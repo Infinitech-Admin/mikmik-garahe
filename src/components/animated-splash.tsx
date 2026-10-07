@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 /**
  * AnimatedSplash — "tachometer" version
  * -------------------------------------
- * The wordmark MIKMIK GARAHE EXCHANGE starts dark. Under it, a tachometer
- * sweeps from 0 to redline: the red arc fills, the needle climbs, and the
- * % counter runs. As the needle passes, each letter ignites in order:
- * B → gulong (O) → S → S, and the AUTO EXCHANGE bar is revealed.
+ * The wordmark MIKMIK'S GARAHE starts dark. Under it, a tachometer
+ * sweeps from 0 to redline: the arc fills, the needle climbs, and the
+ * % counter runs. As the needle passes, each letter of MIKMIK'S ignites
+ * in order, and the GARAHE tag is revealed.
  * At redline the wordmark flares, then everything fades into the homepage.
  *
  * - Shows only when running as an installed PWA (standalone).
@@ -28,7 +28,9 @@ type Props = {
 
 type Phase = "pending" | "show" | "exit" | "done";
 
-const SESSION_KEY = "bax-splash-seen";
+const SESSION_KEY = "mg-splash-seen";
+
+const WORD = "MIKMIK'S".split("");
 
 /* ---------- Gauge geometry (viewBox 200 x 150, 240° sweep) ---------- */
 const CX = 100;
@@ -96,104 +98,59 @@ export default function AnimatedSplash({
 
   return (
     <div
-      className="bax-splash"
+      className="mg-splash"
       data-active={phase === "show" || phase === "exit"}
       data-exit={phase === "exit"}
       role="status"
       aria-live="polite"
       aria-label="Loading Mikmik's Garahe"
-      style={{ ["--bax-fade" as string]: `${fadeMs}ms` }}
+      style={{ ["--mg-fade" as string]: `${fadeMs}ms` }}
     >
-      <div className="bax-stage">
-        {/* B [gulong] S S — dark until the needle reaches each letter */}
-        <h1 className="bax-word" aria-label="Mikmik's Garahe">
-          <span className="bax-l bax-b" aria-hidden="true">
-            B
-          </span>
-
-          <span className="bax-roll" aria-hidden="true">
-            <svg className="bax-wheel" viewBox="0 0 100 100">
-              <circle
-                cx="50"
-                cy="50"
-                r="47"
-                fill="#0b1020"
-                stroke="#fff"
-                strokeWidth="5"
-              />
-              <circle
-                cx="50"
-                cy="50"
-                r="41"
-                fill="none"
-                stroke="#39FF14"
-                strokeWidth="5"
-                strokeDasharray="7 5.2"
-              />
-              <circle
-                cx="50"
-                cy="50"
-                r="30"
-                fill="#06030D"
-                stroke="#fff"
-                strokeWidth="3"
-              />
-              <g stroke="#fff" strokeWidth="5" strokeLinecap="round">
-                <line x1="50" y1="50" x2="50" y2="22" />
-                <line x1="50" y1="50" x2="76.6" y2="41.4" />
-                <line x1="50" y1="50" x2="66.5" y2="72.6" />
-                <line x1="50" y1="50" x2="33.5" y2="72.6" />
-                <line x1="50" y1="50" x2="23.4" y2="41.4" />
-              </g>
-              <circle
-                cx="50"
-                cy="50"
-                r="8"
-                fill="#39FF14"
-                stroke="#fff"
-                strokeWidth="2.5"
-              />
-            </svg>
-          </span>
-
-          <span className="bax-l bax-s1" aria-hidden="true">
-            S
-          </span>
-          <span className="bax-l bax-s2" aria-hidden="true">
-            S
-          </span>
+      <div className="mg-stage">
+        {/* MIKMIK'S — dark until the needle reaches each letter */}
+        <h1 className="mg-word" aria-label="Mikmik's Garahe">
+          {WORD.map((ch, i) => (
+            <span
+              key={i}
+              className="mg-l"
+              aria-hidden="true"
+              style={{ animationDelay: `${450 + i * 270}ms` }}
+            >
+              {ch}
+            </span>
+          ))}
         </h1>
 
-        {/* AUTO EXCHANGE — revealed in step with the needle */}
-        <div className="bax-tag">
+        {/* GARAHE — revealed in step with the needle */}
+        <div className="mg-tag">
           <span>Garahe</span>
         </div>
 
         {/* Tachometer = the loading bar */}
-        <div className="bax-gauge" aria-hidden="true">
+        <div className="mg-gauge" aria-hidden="true">
           <svg viewBox="0 0 200 150" overflow="visible">
             <defs>
-              <linearGradient id="baxArc" x1="0" y1="1" x2="1" y2="0">
-                <stop offset="0" stopColor="#39FF14" />
-                <stop offset="1" stopColor="#ff4757" />
+              <linearGradient id="mgArc" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stopColor="#5BC236" />
+                <stop offset="1" stopColor="#B026FF" />
               </linearGradient>
-              <linearGradient id="baxNeedle" x1="0" y1="1" x2="0" y2="0">
-                <stop offset="0" stopColor="#39FF14" />
-                <stop offset="1" stopColor="#ff6b78" />
+              <linearGradient id="mgNeedle" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0" stopColor="#5BC236" />
+                <stop offset="1" stopColor="#D58CFF" />
               </linearGradient>
-              <radialGradient id="baxGlow">
-                <stop offset="0" stopColor="#39FF14" stopOpacity="0.5" />
-                <stop offset="1" stopColor="#39FF14" stopOpacity="0" />
+              <radialGradient id="mgGlow">
+                <stop offset="0" stopColor="#B026FF" stopOpacity="0.55" />
+                <stop offset="1" stopColor="#B026FF" stopOpacity="0" />
               </radialGradient>
             </defs>
 
             {/* glow behind the dial, brightens as RPM climbs */}
             <circle
-              className="bax-gglow"
+              className="mg-gglow"
               cx={CX}
               cy={CY}
               r="78"
-              fill="url(#baxGlow)"
+              fill="url(#mgGlow)"
             />
 
             {/* track */}
@@ -208,18 +165,18 @@ export default function AnimatedSplash({
             <path
               d="M174.48 49 A86 86 0 0 1 174.48 135"
               fill="none"
-              stroke="#39FF14"
+              stroke="#B026FF"
               strokeWidth="2.5"
               strokeLinecap="round"
               opacity="0.85"
             />
             {/* progress arc */}
             <path
-              className="bax-arc"
+              className="mg-arc"
               d="M30.72 132 A80 80 0 1 1 169.28 132"
               pathLength={100}
               fill="none"
-              stroke="url(#baxArc)"
+              stroke="url(#mgArc)"
               strokeWidth="6"
               strokeLinecap="round"
               strokeDasharray="100"
@@ -235,7 +192,7 @@ export default function AnimatedSplash({
                   x2={CX}
                   y2={CY - (t.major ? 62 : 68)}
                   transform={`rotate(${t.angle} ${CX} ${CY})`}
-                  stroke={t.red ? "#ff4757" : "#fff"}
+                  stroke={t.red ? "#B026FF" : "#fff"}
                   strokeOpacity={t.major ? 0.9 : 0.4}
                   strokeWidth={t.major ? 2 : 1}
                 />
@@ -243,13 +200,13 @@ export default function AnimatedSplash({
             </g>
 
             {/* numbers 0–8 */}
-            <g className="bax-nums" textAnchor="middle" fontSize="9">
+            <g className="mg-nums" textAnchor="middle" fontSize="9">
               {TICKS.filter((t) => t.major).map((t) => (
                 <text
                   key={t.i}
                   x={(CX + 50 * Math.sin(rad(t.angle))).toFixed(2)}
                   y={(CY - 50 * Math.cos(rad(t.angle)) + 3.2).toFixed(2)}
-                  fill={t.red ? "#ff4757" : "#fff"}
+                  fill={t.red ? "#D58CFF" : "#fff"}
                   fillOpacity={t.red ? 1 : 0.75}
                 >
                   {t.i / 4}
@@ -268,10 +225,10 @@ export default function AnimatedSplash({
             </g>
 
             {/* needle */}
-            <g className="bax-needle">
+            <g className="mg-needle">
               <polygon
                 points="98.6,102 98,92 100,24 102,92 101.4,102"
-                fill="url(#baxNeedle)"
+                fill="url(#mgNeedle)"
               />
             </g>
             {/* hub */}
@@ -279,28 +236,30 @@ export default function AnimatedSplash({
               cx={CX}
               cy={CY}
               r="7"
-              fill="#0b1020"
+              fill="#0C0716"
               stroke="#fff"
               strokeWidth="2"
             />
-            <circle cx={CX} cy={CY} r="2.6" fill="#39FF14" />
+            <circle cx={CX} cy={CY} r="2.6" fill="#5BC236" />
           </svg>
 
           {/* % readout */}
-          <div className="bax-readout" />
+          <div className="mg-readout" />
         </div>
       </div>
 
       <style>{`
-        @property --bax-n {
+        @property --mg-n {
           syntax: "<integer>";
           inherits: true;
           initial-value: 0;
         }
 
-        .bax-splash {
-          --red: #39FF14;
-          --red-glow: #ff4757;
+        .mg-splash {
+          --green: #5BC236;
+          --neon: #5BC236;
+          --purple: #B026FF;
+          --purple-glow: #B026FF;
           --navy: #06030D;
           --t0: 300ms;      /* sweep start */
           --drive: 2600ms;  /* sweep duration (gauge = loading bar) */
@@ -312,35 +271,36 @@ export default function AnimatedSplash({
           justify-content: center;
           overflow: hidden;
           background:
-            radial-gradient(55% 40% at 50% 55%, rgba(57,255,20,0.2), transparent 70%),
+            radial-gradient(55% 40% at 50% 55%, rgba(176,38,255,0.3), transparent 70%),
             var(--navy);
           opacity: 1;
-          transition: opacity var(--bax-fade, 600ms) ease, transform var(--bax-fade, 600ms) ease;
+          transition: opacity var(--mg-fade, 600ms) ease, transform var(--mg-fade, 600ms) ease;
           padding: env(safe-area-inset-top) env(safe-area-inset-right)
                    env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
         @media (display-mode: standalone),
                (display-mode: window-controls-overlay),
                (display-mode: fullscreen) {
-          .bax-splash { display: flex; }
+          .mg-splash { display: flex; }
         }
-        .bax-splash[data-active="true"] { display: flex; }
-        .bax-splash[data-exit="true"] {
+        .mg-splash[data-active="true"] { display: flex; }
+        .mg-splash[data-exit="true"] {
           opacity: 0;
           transform: scale(1.04);
           pointer-events: none;
         }
 
-        .bax-stage {
+        .mg-stage {
           display: flex;
           flex-direction: column;
           align-items: stretch;
           width: fit-content;
-          font-size: clamp(56px, 19vw, 104px); /* wordmark size drives everything */
+          /* 8 letters wide: sized so the wordmark fits narrow phones */
+          font-size: clamp(30px, 10.5vw, 76px);
         }
 
         /* ---------- Wordmark ---------- */
-        .bax-word {
+        .mg-word {
           margin: 0;
           display: flex;
           align-items: center;
@@ -350,92 +310,72 @@ export default function AnimatedSplash({
           font-style: italic;
           font-size: 1em;
           line-height: 1;
-          letter-spacing: 0.02em;
-          animation: bax-flare 700ms ease-out 2900ms;
+          letter-spacing: 0.01em;
+          animation: mg-flare 700ms ease-out 2900ms;
         }
-        .bax-l {
+        .mg-l {
           display: inline-block;
-          color: #fff;
-          -webkit-text-stroke: 0.045em var(--red);
-          paint-order: stroke fill;
-          text-shadow: 0 0 0.35em rgba(255,71,87,0.55), 0.04em 0.05em 0 rgba(0,0,0,0.35);
+          color: var(--green);
+          /* purple offset shadow, like the logo */
+          text-shadow:
+            0.06em 0.06em 0 var(--purple),
+            0 0 0.4em rgba(176,38,255,0.5);
           opacity: 0.12; /* unlit */
-        }
-        /* each letter ignites as the needle passes */
-        .bax-b  { animation: bax-ignite 520ms ease-out  450ms forwards; }
-        .bax-s1 { animation: bax-ignite 520ms ease-out 1800ms forwards; }
-        .bax-s2 { animation: bax-ignite 520ms ease-out 2350ms forwards; }
-
-        .bax-roll {
-          display: inline-block;
-          width: 0.82em;
-          height: 0.82em;
-          margin: 0 0.06em;
-          filter: drop-shadow(0 0 0.12em rgba(255,71,87,0.7));
-          opacity: 0.12;
-          animation: bax-ignite 520ms ease-out 1150ms forwards;
-        }
-        .bax-wheel {
-          display: block;
-          width: 100%;
-          height: 100%;
-          /* revs up when lit, then idles */
-          animation:
-            bax-rev 900ms cubic-bezier(0.2, 0.8, 0.3, 1) 1150ms forwards,
-            bax-spin 1400ms linear 2050ms infinite;
+          /* per-letter delay is set inline; each ignites as the needle passes */
+          animation: mg-ignite 520ms ease-out forwards;
         }
 
-        /* ---------- AUTO EXCHANGE ---------- */
-        .bax-tag {
-          margin-top: 0.12em;
-          display: flex;
-          justify-content: center;
-          background: var(--red);
-          color: #fff;
+        /* ---------- GARAHE tag ---------- */
+        .mg-tag {
+          align-self: center;
+          margin-top: 0.14em;
+          background: var(--green);
+          color: var(--navy);
           font-family: "Arial Black", "Helvetica Neue", Arial, system-ui, sans-serif;
           font-weight: 900;
-          font-style: italic;
-          font-size: 0.17em;
-          letter-spacing: 0.42em;
+          font-size: 0.2em;
+          letter-spacing: 0.55em;
           text-transform: uppercase;
-          padding: 0.45em 0.9em 0.45em 1.3em;
-          box-shadow: 0 0 1.4em rgba(255,71,87,0.45);
+          padding: 0.4em 0.4em 0.4em 1em; /* right pad offsets trailing letter-spacing */
+          box-shadow: 0 0 1.4em rgba(91,194,54,0.45);
           clip-path: inset(0 100% 0 0);
-          animation: bax-reveal var(--drive) linear var(--t0) forwards;
+          animation: mg-reveal var(--drive) linear var(--t0) forwards;
         }
 
         /* ---------- Gauge ---------- */
-        .bax-gauge {
+        .mg-gauge {
+          --g: clamp(190px, 58vw, 300px);
           position: relative;
-          width: 2.4em;
-          margin: 0.35em auto 0;
-          animation: bax-flare 700ms ease-out 2900ms;
+          width: var(--g);
+          font-size: calc(var(--g) / 8);
+          margin: clamp(18px, 4vw, 30px) auto 0;
+          animation: mg-flare 700ms ease-out 2900ms;
         }
-        .bax-gauge svg { display: block; width: 100%; height: auto; overflow: visible; }
-        .bax-gauge text {
+        .mg-gauge svg { display: block; width: 100%; height: auto; overflow: visible; }
+        .mg-gauge text {
           font-family: "Arial Black", "Helvetica Neue", Arial, system-ui, sans-serif;
           font-weight: 900;
           font-style: italic;
         }
 
-        .bax-arc {
+        .mg-arc {
           stroke-dashoffset: 100;
-          filter: drop-shadow(0 0 3px rgba(255,71,87,0.9));
-          animation: bax-arc var(--drive) linear var(--t0) both;
+          filter: drop-shadow(0 0 3px rgba(176,38,255,0.9));
+          animation: mg-arc var(--drive) linear var(--t0) both;
         }
-        .bax-needle {
+        .mg-needle {
           transform-box: view-box;
           transform-origin: 100px 92px;
           transform: rotate(-120deg);
-          filter: drop-shadow(0 0 3px rgba(255,71,87,0.9));
-          animation: bax-needle var(--drive) linear var(--t0) both;
+          filter: drop-shadow(0 0 3px rgba(176,38,255,0.9));
+          animation: mg-needle var(--drive) linear var(--t0) both;
         }
-        .bax-gglow {
+        .mg-gglow {
           opacity: 0.1;
-          animation: bax-gglow var(--drive) linear var(--t0) both;
+          animation: mg-gglow var(--drive) linear var(--t0) both;
         }
 
-        .bax-readout {
+        .mg-readout {
           position: absolute;
           left: 50%;
           top: 74%;
@@ -443,43 +383,43 @@ export default function AnimatedSplash({
           font-family: "Arial Black", "Helvetica Neue", Arial, system-ui, sans-serif;
           font-weight: 900;
           font-style: italic;
-          font-size: 0.3em;
+          font-size: 1em;
           line-height: 1;
           color: #fff;
-          text-shadow: 0 0 0.4em rgba(255,71,87,0.6);
+          text-shadow: 0 0 0.4em rgba(176,38,255,0.6);
           font-variant-numeric: tabular-nums;
-          counter-reset: bax-n var(--bax-n);
-          animation: bax-count var(--drive) linear var(--t0) both;
+          counter-reset: mg-n var(--mg-n);
+          animation: mg-count var(--drive) linear var(--t0) both;
         }
-        .bax-readout::before { content: counter(bax-n) "%"; }
+        .mg-readout::before { content: counter(mg-n) "%"; }
 
         /* ---------- Keyframes ---------- */
         /* needle, arc, counter and tag reveal share one speed curve */
-        @keyframes bax-needle {
+        @keyframes mg-needle {
           0%   { transform: rotate(-120deg); animation-timing-function: linear; }
           85%  { transform: rotate(84deg);   animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
           100% { transform: rotate(120deg); }
         }
-        @keyframes bax-arc {
+        @keyframes mg-arc {
           0%   { stroke-dashoffset: 100; animation-timing-function: linear; }
           85%  { stroke-dashoffset: 15;  animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
           100% { stroke-dashoffset: 0; }
         }
-        @keyframes bax-count {
-          0%   { --bax-n: 0;   animation-timing-function: linear; }
-          85%  { --bax-n: 85;  animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
-          100% { --bax-n: 100; }
+        @keyframes mg-count {
+          0%   { --mg-n: 0;   animation-timing-function: linear; }
+          85%  { --mg-n: 85;  animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
+          100% { --mg-n: 100; }
         }
-        @keyframes bax-gglow {
+        @keyframes mg-gglow {
           0%   { opacity: 0.1; }
           100% { opacity: 0.9; }
         }
-        @keyframes bax-reveal {
+        @keyframes mg-reveal {
           0%   { clip-path: inset(0 100% 0 0); animation-timing-function: linear; }
           85%  { clip-path: inset(0 15% 0 0);  animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
           100% { clip-path: inset(0 0 0 0); }
         }
-        @keyframes bax-ignite {
+        @keyframes mg-ignite {
           0%   { opacity: 0.12; }
           20%  { opacity: 1; }
           32%  { opacity: 0.35; }
@@ -487,22 +427,20 @@ export default function AnimatedSplash({
           62%  { opacity: 0.7; }
           100% { opacity: 1; }
         }
-        @keyframes bax-rev  { to { transform: rotate(720deg); } }
-        @keyframes bax-spin { to { transform: rotate(360deg); } }
-        @keyframes bax-flare {
-          0%   { filter: brightness(1) drop-shadow(0 0 0 rgba(255,71,87,0)); }
-          35%  { filter: brightness(1.35) drop-shadow(0 0 0.22em rgba(255,71,87,0.85)); }
-          100% { filter: brightness(1) drop-shadow(0 0 0 rgba(255,71,87,0)); }
+        @keyframes mg-flare {
+          0%   { filter: brightness(1) drop-shadow(0 0 0 rgba(176,38,255,0)); }
+          35%  { filter: brightness(1.35) drop-shadow(0 0 0.22em rgba(176,38,255,0.85)); }
+          100% { filter: brightness(1) drop-shadow(0 0 0 rgba(176,38,255,0)); }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .bax-splash *, .bax-splash *::before {
+          .mg-splash *, .mg-splash *::before {
             animation-duration: 1ms !important;
             animation-delay: 0ms !important;
             animation-iteration-count: 1 !important;
             transition: none !important;
           }
-          .bax-splash[data-exit="true"] { transform: none; }
+          .mg-splash[data-exit="true"] { transform: none; }
         }
       `}</style>
     </div>
