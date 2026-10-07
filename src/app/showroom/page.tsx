@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Bungee } from "next/font/google";
 import {
   ArrowRight,
   Gauge,
@@ -26,8 +27,14 @@ import {
   type Vehicle,
 } from "@/lib/api";
 
+// Signage-style display face, same as the home hero.
+const display = Bungee({ subsets: ["latin"], weight: "400" });
+
 const DEFAULT_LOAD_ERROR =
   "We couldn’t load the showroom inventory right now. Please refresh the page or contact our team for assistance.";
+
+const focusRing =
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5BC236]";
 
 export default function ShowroomPage() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -166,26 +173,20 @@ export default function ShowroomPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-[#191610] text-white">
-        <section className="relative overflow-hidden border-b border-[#5DB521]/20 bg-[#0d0b09]">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(191,152,13,0.18),transparent_50%)]" />
+      <main className="min-h-screen bg-[#0E0818] text-white">
+        {/* HERO */}
+        <section className="relative overflow-hidden bg-[#06030D]">
+          <div className="pointer-events-none absolute -left-32 top-0 h-[400px] w-[400px] rounded-full bg-[#B026FF] opacity-20 blur-[140px]" />
           <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
             <div className="max-w-3xl">
-              <div className="mb-5 flex items-center gap-3">
-                <span className="h-px w-10 bg-[#5DB521]" />
-                <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#5DB521]">
-                  Featured Collection
-                </span>
-              </div>
-
-              <h1 className="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-                Discover the
-                <span className="block text-[#5DB521]">
-                  showroom collection
-                </span>
+              <h1
+                className={`${display.className} text-[2rem] uppercase leading-[1.12] text-white sm:text-5xl lg:text-[2.6rem] xl:text-5xl`}
+              >
+                <span className="block">Discover the</span>
+                <span className="block">showroom collection</span>
               </h1>
 
-              <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg">
+              <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg">
                 Handpicked models that balance confidence, comfort, and design.
                 Explore high-performance sedans and luxury SUVs tailored for
                 modern life.
@@ -195,13 +196,12 @@ export default function ShowroomPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-          <div className="mb-8 rounded-[28px] border border-white/10 bg-[#120f0d] p-4 shadow-[0_20px_60px_rgba(0,0,0,0.2)] sm:p-5">
-            <div className="mb-4 flex items-center justify-between gap-3 text-[#5DB521]">
-              <div className="flex gap-2 items-center">
-                <SlidersHorizontal size={18} />
-                <p className="text-xs font-semibold uppercase tracking-[0.25em]">
-                  Search & filter
-                </p>
+          {/* Search & filter */}
+          <div className="mb-8 rounded-[28px] border border-white/10 bg-[#0E0818] p-4 sm:p-5">
+            <div className="mb-4 flex items-center justify-between gap-3 text-zinc-300">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal size={18} className="text-[#78D152]" />
+                <p className="text-sm font-semibold">Search and filter</p>
               </div>
 
               {!isLoading && !loadError && (
@@ -213,8 +213,8 @@ export default function ShowroomPage() {
             </div>
 
             <div className="grid gap-3 lg:grid-cols-[1.4fr_1fr_1fr_1fr_auto]">
-              <label className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-zinc-300">
-                <Search size={16} className="text-[#5DB521]" />
+              <label className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#06030D]/20 px-4 py-3 text-sm text-zinc-300">
+                <Search size={16} className="text-[#78D152]" />
 
                 <input
                   value={search}
@@ -227,10 +227,10 @@ export default function ShowroomPage() {
               <select
                 value={selectedModel}
                 onChange={(event) => setSelectedModel(event.target.value)}
-                className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none focus:border-[#5DB521]"
+                className="rounded-2xl border border-white/10 bg-[#06030D]/20 px-4 py-3 text-sm text-white outline-none focus:border-[#5BC236]"
               >
                 {modelOptions.map((model) => (
-                  <option key={model} value={model} className="bg-[#120f0d]">
+                  <option key={model} value={model} className="bg-[#0E0818]">
                     {model === "all" ? "All models" : model}
                   </option>
                 ))}
@@ -239,18 +239,18 @@ export default function ShowroomPage() {
               <select
                 value={sortOrder}
                 onChange={(event) => setSortOrder(event.target.value)}
-                className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none focus:border-[#5DB521]"
+                className="rounded-2xl border border-white/10 bg-[#06030D]/20 px-4 py-3 text-sm text-white outline-none focus:border-[#5BC236]"
               >
-                <option value="newest" className="bg-[#120f0d]">
+                <option value="newest" className="bg-[#0E0818]">
                   Newest first
                 </option>
-                <option value="oldest" className="bg-[#120f0d]">
+                <option value="oldest" className="bg-[#0E0818]">
                   Oldest first
                 </option>
-                <option value="price-low" className="bg-[#120f0d]">
+                <option value="price-low" className="bg-[#0E0818]">
                   Price: low to high
                 </option>
-                <option value="price-high" className="bg-[#120f0d]">
+                <option value="price-high" className="bg-[#0E0818]">
                   Price: high to low
                 </option>
               </select>
@@ -258,18 +258,18 @@ export default function ShowroomPage() {
               <select
                 value={priceRange}
                 onChange={(event) => setPriceRange(event.target.value)}
-                className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none focus:border-[#5DB521]"
+                className="rounded-2xl border border-white/10 bg-[#06030D]/20 px-4 py-3 text-sm text-white outline-none focus:border-[#5BC236]"
               >
-                <option value="all" className="bg-[#120f0d]">
+                <option value="all" className="bg-[#0E0818]">
                   All price ranges
                 </option>
-                <option value="under-50k" className="bg-[#120f0d]">
+                <option value="under-50k" className="bg-[#0E0818]">
                   Under ₱50k
                 </option>
-                <option value="50k-70k" className="bg-[#120f0d]">
+                <option value="50k-70k" className="bg-[#0E0818]">
                   ₱50k - ₱70k
                 </option>
-                <option value="70k-plus" className="bg-[#120f0d]">
+                <option value="70k-plus" className="bg-[#0E0818]">
                   ₱70k+
                 </option>
               </select>
@@ -282,7 +282,7 @@ export default function ShowroomPage() {
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-transparent px-4 py-3 text-sm font-semibold text-zinc-200 transition-colors hover:border-[#5DB521] hover:text-[#5DB521]"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-transparent px-4 py-3 text-sm font-semibold text-zinc-200 transition-colors hover:border-[#5BC236] hover:text-white"
                 >
                   <X size={15} />
                   Clear
@@ -292,9 +292,9 @@ export default function ShowroomPage() {
           </div>
 
           {isLoading ? (
-            <div className="rounded-[28px] border border-white/10 bg-[#120f0d] px-6 py-16 text-center shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[#5DB521]/30 bg-[#5DB521]/10">
-                <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#5DB521]/40 border-t-[#5DB521]" />
+            <div className="rounded-[28px] border border-white/10 bg-[#0E0818] px-6 py-16 text-center">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/5">
+                <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-[#5BC236]" />
               </div>
               <p className="mt-6 text-2xl font-bold text-white">
                 Loading inventory...
@@ -304,24 +304,24 @@ export default function ShowroomPage() {
               </p>
             </div>
           ) : loadError ? (
-            <div className="rounded-[28px] border border-red-500/30 bg-[#160f0f] px-6 py-16 text-center shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
+            <div className="rounded-[28px] border border-white/10 bg-[#0E0818] px-6 py-16 text-center">
               <p className="text-2xl font-bold text-white">
                 Something went wrong
               </p>
-              <p className="mt-3 max-w-xl mx-auto text-sm leading-6 text-zinc-300">
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-zinc-300">
                 {loadError}
               </p>
               <button
                 type="button"
                 onClick={handleRetry}
-                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#5DB521] px-5 py-3 text-sm font-semibold text-black transition-all duration-300 hover:bg-[#74CC35]"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#5BC236] px-5 py-3 text-sm font-semibold text-black transition-all duration-300 hover:bg-[#78D152]"
               >
                 <RotateCcw size={16} />
                 Retry
               </button>
             </div>
           ) : filteredCars.length === 0 ? (
-            <div className="rounded-[28px] border border-dashed border-white/15 bg-[#120f0d] px-6 py-16 text-center">
+            <div className="rounded-[28px] border border-dashed border-white/15 bg-[#0E0818] px-6 py-16 text-center">
               <p className="text-xl font-semibold text-white">
                 {vehicles.length === 0
                   ? "No vehicles in the showroom yet"
@@ -336,7 +336,7 @@ export default function ShowroomPage() {
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#5DB521]/50 bg-[#5DB521]/10 px-5 py-3 text-sm font-semibold text-[#F3D77A] transition-all duration-300 hover:border-[#5DB521] hover:bg-[#5DB521]/20"
+                  className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:border-[#5BC236] hover:bg-white/10"
                 >
                   <X size={15} />
                   Clear filters
@@ -359,19 +359,25 @@ export default function ShowroomPage() {
                     : recentlyAdded.includes(car.id)
                       ? "Added ✓"
                       : "Add to Cart";
+                  const badgeText =
+                    unavailable && car.status !== "available"
+                      ? car.status
+                      : car.badge;
 
                   return (
                     <Link
                       key={car.id}
                       href={`/showroom/car/${car.id}`}
-                      className="group flex h-full flex-col overflow-hidden rounded-[26px] border border-white/10 bg-[#12110f] transition-all duration-300 hover:-translate-y-1 hover:border-[#5DB521]/50 hover:shadow-[0_25px_60px_rgba(191,152,13,0.12)]"
+                      className="group flex h-full flex-col overflow-hidden rounded-[26px] border border-white/10 bg-[#0E0818] transition-all duration-300 hover:-translate-y-1 hover:border-[#B026FF]/60 hover:shadow-[0_20px_50px_rgba(176,38,255,0.15)]"
                     >
-                      <div className="relative overflow-hidden bg-[#0d0d0d] p-3">
+                      <div className="relative overflow-hidden bg-[#06030D] p-3">
                         {(car.badge || unavailable) && (
-                          <div className="absolute right-4 top-4 z-10 rounded-full border border-[#5DB521]/40 bg-[#5DB521]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#F3D77A]">
-                            {unavailable && car.status !== "available"
-                              ? car.status
-                              : car.badge}
+                          // max-w + truncate keeps long badges inside the card.
+                          <div
+                            title={badgeText ?? undefined}
+                            className="absolute right-4 top-4 z-10 max-w-[calc(100%-2rem)] truncate rounded-full border border-[#B026FF]/50 bg-[#B026FF]/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#D77BFF]"
+                          >
+                            {badgeText}
                           </div>
                         )}
 
@@ -394,57 +400,67 @@ export default function ShowroomPage() {
                       </div>
 
                       <div className="flex flex-1 flex-col p-5">
-                        <div className="flex items-center justify-between gap-3">
-                          <div>
-                            <p className="text-xs uppercase tracking-[0.18em] text-zinc-400">
-                              {car.year} • {car.type}
-                            </p>
-                            <h3 className="mt-1 text-2xl font-semibold text-white">
-                              {car.name}
-                            </h3>
-                          </div>
-                        </div>
-                        <span className="mt-2 text-base font-black text-[#5DB521]">
-                          {car.price}
-                        </span>
-
-                        <div className="grid grid-cols-2 gap-3 text-sm text-zinc-300 my-5">
-                          <div className="rounded-xl border border-white/10 bg-white/3 p-3">
-                            <span className="block text-[10px] uppercase tracking-[0.18em] text-zinc-400">
-                              Mileage
-                            </span>
-                            <span className="mt-2 block font-semibold text-white">
-                              {car.mileage}
-                            </span>
-                          </div>
-                          <div className="rounded-xl border border-white/10 bg-white/3 p-3">
-                            <span className="block text-[10px] uppercase tracking-[0.18em] text-zinc-400">
-                              Engine
-                            </span>
-                            <span className="mt-2 block font-semibold text-white">
-                              {car.engine}
-                            </span>
-                          </div>
+                        {/* Top block: grows naturally (title can be 1 to 3 lines). */}
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.18em] text-zinc-400">
+                            {car.year} • {car.type}
+                          </p>
+                          <h3 className="mt-1 text-2xl font-semibold text-white">
+                            {car.name}
+                          </h3>
+                          <span className="mt-2 block text-base font-black text-[#78D152]">
+                            {car.price}
+                          </span>
                         </div>
 
-                        {/* Spacer pushes the button + footer to the bottom of every card,
-                            regardless of how many lines the title/specs above take up. */}
-                        <div className="mt-auto">
+                        {/* Bottom block: pinned to the bottom of every card, with
+                            fixed-height pieces so specs, button and footer line up
+                            across cards in the same row. */}
+                        <div className="mt-auto pt-5">
+                          <div className="mb-5 grid grid-cols-2 gap-3 text-sm text-zinc-300">
+                            <div className="min-w-0 rounded-xl border border-white/10 bg-white/3 p-3">
+                              <span className="block text-[10px] uppercase tracking-[0.18em] text-zinc-400">
+                                Mileage
+                              </span>
+                              <span className="mt-2 block min-h-10 line-clamp-2 font-semibold leading-5 text-white">
+                                {car.mileage}
+                              </span>
+                            </div>
+                            <div className="min-w-0 rounded-xl border border-white/10 bg-white/3 p-3">
+                              <span className="block text-[10px] uppercase tracking-[0.18em] text-zinc-400">
+                                Engine
+                              </span>
+                              <span className="mt-2 block min-h-10 line-clamp-2 font-semibold leading-5 text-white">
+                                {car.engine}
+                              </span>
+                            </div>
+                          </div>
+
                           <button
                             type="button"
                             disabled={unavailable}
                             onClick={(event) => handleAddToCart(event, car)}
-                            className="mb-1 flex w-full items-center justify-center gap-2 rounded-xl bg-[#5DB521] px-4 py-2.5 text-sm font-bold text-black transition-all duration-300 hover:bg-[#74CC35] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[#5DB521]"
+                            className="mb-3 flex w-full items-center justify-center gap-2 rounded-xl bg-[#5BC236] px-4 py-2.5 text-sm font-bold text-black transition-all duration-300 hover:bg-[#78D152] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[#5BC236]"
                           >
                             {buttonLabel}
                           </button>
 
-                          <div className="flex items-center justify-between border-t border-white/10 pt-4 text-sm text-zinc-300">
-                            <span className="inline-flex items-center gap-2">
-                              <MapPin size={14} className="text-[#5DB521]" />
-                              {car.location}
+                          {/* Fixed minimum height + 2-line clamp: long addresses
+                              no longer push the button up. */}
+                          <div className="flex min-h-14 items-center justify-between gap-3 border-t border-white/10 pt-3 text-sm text-zinc-300">
+                            <span className="flex min-w-0 items-center gap-2">
+                              <MapPin
+                                size={14}
+                                className="shrink-0 text-[#78D152]"
+                              />
+                              <span
+                                title={car.location}
+                                className="line-clamp-2 leading-5"
+                              >
+                                {car.location}
+                              </span>
                             </span>
-                            <span className="inline-flex items-center gap-2 font-semibold text-[#5DB521]">
+                            <span className="inline-flex shrink-0 items-center gap-2 font-semibold text-white">
                               Details
                               <ArrowRight
                                 size={16}
@@ -467,7 +483,7 @@ export default function ShowroomPage() {
                       setCurrentPage((page) => Math.max(1, page - 1))
                     }
                     disabled={currentPage === 1}
-                    className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[#5DB521] hover:text-[#F3D77A] disabled:cursor-not-allowed disabled:opacity-40"
+                    className={`inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[#5BC236] disabled:cursor-not-allowed disabled:opacity-40 ${focusRing}`}
                   >
                     Previous
                   </button>
@@ -481,10 +497,10 @@ export default function ShowroomPage() {
                         key={page}
                         type="button"
                         onClick={() => setCurrentPage(page)}
-                        className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition-all ${
+                        className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition-all ${focusRing} ${
                           currentPage === page
-                            ? "bg-[#5DB521] text-black"
-                            : "border border-white/10 bg-white/5 text-white hover:border-[#5DB521] hover:text-[#F3D77A]"
+                            ? "bg-[#5BC236] text-black"
+                            : "border border-white/10 bg-white/5 text-white hover:border-[#5BC236]"
                         }`}
                       >
                         {page}
@@ -498,7 +514,7 @@ export default function ShowroomPage() {
                       setCurrentPage((page) => Math.min(totalPages, page + 1))
                     }
                     disabled={currentPage === totalPages}
-                    className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[#5DB521] hover:text-[#F3D77A] disabled:cursor-not-allowed disabled:opacity-40"
+                    className={`inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[#5BC236] disabled:cursor-not-allowed disabled:opacity-40 ${focusRing}`}
                   >
                     Next
                   </button>
@@ -509,46 +525,46 @@ export default function ShowroomPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
-          <div className="rounded-[28px] border border-[#5DB521]/20 bg-[#120f0d] p-6 sm:p-8">
-            <div className="flex items-center gap-3">
-              <h3 className="text-2xl font-bold text-white">
-                Why drivers choose AutoTrade?
-              </h3>
-            </div>
+          <div className="rounded-[28px] border border-white/10 bg-[#0E0818] p-6 sm:p-8">
+            <h3
+              className={`${display.className} text-xl uppercase leading-snug text-white sm:text-2xl`}
+            >
+              Why drivers choose Mikmik&apos;s Garahe
+            </h3>
 
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <div className="flex gap-2 items-center">
-                  <Gauge className="text-[#5DB521]" size={22} />
+                <div className="flex items-center gap-2">
+                  <Gauge className="text-[#78D152]" size={22} />
                   <h4 className="text-xl font-bold text-white">
                     Inspected quality
                   </h4>
                 </div>
-                <p className="mt-2 text-md leading-6 text-zinc-300">
+                <p className="mt-2 text-base leading-6 text-zinc-300">
                   Every vehicle is reviewed for condition, safety, and
                   performance before it reaches the showroom floor.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <div className="flex gap-2 items-center">
-                  <Sparkles className="text-[#5DB521]" size={22} />
+                <div className="flex items-center gap-2">
+                  <Sparkles className="text-[#78D152]" size={22} />
                   <h4 className="text-xl font-bold text-white">
                     Transparent pricing
                   </h4>
                 </div>
-                <p className="mt-2 text-md leading-6 text-zinc-300">
+                <p className="mt-2 text-base leading-6 text-zinc-300">
                   No hidden surprises—just clear value, competitive pricing, and
                   straightforward buying guidance.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <div className="flex gap-2 items-center">
-                  <MapPin className="text-[#5DB521]" size={22} />
+                <div className="flex items-center gap-2">
+                  <MapPin className="text-[#78D152]" size={22} />
                   <h4 className="text-xl font-bold text-white">
                     Local experts
                   </h4>
                 </div>
-                <p className="mt-2 text-md leading-6 text-zinc-300">
+                <p className="mt-2 text-base leading-6 text-zinc-300">
                   Our team helps you compare the right fit for your lifestyle,
                   goals, and long-term value.
                 </p>

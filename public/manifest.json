@@ -1,8 +1,8 @@
 {
   "id": "/",
   "name": "Mikmik's Garahe",
-  "short_name": "Mikmik's Garahe",
-  "description": "Discover quality vehicles for sale at Mikmik's Garahe. Browse premium cars, explore detailed specifications, view photos and videos, and inquire about your next vehicle.",
+  "short_name": "Mikmik's",
+  "description": "Browse quality pre-owned cars for sale at Mikmik's Garahe in Bacoor, Cavite. See photos and videos, book a test drive, or sell and trade your car.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -10,8 +10,8 @@
   "orientation": "any",
   "lang": "en",
   "dir": "ltr",
-  "background_color": "#0B0714",
-  "theme_color": "#5DB521",
+  "background_color": "#06030D",
+  "theme_color": "#06030D",
   "categories": ["shopping", "business", "autos"],
   "prefer_related_applications": false,
   "related_applications": [],
@@ -46,15 +46,9 @@
   "share_target": {
     "action": "/",
     "method": "GET",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
+    "params": { "title": "title", "text": "text", "url": "url" }
   },
-  "edge_side_panel": {
-    "preferred_width": 400
-  },
+  "edge_side_panel": { "preferred_width": 400 },
   "icons": [
     {
       "src": "/icons/icon-48x48.png",

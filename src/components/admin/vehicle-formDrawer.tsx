@@ -45,7 +45,7 @@ const STEPS = [
 ] as const;
 
 const inputClass =
-  "w-full rounded-xl border border-white/10 bg-[#171c28]/60 px-3.5 py-2.5 text-sm text-white placeholder-slate-500 outline-none focus:border-[#d9ae1f]/60";
+  "w-full rounded-xl border border-white/10 bg-[#06030D]/60 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#39FF14]/60";
 
 function Field({
   label,
@@ -58,7 +58,7 @@ function Field({
 }) {
   return (
     <div className={className}>
-      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-400">
+      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-zinc-400">
         {label}
       </label>
       {children}
@@ -87,7 +87,7 @@ function GalleryTile({
   const poster = media.poster ? resolveMediaUrl(media.poster, baseUrl) : "";
 
   return (
-    <div className="group relative aspect-video overflow-hidden rounded-lg border border-white/10 bg-[#171c28]">
+    <div className="group relative aspect-video overflow-hidden rounded-lg border border-white/10 bg-[#06030D]">
       {!isVideo || poster ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -108,10 +108,10 @@ function GalleryTile({
 
       {isVideo && (
         <>
-          <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/30">
+          <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[#06030D]/30">
             <Play size={18} className="fill-white text-white" />
           </span>
-          <span className="pointer-events-none absolute bottom-1 left-1 rounded bg-black/70 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white">
+          <span className="pointer-events-none absolute bottom-1 left-1 rounded bg-[#06030D]/70 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white">
             Video
           </span>
         </>
@@ -120,7 +120,7 @@ function GalleryTile({
       <button
         type="button"
         onClick={onDelete}
-        className="absolute right-1 top-1 hidden rounded-full bg-black/70 p-1 text-white group-hover:block"
+        className="absolute right-1 top-1 hidden rounded-full bg-[#06030D]/70 p-1 text-white group-hover:block"
         aria-label="Remove"
       >
         <Trash2 size={12} />
@@ -154,7 +154,7 @@ function ConfirmDeleteDialog({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-[#06030D]/70 p-4 backdrop-blur-sm"
       onClick={() => {
         if (!deleting) onCancel();
       }}
@@ -166,12 +166,12 @@ function ConfirmDeleteDialog({
         aria-labelledby="confirm-delete-title"
         aria-describedby="confirm-delete-desc"
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-sm overflow-hidden rounded-2xl border border-white/10 bg-[#1a2332] shadow-2xl"
+        className="w-full max-w-sm overflow-hidden rounded-2xl border border-white/10 bg-[#06030D] shadow-2xl"
       >
         <div className="px-6 pt-6">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-500/15">
-              <AlertTriangle size={20} className="text-red-400" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#39FF14]/15">
+              <AlertTriangle size={20} className="text-[#7CFF5B]" />
             </div>
             <div>
               <h3
@@ -182,7 +182,7 @@ function ConfirmDeleteDialog({
               </h3>
               <p
                 id="confirm-delete-desc"
-                className="mt-1 text-sm text-slate-400"
+                className="mt-1 text-sm text-zinc-400"
               >
                 This will permanently remove it from the gallery. This can’t be
                 undone.
@@ -191,7 +191,7 @@ function ConfirmDeleteDialog({
           </div>
 
           {/* Preview of what's being deleted */}
-          <div className="mt-4 aspect-video w-full overflow-hidden rounded-lg border border-white/10 bg-[#171c28]">
+          <div className="mt-4 aspect-video w-full overflow-hidden rounded-lg border border-white/10 bg-[#06030D]">
             {!isVideo || poster ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -216,7 +216,7 @@ function ConfirmDeleteDialog({
             type="button"
             onClick={onCancel}
             disabled={deleting}
-            className="rounded-full px-4 py-2 text-sm font-medium text-slate-400 hover:text-white disabled:opacity-50"
+            className="rounded-full px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white disabled:opacity-50"
           >
             Cancel
           </button>
@@ -224,7 +224,7 @@ function ConfirmDeleteDialog({
             type="button"
             onClick={onConfirm}
             disabled={deleting}
-            className="flex items-center gap-2 rounded-full bg-red-600 px-5 py-2 text-sm font-bold text-white hover:bg-red-700 disabled:opacity-60"
+            className="flex items-center gap-2 rounded-full bg-[#39FF14] px-5 py-2 text-sm font-bold text-black hover:bg-[#A8161F] disabled:opacity-60"
           >
             {deleting && <Loader2 size={15} className="animate-spin" />}
             {deleting ? "Removing..." : "Yes, remove"}
@@ -465,8 +465,8 @@ export default function VehicleFormDrawer({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-[#1a2332] shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#06030D]/60 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-[#06030D] shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
           <h2 className="text-lg font-bold text-white">
@@ -474,7 +474,7 @@ export default function VehicleFormDrawer({
           </h2>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white"
+            className="text-zinc-400 hover:text-white"
             aria-label="Close"
           >
             <X size={20} />
@@ -496,17 +496,17 @@ export default function VehicleFormDrawer({
                 disabled={s.id > step}
                 className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors ${
                   s.id === step
-                    ? "bg-[#d9ae1f] text-[#171c28]"
+                    ? "bg-[#39FF14] text-black"
                     : s.id < step
-                      ? "bg-[#d9ae1f]/20 text-[#d9ae1f] cursor-pointer"
-                      : "bg-white/5 text-slate-500"
+                      ? "bg-[#39FF14]/20 text-[#7CFF5B] cursor-pointer"
+                      : "bg-white/5 text-zinc-500"
                 }`}
               >
                 {s.id < step ? <Check size={14} /> : s.id}
               </button>
               <span
                 className={`hidden text-xs font-medium sm:block ${
-                  s.id === step ? "text-white" : "text-slate-500"
+                  s.id === step ? "text-white" : "text-zinc-500"
                 }`}
               >
                 {s.label}
@@ -514,7 +514,7 @@ export default function VehicleFormDrawer({
               {i < STEPS.length - 1 && (
                 <div
                   className={`h-px flex-1 ${
-                    s.id < step ? "bg-[#d9ae1f]/40" : "bg-white/10"
+                    s.id < step ? "bg-[#39FF14]/40" : "bg-white/10"
                   }`}
                 />
               )}
@@ -528,7 +528,7 @@ export default function VehicleFormDrawer({
         >
           <div className="flex-1 space-y-5 overflow-y-auto px-6 py-6">
             {error && (
-              <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+              <div className="rounded-xl border border-[#39FF14]/30 bg-[#39FF14]/10 px-4 py-3 text-sm text-[#7CFF5B]">
                 {error}
               </div>
             )}
@@ -562,7 +562,7 @@ export default function VehicleFormDrawer({
                     className={inputClass}
                   >
                     {VEHICLE_TYPES.map((t) => (
-                      <option key={t} value={t} className="bg-[#171c28]">
+                      <option key={t} value={t} className="bg-[#06030D]">
                         {t}
                       </option>
                     ))}
@@ -606,7 +606,7 @@ export default function VehicleFormDrawer({
                       <option
                         key={s}
                         value={s}
-                        className="bg-[#171c28] capitalize"
+                        className="bg-[#06030D] capitalize"
                       >
                         {s}
                       </option>
@@ -699,11 +699,11 @@ export default function VehicleFormDrawer({
             {step === 3 && (
               <div className="space-y-6">
                 <div>
-                  <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-zinc-400">
                     Cover image
                   </label>
                   <div className="flex items-center gap-3">
-                    <div className="flex h-20 w-28 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-[#171c28]">
+                    <div className="flex h-20 w-28 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-[#06030D]">
                       {imagePreview ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -712,7 +712,7 @@ export default function VehicleFormDrawer({
                           className="h-full w-full object-cover"
                         />
                       ) : (
-                        <UploadCloud size={20} className="text-slate-600" />
+                        <UploadCloud size={20} className="text-zinc-600" />
                       )}
                     </div>
                     <div className="flex-1">
@@ -723,12 +723,12 @@ export default function VehicleFormDrawer({
                           const file = e.target.files?.[0];
                           if (file) handleImageSelect(file);
                         }}
-                        className="block w-full text-xs text-slate-400 file:mr-3 file:rounded-full file:border-0 file:bg-[#d9ae1f]/15 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-[#d9ae1f]"
+                        className="block w-full text-xs text-zinc-400 file:mr-3 file:rounded-full file:border-0 file:bg-[#39FF14]/15 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-[#7CFF5B]"
                       />
                       {imageUploadPercent !== null && (
                         <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
                           <div
-                            className="h-full bg-[#d9ae1f] transition-all"
+                            className="h-full bg-[#39FF14] transition-all"
                             style={{ width: `${imageUploadPercent}%` }}
                           />
                         </div>
@@ -738,12 +738,12 @@ export default function VehicleFormDrawer({
                 </div>
 
                 <div>
-                  <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-zinc-400">
                     Gallery photos &amp; videos
                   </label>
 
                   {!isEditing && (
-                    <p className="mb-2 text-xs text-slate-500">
+                    <p className="mb-2 text-xs text-zinc-500">
                       Save the vehicle first to unlock gallery uploads.
                     </p>
                   )}
@@ -757,12 +757,12 @@ export default function VehicleFormDrawer({
                         if (e.target.files) handleGalleryFiles(e.target.files);
                         e.target.value = "";
                       }}
-                      className="mb-3 block w-full text-xs text-slate-400 file:mr-3 file:rounded-full file:border-0 file:bg-[#d9ae1f]/15 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-[#d9ae1f]"
+                      className="mb-3 block w-full text-xs text-zinc-400 file:mr-3 file:rounded-full file:border-0 file:bg-[#39FF14]/15 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-[#7CFF5B]"
                     />
                   )}
 
                   {galleryUploading && (
-                    <div className="mb-3 rounded-lg border border-white/10 bg-[#171c28] px-3 py-2 text-xs text-slate-400">
+                    <div className="mb-3 rounded-lg border border-white/10 bg-[#06030D] px-3 py-2 text-xs text-zinc-400">
                       <div className="mb-1 flex items-center justify-between">
                         <span className="truncate">
                           {galleryUploading.name}
@@ -771,7 +771,7 @@ export default function VehicleFormDrawer({
                       </div>
                       <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
                         <div
-                          className="h-full bg-[#d9ae1f] transition-all"
+                          className="h-full bg-[#39FF14] transition-all"
                           style={{ width: `${galleryUploading.percent}%` }}
                         />
                       </div>
@@ -798,7 +798,7 @@ export default function VehicleFormDrawer({
             <button
               type="button"
               onClick={step === 1 ? onClose : goBack}
-              className="rounded-full px-4 py-2 text-sm font-medium text-slate-400 hover:text-white"
+              className="rounded-full px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white"
             >
               {step === 1 ? "Cancel" : "Back"}
             </button>
@@ -806,7 +806,7 @@ export default function VehicleFormDrawer({
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#d9ae1f] to-[#f4c430] px-5 py-2.5 text-sm font-bold text-[#171c28] disabled:opacity-60"
+              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#39FF14] to-[#7CFF5B] px-5 py-2.5 text-sm font-bold text-white disabled:opacity-60"
             >
               {saving && <Loader2 size={15} className="animate-spin" />}
               {isLastStep

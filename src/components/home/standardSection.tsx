@@ -50,16 +50,16 @@ export default function StandardSection() {
                     {/* Section Heading */}
                     <div className="mx-auto max-w-3xl text-center">
                         <div className="mb-5 flex items-center justify-center gap-3">
-                            <span className="h-px w-10 bg-[#5DB521]" />
-                            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#5DB521]">
+                            <span className="h-px w-10 bg-[#39FF14]" />
+                            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7CFF5B]">
                                 AutoTrade Standard
                             </span>
-                            <span className="h-px w-10 bg-[#5DB521]" />
+                            <span className="h-px w-10 bg-[#39FF14]" />
                         </div>
 
                         <h2 className="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
                             Trust, built into
-                            <span className="block text-[#5DB521]">
+                            <span className="block text-[#7CFF5B]">
                                 every detail.
                             </span>
                         </h2>
@@ -90,8 +90,8 @@ export default function StandardSection() {
                                         }`}
                                 >
                                     {/* Icon */}
-                                    <div className="flex size-12 items-center justify-center rounded-xl border border-[#5DB521]/30 bg-[#5DB521]/10 transition-all duration-300 group-hover:border-[#5DB521]/60 group-hover:bg-[#5DB521]/20">
-                                        <Icon className="size-6 text-[#5DB521]" />
+                                    <div className="flex size-12 items-center justify-center rounded-xl border border-[#39FF14]/30 bg-[#39FF14]/10 transition-all duration-300 group-hover:border-[#39FF14]/60 group-hover:bg-[#39FF14]/20">
+                                        <Icon className="size-6 text-[#7CFF5B]" />
                                     </div>
 
                                     {/* Content */}
@@ -104,7 +104,7 @@ export default function StandardSection() {
                                     </p>
 
                                     {/* Hover accent */}
-                                    <div className="absolute bottom-0 left-0 h-px w-0 bg-[#5DB521] transition-all duration-500 group-hover:w-full" />
+                                    <div className="absolute bottom-0 left-0 h-px w-0 bg-[#39FF14] transition-all duration-500 group-hover:w-full" />
                                 </div>
                             );
                         })}

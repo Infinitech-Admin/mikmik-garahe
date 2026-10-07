@@ -67,19 +67,19 @@ const STATUS_META: Record<
 > = {
   pending_verification: {
     label: "Verifying payment",
-    badge: "border-lime-400/40 bg-lime-400/10 text-lime-300",
+    badge: "border-[#7CFF5B]/40 bg-[#7CFF5B]/10 text-[#7CFF5B]",
     message:
       "We received your order and are checking your payment screenshot. We'll contact you once it's verified.",
   },
   confirmed: {
     label: "Confirmed",
-    badge: "border-emerald-400/40 bg-emerald-400/10 text-emerald-300",
+    badge: "border-[#7CFF5B]/40 bg-[#7CFF5B]/10 text-[#7CFF5B]",
     message:
       "Your payment is verified. A sales advisor will contact you about the next steps.",
   },
   rejected: {
     label: "Payment issue",
-    badge: "border-red-400/40 bg-red-400/10 text-red-300",
+    badge: "border-[#7CFF5B]/40 bg-[#7CFF5B]/10 text-[#7CFF5B]",
     message:
       "We couldn't verify your payment. Please contact us and send a clearer screenshot.",
   },
@@ -117,12 +117,12 @@ function Tracker({ status }: { status: OrderStatus }) {
 
         const circle =
           state === "done"
-            ? "border-[#5DB521] bg-[#5DB521] text-black"
+            ? "border-[#39FF14] bg-[#39FF14] text-black"
             : state === "current"
-              ? "border-[#5DB521] bg-[#5DB521]/10 text-[#F3D77A]"
+              ? "border-[#39FF14] bg-[#39FF14]/10 text-[#D77BFF]"
               : state === "failed"
-                ? "border-red-400 bg-red-400/10 text-red-300"
-                : "border-white/15 bg-black/30 text-zinc-600";
+                ? "border-[#7CFF5B] bg-[#7CFF5B]/10 text-[#7CFF5B]"
+                : "border-white/15 bg-[#06030D]/30 text-zinc-600";
 
         return (
           <li key={label} className="relative flex flex-col items-center">
@@ -130,7 +130,7 @@ function Tracker({ status }: { status: OrderStatus }) {
               <span
                 aria-hidden
                 className={`absolute right-1/2 top-4 h-0.5 w-full ${
-                  lineActive ? "bg-[#5DB521]" : "bg-white/10"
+                  lineActive ? "bg-[#39FF14]" : "bg-white/10"
                 }`}
               />
             )}
@@ -160,7 +160,7 @@ function OrderCard({ order }: { order: Order }) {
   const meta = STATUS_META[order.status] ?? STATUS_META.pending_verification;
 
   return (
-    <article className="rounded-[28px] border border-white/10 bg-[#120f0d] p-5 sm:p-7">
+    <article className="rounded-[28px] border border-white/10 bg-[#0E0818] p-5 sm:p-7">
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
@@ -204,7 +204,7 @@ function OrderCard({ order }: { order: Order }) {
               {item.vehicle_id ? (
                 <Link
                   href={`/showroom/car/${item.vehicle_id}`}
-                  className="block truncate font-semibold text-white transition-colors hover:text-[#F3D77A]"
+                  className="block truncate font-semibold text-white transition-colors hover:text-[#D77BFF]"
                 >
                   {item.name}
                 </Link>
@@ -215,7 +215,7 @@ function OrderCard({ order }: { order: Order }) {
               )}
               <span className="text-xs text-zinc-500">Qty {item.quantity}</span>
             </div>
-            <span className="shrink-0 font-bold text-[#5DB521]">
+            <span className="shrink-0 font-bold text-[#7CFF5B]">
               {formatPrice(item.unit_price * item.quantity)}
             </span>
           </div>
@@ -259,7 +259,7 @@ function OrderCard({ order }: { order: Order }) {
             href={order.payment_proof_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 font-semibold text-[#5DB521] transition-colors hover:text-[#dbc15b]"
+            className="inline-flex items-center gap-1.5 font-semibold text-[#7CFF5B] transition-colors hover:text-[#B026FF]"
           >
             View screenshot
             <ExternalLink size={13} />
@@ -276,7 +276,7 @@ function Skeleton() {
       {[0, 1].map((i) => (
         <div
           key={i}
-          className="h-72 animate-pulse rounded-[28px] border border-white/10 bg-[#120f0d]"
+          className="h-72 animate-pulse rounded-[28px] border border-white/10 bg-[#0E0818]"
         />
       ))}
     </div>
@@ -327,7 +327,7 @@ export default function OrdersPage() {
     content = <Skeleton />;
   } else if (!user) {
     content = (
-      <div className="rounded-[28px] border border-dashed border-white/15 bg-[#120f0d] px-6 py-16 text-center">
+      <div className="rounded-[28px] border border-dashed border-white/15 bg-[#0E0818] px-6 py-16 text-center">
         <p className="text-xl font-semibold text-white">
           Log in to see your orders
         </p>
@@ -336,7 +336,7 @@ export default function OrdersPage() {
         </p>
         <Link
           href={LOGIN_HREF}
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#5DB521] px-5 py-3 text-sm font-semibold text-black transition-all duration-300 hover:bg-[#74CC35]"
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#39FF14] px-5 py-3 text-sm font-semibold text-black transition-all duration-300 hover:bg-[#7CFF5B]"
         >
           Log in
           <ArrowRight size={16} />
@@ -345,12 +345,12 @@ export default function OrdersPage() {
     );
   } else if (error && orders === null) {
     content = (
-      <div className="rounded-[28px] border border-red-500/30 bg-red-500/10 px-6 py-12 text-center">
-        <p className="text-sm text-red-300">{error}</p>
+      <div className="rounded-[28px] border border-[#39FF14]/30 bg-[#39FF14]/10 px-6 py-12 text-center">
+        <p className="text-sm text-[#7CFF5B]">{error}</p>
         <button
           type="button"
           onClick={handleRefresh}
-          className="mt-4 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:border-[#5DB521]"
+          className="mt-4 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:border-[#39FF14]"
         >
           Try again
         </button>
@@ -360,9 +360,9 @@ export default function OrdersPage() {
     content = <Skeleton />;
   } else if (orders.length === 0) {
     content = (
-      <div className="rounded-[28px] border border-dashed border-white/15 bg-[#120f0d] px-6 py-20 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[#5DB521]/30 bg-[#5DB521]/10">
-          <ShoppingBag className="text-[#5DB521]" size={26} />
+      <div className="rounded-[28px] border border-dashed border-white/15 bg-[#0E0818] px-6 py-20 text-center">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[#39FF14]/30 bg-[#39FF14]/10">
+          <ShoppingBag className="text-[#7CFF5B]" size={26} />
         </div>
         <p className="mt-6 text-xl font-semibold text-white">No orders yet</p>
         <p className="mt-2 text-sm text-zinc-400">
@@ -370,7 +370,7 @@ export default function OrdersPage() {
         </p>
         <Link
           href="/showroom"
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#5DB521] px-5 py-3 text-sm font-semibold text-black transition-all duration-300 hover:bg-[#74CC35]"
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#39FF14] px-5 py-3 text-sm font-semibold text-black transition-all duration-300 hover:bg-[#7CFF5B]"
         >
           Browse showroom
           <ArrowRight size={16} />
@@ -390,12 +390,12 @@ export default function OrdersPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-[#191610] text-white">
-        <section className="border-b border-[#5DB521]/20 bg-[#0d0b09]">
+      <main className="min-h-screen bg-[#0E0818] text-white">
+        <section className="border-b border-[#39FF14]/20 bg-[#06030D]">
           <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
             <div className="flex items-center gap-3">
-              <span className="h-px w-10 bg-[#5DB521]" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#5DB521]">
+              <span className="h-px w-10 bg-[#39FF14]" />
+              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#7CFF5B]">
                 Your Account
               </span>
             </div>
@@ -410,7 +410,7 @@ export default function OrdersPage() {
                   type="button"
                   onClick={handleRefresh}
                   disabled={isRefreshing}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-zinc-300 transition-colors hover:border-[#5DB521] hover:text-[#F3D77A] disabled:opacity-60"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-zinc-300 transition-colors hover:border-[#39FF14] hover:text-[#D77BFF] disabled:opacity-60"
                 >
                   <RefreshCw
                     size={14}

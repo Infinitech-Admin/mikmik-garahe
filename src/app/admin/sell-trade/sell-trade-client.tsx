@@ -33,9 +33,9 @@ const STATUS_FILTERS: Array<"All" | SellTradeStatus> = [
 const STATUS_OPTIONS: SellTradeStatus[] = ["new", "contacted", "closed"];
 
 const STATUS_STYLES: Record<SellTradeStatus, string> = {
-  new: "bg-[#d9ae1f]/10 text-[#d9ae1f]",
-  contacted: "bg-blue-500/10 text-blue-400",
-  closed: "bg-slate-500/15 text-slate-400",
+  new: "bg-[#39FF14]/10 text-[#7CFF5B]",
+  contacted: "bg-zinc-500/15 text-zinc-300",
+  closed: "bg-zinc-500/15 text-zinc-400",
 };
 
 const STATUS_LABELS: Record<SellTradeStatus, string> = {
@@ -89,13 +89,13 @@ function Dialog({
       aria-modal="true"
     >
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-[#06030D]/70 backdrop-blur-sm"
         onClick={() => {
           if (!busy) onClose();
         }}
       />
       <div
-        className={`relative max-h-[90vh] w-full overflow-y-auto rounded-2xl border border-white/10 bg-[#1a2332] p-6 shadow-2xl ${
+        className={`relative max-h-[90vh] w-full overflow-y-auto rounded-2xl border border-white/10 bg-[#06030D] p-6 shadow-2xl ${
           wide ? "max-w-lg" : "max-w-md"
         }`}
       >
@@ -126,7 +126,7 @@ function RowActions({
         onClick={() => onView(item)}
         title="View"
         aria-label={`View request from ${item.full_name}`}
-        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-300 transition-colors hover:border-[#d9ae1f]/50 hover:bg-[#d9ae1f]/10 hover:text-[#d9ae1f]"
+        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-300 transition-colors hover:border-[#39FF14]/50 hover:bg-[#39FF14]/10 hover:text-[#7CFF5B]"
       >
         <Eye size={14} />
       </button>
@@ -135,7 +135,7 @@ function RowActions({
         onClick={() => onDelete(item)}
         title="Delete"
         aria-label={`Delete request from ${item.full_name}`}
-        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-300 transition-colors hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400"
+        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-300 transition-colors hover:border-[#39FF14]/50 hover:bg-[#39FF14]/10 hover:text-[#7CFF5B]"
       >
         <Trash2 size={14} />
       </button>
@@ -287,7 +287,7 @@ export default function SellTradeClient() {
         <h1 className="text-xl font-bold text-white sm:text-2xl">
           Sell / Trade
         </h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-zinc-400">
           Review vehicle submissions from customers and follow up on leads.
         </p>
       </div>
@@ -296,21 +296,21 @@ export default function SellTradeClient() {
         <div className="relative flex-1">
           <Search
             size={16}
-            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
+            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500"
           />
           <input
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Search by name, contact, brand or model..."
-            className="w-full rounded-xl border border-white/10 bg-[#232b3d]/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 outline-none focus:border-[#d9ae1f]/60"
+            className="w-full rounded-xl border border-white/10 bg-[#0E0818]/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#39FF14]/60"
           />
         </div>
 
         <div className="flex items-center gap-2 overflow-x-auto">
           <SlidersHorizontal
             size={15}
-            className="hidden shrink-0 text-slate-500 sm:block"
+            className="hidden shrink-0 text-zinc-500 sm:block"
           />
           {STATUS_FILTERS.map((status) => (
             <button
@@ -321,8 +321,8 @@ export default function SellTradeClient() {
               }}
               className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium capitalize transition-colors ${
                 statusFilter === status
-                  ? "bg-[#d9ae1f]/15 text-[#d9ae1f]"
-                  : "bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
+                  ? "bg-[#39FF14]/15 text-[#7CFF5B]"
+                  : "bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white"
               }`}
             >
               {status}
@@ -332,27 +332,27 @@ export default function SellTradeClient() {
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+        <div className="rounded-xl border border-[#39FF14]/30 bg-[#39FF14]/10 px-4 py-3 text-sm text-[#7CFF5B]">
           {error}
         </div>
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center rounded-2xl border border-white/10 bg-[#232b3d]/70 py-16 text-sm text-slate-400">
-          <Loader2 size={18} className="mr-2 animate-spin text-[#d9ae1f]" />
+        <div className="flex items-center justify-center rounded-2xl border border-white/10 bg-[#0E0818]/70 py-16 text-sm text-zinc-400">
+          <Loader2 size={18} className="mr-2 animate-spin text-[#7CFF5B]" />
           Loading requests...
         </div>
       ) : (
         <>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-zinc-500">
             {total} request{total !== 1 ? "s" : ""} found
           </p>
 
           {/* Desktop table */}
-          <div className="hidden overflow-hidden rounded-2xl border border-white/10 bg-[#232b3d]/70 lg:block">
+          <div className="hidden overflow-hidden rounded-2xl border border-white/10 bg-[#0E0818]/70 lg:block">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-white/10 text-xs uppercase tracking-wide text-slate-500">
+                <tr className="border-b border-white/10 text-xs uppercase tracking-wide text-zinc-500">
                   <th className="px-5 py-3 font-medium">Customer</th>
                   <th className="px-5 py-3 font-medium">Vehicle</th>
                   <th className="px-5 py-3 font-medium">Mileage</th>
@@ -370,32 +370,32 @@ export default function SellTradeClient() {
                   >
                     <td className="px-5 py-3">
                       <p className="font-medium text-white">{i.full_name}</p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-zinc-500">
                         {i.phone || i.email}
                       </p>
                     </td>
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#d9ae1f]/15 text-[#d9ae1f]">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#39FF14]/15 text-[#7CFF5B]">
                           <CarFront size={16} />
                         </span>
                         <div>
                           <p className="font-medium text-white">
                             {i.brand} {i.model}
                           </p>
-                          <p className="text-xs text-slate-500">
+                          <p className="text-xs text-zinc-500">
                             {i.year} · {i.type} · {i.condition}
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-3 text-slate-400">
+                    <td className="px-5 py-3 text-zinc-400">
                       {i.mileage.toLocaleString()} km
                     </td>
                     <td className="px-5 py-3 text-white">
                       {formatPeso(i.estimate)}
                     </td>
-                    <td className="px-5 py-3 text-slate-400">
+                    <td className="px-5 py-3 text-zinc-400">
                       {formatDate(i.created_at)}
                     </td>
                     <td className="px-5 py-3">
@@ -418,7 +418,7 @@ export default function SellTradeClient() {
                   <tr>
                     <td
                       colSpan={7}
-                      className="px-5 py-10 text-center text-sm text-slate-500"
+                      className="px-5 py-10 text-center text-sm text-zinc-500"
                     >
                       No requests match your search.
                     </td>
@@ -433,18 +433,18 @@ export default function SellTradeClient() {
             {items.map((i) => (
               <div
                 key={i.id}
-                className="rounded-2xl border border-white/10 bg-[#232b3d]/70 p-4"
+                className="rounded-2xl border border-white/10 bg-[#0E0818]/70 p-4"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#d9ae1f]/15 text-[#d9ae1f]">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#39FF14]/15 text-[#7CFF5B]">
                       <CarFront size={18} />
                     </span>
                     <div>
                       <p className="text-sm font-semibold text-white">
                         {i.brand} {i.model}
                       </p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-zinc-500">
                         {i.type} · {i.year}
                       </p>
                     </div>
@@ -467,14 +467,14 @@ export default function SellTradeClient() {
                   </span>
                 </div>
 
-                <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
+                <div className="mt-2 flex items-center justify-between text-xs text-zinc-500">
                   <span>{i.full_name}</span>
                   <span>{formatDate(i.created_at)}</span>
                 </div>
               </div>
             ))}
             {items.length === 0 && (
-              <div className="col-span-full rounded-2xl border border-white/10 bg-[#232b3d]/70 py-10 text-center text-sm text-slate-500">
+              <div className="col-span-full rounded-2xl border border-white/10 bg-[#0E0818]/70 py-10 text-center text-sm text-zinc-500">
                 No requests match your search.
               </div>
             )}
@@ -482,7 +482,7 @@ export default function SellTradeClient() {
 
           {/* Pagination */}
           {lastPage > 1 && (
-            <div className="flex items-center justify-between text-xs text-slate-500">
+            <div className="flex items-center justify-between text-xs text-zinc-500">
               <p>
                 Page {page} of {lastPage}
               </p>
@@ -491,7 +491,7 @@ export default function SellTradeClient() {
                   type="button"
                   disabled={page <= 1}
                   onClick={() => setPage((p) => p - 1)}
-                  className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+                  className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ChevronLeft size={14} /> Prev
                 </button>
@@ -499,7 +499,7 @@ export default function SellTradeClient() {
                   type="button"
                   disabled={page >= lastPage}
                   onClick={() => setPage((p) => p + 1)}
-                  className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+                  className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Next <ChevronRight size={14} />
                 </button>
@@ -514,7 +514,7 @@ export default function SellTradeClient() {
         <Dialog open={!!selected} onClose={closeDetail} busy={saving} wide>
           {selected && (
             <>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#d9ae1f]">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#7CFF5B]">
                 Request #{selected.id}
               </p>
               <h2 className="mt-1 text-lg font-bold text-white">
@@ -523,38 +523,38 @@ export default function SellTradeClient() {
 
               <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4 text-sm">
                 <div>
-                  <dt className="text-xs text-slate-500">Phone</dt>
+                  <dt className="text-xs text-zinc-500">Phone</dt>
                   <dd className="mt-1 text-white">{selected.phone || "—"}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-slate-500">Email</dt>
+                  <dt className="text-xs text-zinc-500">Email</dt>
                   <dd className="mt-1 break-all text-white">
                     {selected.email || "—"}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-slate-500">Vehicle</dt>
+                  <dt className="text-xs text-zinc-500">Vehicle</dt>
                   <dd className="mt-1 text-white">
                     {selected.year} {selected.brand} {selected.model}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-slate-500">Type</dt>
+                  <dt className="text-xs text-zinc-500">Type</dt>
                   <dd className="mt-1 text-white">{selected.type}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-slate-500">Mileage</dt>
+                  <dt className="text-xs text-zinc-500">Mileage</dt>
                   <dd className="mt-1 text-white">
                     {selected.mileage.toLocaleString()} km
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-slate-500">Condition</dt>
+                  <dt className="text-xs text-zinc-500">Condition</dt>
                   <dd className="mt-1 text-white">{selected.condition}</dd>
                 </div>
                 <div className="col-span-2">
-                  <dt className="text-xs text-slate-500">Customer estimate</dt>
-                  <dd className="mt-1 text-2xl font-bold text-[#d9ae1f]">
+                  <dt className="text-xs text-zinc-500">Customer estimate</dt>
+                  <dd className="mt-1 text-2xl font-bold text-[#7CFF5B]">
                     {formatPeso(selected.estimate)}
                   </dd>
                 </div>
@@ -563,7 +563,7 @@ export default function SellTradeClient() {
               <div className="mt-5">
                 <label
                   htmlFor="sell-trade-status"
-                  className="text-xs text-slate-500"
+                  className="text-xs text-zinc-500"
                 >
                   Status
                 </label>
@@ -574,7 +574,7 @@ export default function SellTradeClient() {
                     setStatusDraft(e.target.value as SellTradeStatus)
                   }
                   disabled={saving}
-                  className="mt-2 w-full rounded-xl border border-white/10 bg-[#232b3d]/70 px-4 py-2.5 text-sm text-white outline-none focus:border-[#d9ae1f]/60"
+                  className="mt-2 w-full rounded-xl border border-white/10 bg-[#0E0818]/70 px-4 py-2.5 text-sm text-white outline-none focus:border-[#39FF14]/60"
                 >
                   {STATUS_OPTIONS.map((s) => (
                     <option key={s} value={s}>
@@ -587,7 +587,7 @@ export default function SellTradeClient() {
               <div className="mt-4">
                 <label
                   htmlFor="sell-trade-notes"
-                  className="text-xs text-slate-500"
+                  className="text-xs text-zinc-500"
                 >
                   Internal notes
                 </label>
@@ -598,12 +598,12 @@ export default function SellTradeClient() {
                   onChange={(e) => setNotesDraft(e.target.value)}
                   disabled={saving}
                   placeholder="Add notes about this lead..."
-                  className="mt-2 w-full rounded-xl border border-white/10 bg-[#232b3d]/70 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-[#d9ae1f]/60"
+                  className="mt-2 w-full rounded-xl border border-white/10 bg-[#0E0818]/70 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#39FF14]/60"
                 />
               </div>
 
               {saveError && (
-                <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                <div className="mt-4 rounded-xl border border-[#39FF14]/30 bg-[#39FF14]/10 px-4 py-3 text-sm text-[#7CFF5B]">
                   {saveError}
                 </div>
               )}
@@ -613,7 +613,7 @@ export default function SellTradeClient() {
                   type="button"
                   onClick={() => openDeleteDialog(selected)}
                   disabled={saving}
-                  className="flex items-center justify-center gap-2 rounded-full border border-red-500/30 px-5 py-2.5 text-sm font-medium text-red-400 transition-colors hover:bg-red-500/10 disabled:opacity-50"
+                  className="flex items-center justify-center gap-2 rounded-full border border-[#39FF14]/30 px-5 py-2.5 text-sm font-medium text-[#7CFF5B] transition-colors hover:bg-[#39FF14]/10 disabled:opacity-50"
                 >
                   <Trash2 size={15} />
                   Delete
@@ -624,7 +624,7 @@ export default function SellTradeClient() {
                     type="button"
                     onClick={closeDetail}
                     disabled={saving}
-                    className="rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
+                    className="rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
                   >
                     Close
                   </button>
@@ -632,7 +632,7 @@ export default function SellTradeClient() {
                     type="button"
                     onClick={saveChanges}
                     disabled={saving || !hasChanges}
-                    className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#d9ae1f] to-[#f4c430] px-5 py-2.5 text-sm font-bold text-[#171c28] transition-all hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#39FF14] to-[#7CFF5B] px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {saving ? (
                       <>
@@ -658,12 +658,12 @@ export default function SellTradeClient() {
           busy={deleting}
         >
           <div className="flex items-start gap-4">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-red-400">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#39FF14]/10 text-[#7CFF5B]">
               <AlertTriangle size={20} />
             </span>
             <div className="min-w-0">
               <h2 className="text-lg font-bold text-white">Delete request?</h2>
-              <p className="mt-1.5 text-sm leading-6 text-slate-400">
+              <p className="mt-1.5 text-sm leading-6 text-zinc-400">
                 You’re about to delete the request from{" "}
                 <span className="font-semibold text-white">
                   {deleteTarget?.full_name}
@@ -674,7 +674,7 @@ export default function SellTradeClient() {
           </div>
 
           {deleteError && (
-            <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+            <div className="mt-4 rounded-xl border border-[#39FF14]/30 bg-[#39FF14]/10 px-4 py-3 text-sm text-[#7CFF5B]">
               {deleteError}
             </div>
           )}
@@ -684,7 +684,7 @@ export default function SellTradeClient() {
               type="button"
               onClick={closeDeleteDialog}
               disabled={deleting}
-              className="rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
+              className="rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
             >
               Cancel
             </button>
@@ -692,7 +692,7 @@ export default function SellTradeClient() {
               type="button"
               onClick={confirmDelete}
               disabled={deleting}
-              className="flex items-center justify-center gap-2 rounded-full bg-red-500 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-red-600 disabled:opacity-60"
+              className="flex items-center justify-center gap-2 rounded-full bg-[#39FF14] px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-[#39FF14] disabled:opacity-60"
             >
               {deleting ? (
                 <>

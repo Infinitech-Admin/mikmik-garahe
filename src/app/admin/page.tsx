@@ -37,16 +37,16 @@ import { fetchAdminDashboard, type DashboardData } from "@/lib/api";
 /* -------------------------------------------------------------------------- */
 
 const CATEGORY_COLORS = [
-  "#d9ae1f",
-  "#3b82f6",
-  "#22c55e",
-  "#ec4899",
-  "#a855f7",
-  "#f97316",
+  "#39FF14",
+  "#FFFFFF",
+  "#9CA3AF",
+  "#7CFF5B",
+  "#6B7280",
+  "#8E1520",
 ];
 
 const TOOLTIP_STYLE = {
-  background: "#232b3d",
+  background: "#0E0818",
   border: "1px solid rgba(255,255,255,0.1)",
   borderRadius: 12,
   color: "#fff",
@@ -54,13 +54,13 @@ const TOOLTIP_STYLE = {
 };
 
 const STATUS_STYLES: Record<string, string> = {
-  confirmed: "bg-emerald-500/10 text-emerald-400",
-  completed: "bg-emerald-500/10 text-emerald-400",
-  ready_for_pick_up: "bg-blue-500/10 text-blue-400",
-  pending_verification: "bg-lime-500/10 text-lime-400",
-  reserved: "bg-blue-500/10 text-blue-400",
-  cancelled: "bg-red-500/10 text-red-400",
-  rejected: "bg-red-500/10 text-red-400",
+  confirmed: "bg-[#39FF14]/10 text-[#7CFF5B]",
+  completed: "bg-[#39FF14]/10 text-[#7CFF5B]",
+  ready_for_pick_up: "bg-zinc-500/15 text-zinc-300",
+  pending_verification: "bg-[#39FF14]/10 text-[#7CFF5B]",
+  reserved: "bg-zinc-500/15 text-zinc-300",
+  cancelled: "bg-[#39FF14]/10 text-[#7CFF5B]",
+  rejected: "bg-[#39FF14]/10 text-[#7CFF5B]",
 };
 
 function statusLabel(status: string): string {
@@ -129,7 +129,7 @@ export default function AdminDashboardPage() {
           <h1 className="text-xl font-bold text-white sm:text-2xl">
             Dashboard
           </h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-zinc-400">
             Overview of sales, inventory, and activity.
           </p>
         </div>
@@ -137,7 +137,7 @@ export default function AdminDashboardPage() {
         <div
           role="group"
           aria-label="Date range"
-          className="flex rounded-full border border-white/10 bg-[#232b3d]/70 p-1"
+          className="flex rounded-full border border-white/10 bg-[#0E0818]/70 p-1"
         >
           {RANGES.map((range) => (
             <button
@@ -147,8 +147,8 @@ export default function AdminDashboardPage() {
               aria-pressed={months === range}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                 months === range
-                  ? "bg-[#d9ae1f] text-black"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-[#39FF14] text-black"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
               {range} months
@@ -158,7 +158,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {error && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-red-500/30 bg-red-500/5 p-4 text-sm text-red-300">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#39FF14]/30 bg-[#39FF14]/5 p-4 text-sm text-[#7CFF5B]">
           <span>{error}</span>
           <button
             type="button"
@@ -247,21 +247,21 @@ function DashboardContent({
               >
                 <defs>
                   <linearGradient id="revenueFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#d9ae1f" stopOpacity={0.35} />
-                    <stop offset="100%" stopColor="#d9ae1f" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#39FF14" stopOpacity={0.35} />
+                    <stop offset="100%" stopColor="#39FF14" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="#ffffff14" vertical={false} />
                 <XAxis
                   dataKey="month"
-                  stroke="#64748b"
+                  stroke="#71717a"
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
                 />
                 <YAxis
                   yAxisId="revenue"
-                  stroke="#64748b"
+                  stroke="#71717a"
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
@@ -281,7 +281,7 @@ function DashboardContent({
                   yAxisId="revenue"
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#d9ae1f"
+                  stroke="#39FF14"
                   strokeWidth={2}
                   fill="url(#revenueFill)"
                 />
@@ -289,7 +289,7 @@ function DashboardContent({
                   yAxisId="units"
                   type="monotone"
                   dataKey="unitsSold"
-                  stroke="#3b82f6"
+                  stroke="#FFFFFF"
                   strokeWidth={2}
                   dot={false}
                 />
@@ -324,7 +324,7 @@ function DashboardContent({
                   verticalAlign="bottom"
                   height={36}
                   iconType="circle"
-                  wrapperStyle={{ fontSize: 12, color: "#94a3b8" }}
+                  wrapperStyle={{ fontSize: 12, color: "#a1a1aa" }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -335,12 +335,12 @@ function DashboardContent({
       {/* Cart analytics */}
       <section aria-label="Cart analytics" className="space-y-4">
         <div className="flex items-center gap-3">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#d9ae1f]/10 text-[#d9ae1f]">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#39FF14]/10 text-[#7CFF5B]">
             <ShoppingCart size={16} />
           </span>
           <div>
             <h2 className="text-sm font-semibold text-white">Cart activity</h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-zinc-400">
               Last 30 days · logged-in shoppers
             </p>
           </div>
@@ -375,14 +375,14 @@ function DashboardContent({
                   <CartesianGrid stroke="#ffffff14" vertical={false} />
                   <XAxis
                     dataKey="day"
-                    stroke="#64748b"
+                    stroke="#71717a"
                     fontSize={11}
                     tickLine={false}
                     axisLine={false}
                     interval="preserveStartEnd"
                   />
                   <YAxis
-                    stroke="#64748b"
+                    stroke="#71717a"
                     fontSize={12}
                     tickLine={false}
                     axisLine={false}
@@ -396,18 +396,18 @@ function DashboardContent({
                     verticalAlign="bottom"
                     height={28}
                     iconType="circle"
-                    wrapperStyle={{ fontSize: 12, color: "#94a3b8" }}
+                    wrapperStyle={{ fontSize: 12, color: "#a1a1aa" }}
                   />
                   <Bar
                     dataKey="added"
                     name="Added"
-                    fill="#d9ae1f"
+                    fill="#39FF14"
                     radius={[4, 4, 0, 0]}
                   />
                   <Bar
                     dataKey="removed"
                     name="Removed"
-                    fill="#ef4444"
+                    fill="#39FF14"
                     radius={[4, 4, 0, 0]}
                   />
                 </BarChart>
@@ -428,8 +428,8 @@ function DashboardContent({
                     <span className="min-w-0 truncate text-white">
                       {row.vehicle}
                     </span>
-                    <span className="shrink-0 text-xs text-slate-400">
-                      <span className="font-semibold text-red-400">
+                    <span className="shrink-0 text-xs text-zinc-400">
+                      <span className="font-semibold text-[#7CFF5B]">
                         {row.removed}
                       </span>{" "}
                       removed / {row.added} added
@@ -460,7 +460,7 @@ function DashboardContent({
                 <CartesianGrid stroke="#ffffff14" horizontal={false} />
                 <XAxis
                   type="number"
-                  stroke="#64748b"
+                  stroke="#71717a"
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
@@ -469,7 +469,7 @@ function DashboardContent({
                 <YAxis
                   type="category"
                   dataKey="model"
-                  stroke="#94a3b8"
+                  stroke="#a1a1aa"
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
@@ -479,7 +479,7 @@ function DashboardContent({
                 <Bar
                   dataKey="unitsSold"
                   name="Units sold"
-                  fill="#d9ae1f"
+                  fill="#39FF14"
                   radius={[0, 6, 6, 0]}
                   barSize={16}
                 />
@@ -488,17 +488,17 @@ function DashboardContent({
           )}
         </ChartCard>
 
-        <div className="rounded-2xl border border-white/10 bg-[#232b3d]/70 p-4 sm:p-5 xl:col-span-2">
+        <div className="rounded-2xl border border-white/10 bg-[#0E0818]/70 p-4 sm:p-5 xl:col-span-2">
           <div className="mb-4 flex items-center justify-between">
             <div>
               <h2 className="text-sm font-semibold text-white">
                 Recent activity
               </h2>
-              <p className="text-xs text-slate-400">Latest orders</p>
+              <p className="text-xs text-zinc-400">Latest orders</p>
             </div>
             <a
               href="/admin/orders"
-              className="text-xs font-medium text-[#d9ae1f] hover:text-[#f4c430]"
+              className="text-xs font-medium text-[#7CFF5B] hover:text-[#7CFF5B]"
             >
               View all
             </a>
@@ -510,7 +510,7 @@ function DashboardContent({
             <div className="overflow-x-auto">
               <table className="w-full min-w-[560px] text-left text-sm">
                 <thead>
-                  <tr className="border-b border-white/10 text-xs uppercase tracking-wide text-slate-500">
+                  <tr className="border-b border-white/10 text-xs uppercase tracking-wide text-zinc-500">
                     <th className="pb-2 pr-4 font-medium">Order</th>
                     <th className="pb-2 pr-4 font-medium">Customer</th>
                     <th className="pb-2 pr-4 font-medium">Vehicle</th>
@@ -525,9 +525,9 @@ function DashboardContent({
                       key={row.id}
                       className="border-b border-white/5 last:border-0"
                     >
-                      <td className="py-2.5 pr-4 text-slate-300">{row.id}</td>
+                      <td className="py-2.5 pr-4 text-zinc-300">{row.id}</td>
                       <td className="py-2.5 pr-4 text-white">{row.customer}</td>
-                      <td className="py-2.5 pr-4 text-slate-400">
+                      <td className="py-2.5 pr-4 text-zinc-400">
                         {row.vehicle}
                       </td>
                       <td className="py-2.5 pr-4 text-white">
@@ -537,13 +537,13 @@ function DashboardContent({
                         <span
                           className={`whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium ${
                             STATUS_STYLES[row.status] ??
-                            "bg-slate-500/10 text-slate-300"
+                            "bg-zinc-500/10 text-zinc-300"
                           }`}
                         >
                           {statusLabel(row.status)}
                         </span>
                       </td>
-                      <td className="py-2.5 text-slate-400">
+                      <td className="py-2.5 text-zinc-400">
                         {formatDate(row.date)}
                       </td>
                     </tr>
@@ -576,12 +576,12 @@ function StatCard({
   const trend = change !== null && change < 0 ? "down" : "up";
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-[#232b3d]/70 p-4 sm:p-5">
+    <div className="rounded-2xl border border-white/10 bg-[#0E0818]/70 p-4 sm:p-5">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
+        <span className="text-xs font-medium uppercase tracking-wide text-zinc-400">
           {label}
         </span>
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#d9ae1f]/10 text-[#d9ae1f]">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#39FF14]/10 text-[#7CFF5B]">
           {icon}
         </span>
       </div>
@@ -590,7 +590,7 @@ function StatCard({
         {change !== null && (
           <span
             className={`flex items-center gap-1 text-xs font-semibold ${
-              trend === "up" ? "text-emerald-400" : "text-red-400"
+              trend === "up" ? "text-[#7CFF5B]" : "text-[#7CFF5B]"
             }`}
           >
             {trend === "up" ? (
@@ -618,9 +618,9 @@ function MiniStat({
 }) {
   return (
     <div
-      className={`rounded-2xl border border-white/10 bg-[#232b3d]/70 p-4 ${className}`}
+      className={`rounded-2xl border border-white/10 bg-[#0E0818]/70 p-4 ${className}`}
     >
-      <p className="text-xs text-slate-400">{label}</p>
+      <p className="text-xs text-zinc-400">{label}</p>
       <p className="mt-1 text-2xl font-bold text-white">
         {typeof value === "number" ? value.toLocaleString() : value}
       </p>
@@ -641,11 +641,11 @@ function ChartCard({
 }) {
   return (
     <div
-      className={`rounded-2xl border border-white/10 bg-[#232b3d]/70 p-4 sm:p-5 ${className}`}
+      className={`rounded-2xl border border-white/10 bg-[#0E0818]/70 p-4 sm:p-5 ${className}`}
     >
       <div className="mb-2">
         <h2 className="text-sm font-semibold text-white">{title}</h2>
-        <p className="text-xs text-slate-400">{subtitle}</p>
+        <p className="text-xs text-zinc-400">{subtitle}</p>
       </div>
       {children}
     </div>
@@ -654,7 +654,7 @@ function ChartCard({
 
 function EmptyState({ message }: { message: string }) {
   return (
-    <div className="flex h-[180px] items-center justify-center text-center text-sm text-slate-500">
+    <div className="flex h-[180px] items-center justify-center text-center text-sm text-zinc-500">
       {message}
     </div>
   );
@@ -667,13 +667,13 @@ function DashboardSkeleton() {
         {[0, 1, 2, 3].map((i) => (
           <div
             key={i}
-            className="h-[104px] rounded-2xl border border-white/10 bg-[#232b3d]/50"
+            className="h-[104px] rounded-2xl border border-white/10 bg-[#0E0818]/50"
           />
         ))}
       </div>
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-        <div className="h-[350px] rounded-2xl border border-white/10 bg-[#232b3d]/50 xl:col-span-2" />
-        <div className="h-[350px] rounded-2xl border border-white/10 bg-[#232b3d]/50" />
+        <div className="h-[350px] rounded-2xl border border-white/10 bg-[#0E0818]/50 xl:col-span-2" />
+        <div className="h-[350px] rounded-2xl border border-white/10 bg-[#0E0818]/50" />
       </div>
     </div>
   );

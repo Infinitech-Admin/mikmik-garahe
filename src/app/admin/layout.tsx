@@ -15,6 +15,8 @@ import {
   LogOut,
   Mail,
   Menu,
+  Megaphone,
+  Newspaper,
   Search,
   X,
 } from "lucide-react";
@@ -47,9 +49,19 @@ const NAV_ITEMS: NavItem[] = [
     icon: LayoutDashboard,
   },
   {
+    label: "Announcements",
+    href: "/admin/announcement",
+    icon: Megaphone,
+  },
+  {
     label: "Showroom",
     href: "/admin/showroom",
     icon: CarFront,
+  },
+  {
+    label: "Blog",
+    href: "/admin/blog",
+    icon: Newspaper,
   },
   {
     label: "Orders",
@@ -118,9 +130,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   if (authState === "checking") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#171c28]">
-        <div className="flex items-center gap-2 text-sm text-slate-400">
-          <Loader2 size={18} className="animate-spin text-[#d9ae1f]" />
+      <div className="flex min-h-screen items-center justify-center bg-[#06030D]">
+        <div className="flex items-center gap-2 text-sm text-zinc-400">
+          <Loader2 size={18} className="animate-spin text-[#7CFF5B]" />
           Checking session...
         </div>
       </div>
@@ -128,18 +140,18 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#171c28] text-white">
+    <div className="min-h-screen bg-[#06030D] text-white">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-[#06030D]/60 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-white/10 bg-[#1a2332] transition-transform duration-200 lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-white/10 bg-[#06030D] transition-transform duration-200 lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -149,16 +161,16 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             href="/admin"
             className="flex items-center gap-2 text-lg font-black text-white"
           >
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#5DB521]/15 text-[#d9ae1f]">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#39FF14]/15 text-[#7CFF5B]">
               <Car size={17} />
             </span>
             Auto
-            <span className="text-[#d9ae1f]">Trade</span>
+            <span className="text-[#7CFF5B]">Trade</span>
           </Link>
 
           <button
             onClick={() => setSidebarOpen(false)}
-            className="text-slate-400 hover:text-white lg:hidden"
+            className="text-zinc-400 hover:text-white lg:hidden"
             aria-label="Close menu"
           >
             <X size={20} />
@@ -168,14 +180,18 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         {/* Navigation */}
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
           {NAV_ITEMS.map((item) => {
-            const active = pathname === item.href;
+            const active =
+              item.href === "/admin"
+                ? pathname === "/admin"
+                : pathname === item.href ||
+                  pathname.startsWith(`${item.href}/`);
             const Icon = item.icon;
 
             if (item.soon) {
               return (
                 <div
                   key={item.href}
-                  className="flex cursor-not-allowed items-center justify-between rounded-lg px-3 py-2.5 text-sm text-slate-600"
+                  className="flex cursor-not-allowed items-center justify-between rounded-lg px-3 py-2.5 text-sm text-zinc-600"
                   title="Coming soon"
                 >
                   <span className="flex items-center gap-3">
@@ -183,7 +199,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                     {item.label}
                   </span>
 
-                  <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] text-slate-500">
+                  <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] text-zinc-500">
                     Soon
                   </span>
                 </div>
@@ -197,8 +213,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   active
-                    ? "bg-[#d9ae1f]/10 text-[#d9ae1f]"
-                    : "text-slate-300 hover:bg-white/5 hover:text-white"
+                    ? "bg-[#39FF14]/10 text-[#7CFF5B]"
+                    : "text-zinc-300 hover:bg-white/5 hover:text-white"
                 }`}
               >
                 <Icon size={17} />
@@ -212,7 +228,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <div className="border-t border-white/10 p-3">
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 transition-colors hover:bg-white/5 hover:text-white"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-400 transition-colors hover:bg-white/5 hover:text-white"
           >
             <LogOut size={17} />
             Sign out
@@ -223,11 +239,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       {/* Main column */}
       <div className="lg:pl-64">
         {/* Header */}
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-white/10 bg-[#171c28]/90 px-4 backdrop-blur sm:px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-white/10 bg-[#06030D]/90 px-4 backdrop-blur sm:px-6">
           {/* Mobile menu */}
           <button
             onClick={() => setSidebarOpen(true)}
-            className="text-slate-300 hover:text-white lg:hidden"
+            className="text-zinc-300 hover:text-white lg:hidden"
             aria-label="Open menu"
           >
             <Menu size={22} />
@@ -237,13 +253,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <div className="relative hidden max-w-sm flex-1 sm:block">
             <Search
               size={16}
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
             />
 
             <input
               type="text"
               placeholder="Search vehicles, orders..."
-              className="w-full rounded-lg border border-white/10 bg-[#232b3d]/70 py-2 pl-9 pr-3 text-sm text-white placeholder-slate-500 outline-none focus:border-[#d9ae1f]/60"
+              className="w-full rounded-lg border border-white/10 bg-[#0E0818]/70 py-2 pl-9 pr-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#39FF14]/60"
             />
           </div>
 
@@ -251,12 +267,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <div className="ml-auto flex items-center gap-3 sm:gap-4">
             {/* Notifications */}
             <button
-              className="relative text-slate-300 hover:text-white"
+              className="relative text-zinc-300 hover:text-white"
               aria-label="Notifications"
             >
               <Bell size={19} />
 
-              <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-[#d9ae1f]" />
+              <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-[#39FF14]" />
             </button>
 
             {/* User */}
@@ -266,13 +282,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                   {user?.name ?? "..."}
                 </p>
 
-                <p className="text-[11px] capitalize leading-tight text-slate-400">
+                <p className="text-[11px] capitalize leading-tight text-zinc-400">
                   {user?.role ?? ""}
                 </p>
               </div>
 
               <div
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#d9ae1f]/15 text-xs font-bold text-[#d9ae1f]"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#39FF14]/15 text-xs font-bold text-[#7CFF5B]"
                 title={user?.email}
               >
                 {getInitials(user?.name)}

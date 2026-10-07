@@ -4,22 +4,22 @@ import Link from "next/link";
 
 export default function CTA() {
     return (
-        <section className="relative overflow-hidden bg-black border-t border-[#5DB521]/30 backdrop-blur-2xl backdrop-[#5DB521]/10 py-14 text-center">
+        <section className="relative overflow-hidden bg-[#06030D] border-t border-[#39FF14]/30 backdrop-blur-2xl backdrop-[#39FF14]/10 py-14 text-center">
             {/* Background glow */}
-            <div className="absolute left-1/2 top-1/2 h-[450px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#5DB521]/10 blur-[130px]" />
+            <div className="absolute left-1/2 top-1/2 h-[450px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.06] blur-[130px]" />
 
             <div className="relative mx-auto max-w-4xl px-5 sm:px-6">
                 <div className="mb-5 flex items-center justify-center gap-3">
-                    <span className="h-px w-10 bg-[#5DB521]" />
-                    <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#5DB521]">
+                    <span className="h-px w-10 bg-[#39FF14]" />
+                    <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7CFF5B]">
                         Your Next Drive
                     </span>
-                    <span className="h-px w-10 bg-[#5DB521]" />
+                    <span className="h-px w-10 bg-[#39FF14]" />
                 </div>
 
                 <h2 className="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
                     Ready to find your
-                    <span className="block text-[#5DB521]">
+                    <span className="block text-[#7CFF5B]">
                         next car?
                     </span>
                 </h2>
@@ -32,14 +32,14 @@ export default function CTA() {
                 <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
                     <Link
                         href="/showroom"
-                        className="inline-flex items-center justify-center rounded-full bg-[#5DB521] px-7 py-3.5 text-sm font-semibold text-black transition-all duration-300 hover:bg-[#74CC35] hover:shadow-[0_0_30px_rgba(191,152,13,0.25)]"
+                        className="inline-flex items-center justify-center rounded-full bg-[#39FF14] px-7 py-3.5 text-sm font-semibold text-black transition-all duration-300 hover:bg-[#7CFF5B] hover:shadow-[0_0_30px_rgba(191,152,13,0.25)]"
                     >
                         Visit Showroom
                     </Link>
 
                     <Link
                         href="/contact"
-                        className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-[#5DB521]/50 hover:bg-white/10"
+                        className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-[#39FF14]/50 hover:bg-white/10"
                     >
                         Contact Us
                     </Link>

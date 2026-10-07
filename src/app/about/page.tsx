@@ -1,12 +1,22 @@
 // Path: app/about/page.tsx
 "use client";
 
+import Link from "next/link";
+import { Bungee } from "next/font/google";
 import {
-  Award,
+  ArrowRight,
+  ArrowUpRight,
+  Banknote,
   BadgeCheck,
+  CalendarCheck,
   CarFront,
-  CreditCard,
+  Images,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Repeat,
   ShieldCheck,
+  Star,
   Users,
 } from "lucide-react";
 
@@ -14,16 +24,81 @@ import Navbar from "../../components/layout/navbar";
 import Footer from "../../components/layout/footer";
 import CTA from "../../components/home/cta";
 
-// Verified from public sources:
-// - Carmudi Philippines named Mikmik's Garahe a Top 2 Dealer of 2023
-// - Facebook page: 100% recommend (16 reviews), cash/financing/trade-in accepted,
-//   fast approval, "We buy rush cars"
-// - Location: 91 Aurora Pijuan St., BF Resort Village, Las Piñas City
-const stats = [
-  { value: "Top 2", label: "Carmudi dealer of 2023" },
-  { value: "100%", label: "Recommended on Facebook" },
-  { value: "3 ways", label: "To pay: cash, financing, or trade-in" },
-  { value: "Las Piñas", label: "BF Resort Village showroom" },
+// Signage-style display face, same as the home hero.
+const display = Bungee({ subsets: ["latin"], weight: "400" });
+
+// Source: Mikmik's Garahe Facebook page.
+// Instagram and TikTok are "#" until the real links exist.
+const BUSINESS = {
+  name: "Mikmik's Garahe",
+  tagline: "We buy rush cars. Let's go!",
+  address: "F&E De Castro Village, Molino Bacoor, Bacoor, Philippines",
+  phoneDisplay: "0956 659 0932",
+  phoneHref: "tel:+639566590932",
+  facebook: "https://www.facebook.com/profile.php?id=100083373601114",
+  instagram: "#",
+  tiktok: "#",
+};
+
+const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  `${BUSINESS.name}, ${BUSINESS.address}`,
+)}`;
+
+const facts = [
+  { icon: MapPin, text: "Molino, Bacoor" },
+  { icon: Star, text: "100% recommend, 17 Facebook reviews" },
+  { icon: Repeat, text: "Buy, sell, and trade in one place" },
+  { icon: Images, text: "Photos and videos on every listing" },
+  { icon: CalendarCheck, text: "Book a test drive online" },
+];
+
+const services = [
+  {
+    icon: CarFront,
+    word: "Buy",
+    title: "Buy a car",
+    description:
+      "Browse the showroom with specs, mileage, photos, and videos shown up front, then pick the one that fits your life and budget.",
+    href: "/showroom",
+    cta: "Browse the showroom",
+  },
+  {
+    icon: Banknote,
+    word: "Sell",
+    title: "Sell your car",
+    description:
+      "Need to sell fast? Get a quick value estimate online and send your car in for review. Our team will get back to you.",
+    href: "/sell-trade",
+    cta: "Get a value estimate",
+  },
+  {
+    icon: Repeat,
+    word: "Trade",
+    title: "Trade it in",
+    description:
+      "Moving up or switching? Trade in your current car and put it toward your next one.",
+    href: "/sell-trade",
+    cta: "Start a trade-in",
+  },
+];
+
+const journeys = [
+  {
+    title: "Buying with us",
+    steps: [
+      "Browse listings with full specs, mileage, photos, and videos.",
+      "Message us or book a test drive online.",
+      "Visit the showroom and drive it in person.",
+    ],
+  },
+  {
+    title: "Selling or trading in",
+    steps: [
+      "Enter your car's details and get a quick value estimate.",
+      "Send it in for review.",
+      "Our team gets back to you with the next steps.",
+    ],
+  },
 ];
 
 const values = [
@@ -31,197 +106,288 @@ const values = [
     icon: ShieldCheck,
     title: "Honest guidance",
     description:
-      "We believe the right purchase starts with clear information and no pressure. Every recommendation is based on your needs, not just the cars on our lot.",
+      "The right purchase starts with clear information and no pressure. Every recommendation is based on your needs, not just the cars on our lot.",
   },
   {
     icon: BadgeCheck,
     title: "Clear details",
     description:
-      "We show each car's specifications, photos, and condition up front, so you can decide with confidence whether it's your first car or your next upgrade.",
-  },
-  {
-    icon: CreditCard,
-    title: "Flexible payment",
-    description:
-      "Pay in cash, finance, or trade in your current car. Financing comes with fast approval, and we explain the terms before you commit.",
+      "Specs, mileage, photos, and videos are on every listing, so you can decide with confidence whether it's your first car or your next upgrade.",
   },
   {
     icon: Users,
     title: "Friendly service",
     description:
-      "From your first message to the final handover, our team is patient, responsive, and easy to talk to. We also buy rush cars if you need to sell fast.",
+      "From your first message to the final handover, our team is patient, responsive, and easy to talk to.",
   },
 ];
+
+const socials = [
+  { label: "Facebook", href: BUSINESS.facebook },
+  { label: "Instagram", href: BUSINESS.instagram },
+  { label: "TikTok", href: BUSINESS.tiktok },
+];
+
+const focusRing =
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5BC236]";
 
 export default function About() {
   return (
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-[#0B0714] text-white">
-        <section className="relative overflow-hidden border-b border-[#5DB521]/20 bg-[#080b0f]">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(93,181,33,0.18),transparent_50%)]" />
+      <main className="min-h-screen bg-[#0E0818] text-white">
+        {/* HERO */}
+        <section className="relative overflow-hidden bg-[#06030D]">
+          <div className="pointer-events-none absolute -left-32 top-10 h-[420px] w-[420px] rounded-full bg-[#B026FF] opacity-20 blur-[140px]" />
 
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 lg:pt-24">
-            <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="relative mx-auto max-w-7xl px-4 pb-14 pt-14 sm:px-6 lg:px-8 lg:pb-20 lg:pt-24">
+            <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
               <div>
-                <div className="mb-5 flex items-center gap-3">
-                  <span className="h-px w-10 bg-[#5DB521]" />
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#5DB521]">
-                    Our story
-                  </span>
-                </div>
-
-                <h1 className="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-                  Quality used cars,
-                  <span className="block text-[#5DB521]">honest terms.</span>
+                <h1
+                  className={`${display.className} text-[2rem] uppercase leading-[1.12] text-white  sm:text-5xl lg:text-[2.6rem] xl:text-5xl`}
+                >
+                  <span className="block">We buy rush cars.</span>
+                  <span className="block text-white">{"Let's go!"}</span>
                 </h1>
 
                 <p className="mt-6 max-w-xl text-base leading-7 text-zinc-300 sm:text-lg">
-                  Mikmik&apos;s Garahe is a car dealership in BF Resort Village,
-                  Las Piñas City. We buy, sell, and trade used cars, with
-                  flexible payment options and a straightforward path to
-                  ownership.
+                  Mikmik&apos;s Garahe is a car dealership in Molino, Bacoor. We
+                  buy, sell, and trade cars, with clear details and a
+                  straightforward path to ownership.
                 </p>
+
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    href="/showroom"
+                    className={`inline-flex items-center justify-center gap-2 rounded-full bg-[#5BC236] px-7 py-3.5 text-sm font-bold text-black  transition-all duration-300 hover:bg-[#78D152] ${focusRing}`}
+                  >
+                    Browse the showroom
+                    <ArrowRight size={16} />
+                  </Link>
+
+                  <Link
+                    href="/sell-trade"
+                    className={`inline-flex items-center justify-center rounded-full border-2 border-[#B026FF] px-7 py-3 text-sm font-semibold text-white shadow-[0_0_20px_rgba(176,38,255,0.45),inset_0_0_14px_rgba(176,38,255,0.25)] transition-all duration-300 hover:border-[#D77BFF] hover:bg-[#B026FF]/15 ${focusRing}`}
+                  >
+                    Sell / Trade your car
+                  </Link>
+                </div>
               </div>
 
-              <div className="rounded-[30px] border border-white/10 bg-[#120f0d] p-5 shadow-[0_30px_80px_rgba(0,0,0,0.35)] sm:p-7">
-                <div className="flex items-center justify-between border-b border-white/10 pb-5">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.22em] text-zinc-400">
-                      Mikmik&apos;s Garahe
-                    </p>
-                    <h2 className="mt-2 text-2xl font-black text-white">
-                      How we work
-                    </h2>
+              {/* Visit panel in a neon tube frame */}
+              <div className="relative">
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 translate-x-3 translate-y-3 rounded-[2rem] border-[3px] border-[#B026FF] shadow-[0_0_28px_rgba(176,38,255,0.75),inset_0_0_20px_rgba(176,38,255,0.4)] sm:translate-x-4 sm:translate-y-4"
+                />
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 z-20 rounded-[2rem] border border-white/15 "
+                />
+
+                <div className="relative z-10 rounded-[2rem] bg-[#0E0818] p-6 sm:p-8">
+                  <h2
+                    className={`${display.className} text-2xl uppercase text-white`}
+                  >
+                    Find us
+                  </h2>
+
+                  <div className="mt-6 space-y-5">
+                    <div className="flex gap-3">
+                      <MapPin
+                        size={18}
+                        className="mt-1 shrink-0 text-[#5BC236]"
+                      />
+                      <p className="text-sm leading-7 text-zinc-300">
+                        {BUSINESS.address}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <Phone size={18} className="shrink-0 text-[#5BC236]" />
+                      <a
+                        href={BUSINESS.phoneHref}
+                        className={`font-semibold text-white transition-colors hover:text-[#78D152] ${focusRing}`}
+                      >
+                        {BUSINESS.phoneDisplay}
+                      </a>
+                    </div>
                   </div>
 
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#5DB521]/15 text-[#5DB521]">
-                    <CarFront size={22} />
-                  </div>
-                </div>
+                  <div className="mt-7 grid gap-3 sm:grid-cols-2">
+                    <a
+                      href={BUSINESS.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center justify-center gap-2 rounded-full bg-[#5BC236] px-5 py-3 text-sm font-bold text-black transition-colors hover:bg-[#78D152] ${focusRing}`}
+                    >
+                      <MessageCircle size={16} />
+                      Message us
+                    </a>
 
-                <div className="mt-6 space-y-5 text-lg leading-7 text-zinc-300">
-                  <p>
-                    Buying a car should feel clear, confident, and personal. We
-                    explain pricing and payment options up front, so you know
-                    what to expect before you commit.
-                  </p>
-                  <p>
-                    Whether you want to pay in cash, finance, or trade in your
-                    current car, we walk you through each option. Need to sell
-                    fast? We also buy rush cars.
-                  </p>
+                    <a
+                      href={MAPS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10 ${focusRing}`}
+                    >
+                      Directions
+                      <ArrowUpRight size={16} />
+                    </a>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-white/10 pt-5 text-sm">
+                    <span className="mr-1 text-zinc-400">Follow us</span>
+                    {socials.map((social) => {
+                      const isLive = social.href !== "#";
+
+                      return (
+                        <a
+                          key={social.label}
+                          href={social.href}
+                          target={isLive ? "_blank" : undefined}
+                          rel={isLive ? "noopener noreferrer" : undefined}
+                          className={`rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 font-semibold text-white transition-colors hover:border-[#5BC236] hover:text-[#78D152] ${focusRing}`}
+                        >
+                          {social.label}
+                        </a>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-[24px] border border-white/10 bg-[#120f0d] p-6 text-center shadow-[0_20px_60px_rgba(0,0,0,0.18)]"
+            {/* Facts: neon-outlined chips */}
+            <ul className="mt-14 flex flex-wrap gap-3">
+              {facts.map(({ icon: Icon, text }) => (
+                <li
+                  key={text}
+                  className="flex items-center gap-2.5 rounded-full border border-[#B026FF]/50 bg-[#0E0818]/80 px-4 py-2.5 text-sm text-zinc-200 shadow-[0_0_16px_rgba(176,38,255,0.18)]"
                 >
-                  <div className="text-3xl font-black text-[#5DB521] sm:text-4xl">
-                    {stat.value}
+                  <Icon size={16} className="shrink-0 text-[#5BC236]" />
+                  {text}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* WHAT WE DO: three big rows instead of three cards */}
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+          <h2
+            className={`${display.className} max-w-2xl text-2xl uppercase leading-snug text-white sm:text-3xl`}
+          >
+            One dealership for every way you move.
+          </h2>
+
+          <ul className="mt-10 border-t border-white/10">
+            {services.map(
+              ({ icon: Icon, word, title, description, href, cta }) => (
+                <li
+                  key={title}
+                  className="group grid gap-4 border-b border-white/10 py-8 transition-colors duration-300 hover:bg-white/10 md:grid-cols-[220px_1fr_auto] md:items-center md:gap-10 md:px-4"
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="flex size-12 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 ">
+                      <Icon size={22} className="text-[#5BC236]" />
+                    </span>
+                    <span
+                      className={`${display.className} text-3xl uppercase text-white transition-[text-shadow] duration-300 `}
+                    >
+                      {word}
+                    </span>
                   </div>
-                  <p className="mt-3 text-base text-zinc-300">{stat.label}</p>
+
+                  <div>
+                    <h3 className="text-lg font-bold text-white">{title}</h3>
+                    <p className="mt-1.5 max-w-xl text-base leading-7 text-zinc-400">
+                      {description}
+                    </p>
+                  </div>
+
+                  <Link
+                    href={href}
+                    className={`inline-flex items-center gap-2 text-sm font-semibold text-white transition-colors hover:text-[#78D152] ${focusRing}`}
+                  >
+                    {cta}
+                    <ArrowRight
+                      size={16}
+                      className="transition-transform duration-300 group-hover:translate-x-1"
+                    />
+                  </Link>
+                </li>
+              ),
+            )}
+          </ul>
+        </section>
+
+        {/* HOW IT WORKS: steps on a neon line */}
+        <section className="border-y border-white/10 bg-[#06030D]">
+          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+            <h2
+              className={`${display.className} text-2xl uppercase text-white sm:text-3xl`}
+            >
+              How it works
+            </h2>
+
+            <div className="mt-12 grid gap-12 md:grid-cols-2 md:gap-16">
+              {journeys.map((journey) => (
+                <div key={journey.title}>
+                  <h3 className="text-xl font-bold text-white">
+                    {journey.title}
+                  </h3>
+
+                  <ol className="relative mt-7 space-y-7 border-l-2 border-white/15 pl-8 ">
+                    {journey.steps.map((step, index) => (
+                      <li key={step} className="relative">
+                        <span className="absolute -left-[3.05rem] flex size-9 items-center justify-center rounded-full border-2 border-white/30 bg-[#06030D] text-sm font-bold text-white ">
+                          {index + 1}
+                        </span>
+                        <p className="pt-1 text-base leading-7 text-zinc-300">
+                          {step}
+                        </p>
+                      </li>
+                    ))}
+                  </ol>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center">
-            <div className="rounded-[30px] border border-[#5DB521]/20 bg-[#120f0d] p-6 sm:p-8">
-              <div className="mb-6 flex items-center gap-3 text-[#5DB521]">
-                <Award size={20} />
-                <span className="text-xs font-semibold uppercase tracking-[0.28em]">
-                  Our promise
-                </span>
-              </div>
-
-              <h3 className="text-3xl font-black tracking-tight text-white">
-                Thoughtful service at every step.
-              </h3>
-
-              <ul className="mt-6 space-y-4 text-sm leading-7 text-zinc-300">
-                {[
-                  "Cash, financing, or trade-in: you choose what works for you.",
-                  "Friendly people who listen first and explain clearly.",
-                  "Simple, upfront communication from first enquiry to delivery.",
-                ].map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#5DB521]/15 text-[#5DB521]">
-                      <BadgeCheck size={12} />
-                    </span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[radial-gradient(circle_at_top,_rgba(93,181,33,0.18),transparent_45%)] p-6 sm:p-8">
-              <div className="relative">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#5DB521]">
-                  The Mikmik&apos;s Garahe difference
-                </p>
-                <h3 className="mt-4 text-3xl font-black tracking-tight text-white sm:text-4xl">
-                  We make buying feel confident, not complicated.
-                </h3>
-                <p className="mt-5 max-w-xl text-base leading-7 text-zinc-300">
-                  Whether you&apos;re shopping for a family SUV, a city car, or
-                  a weekend ride, we help you find something that fits your life
-                  and your budget.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mx-auto max-w-7xl px-4 pt-20 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="mb-5 flex items-center justify-center gap-3">
-                <span className="h-px w-10 bg-[#5DB521]" />
-                <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#5DB521]">
-                  Why drivers choose us
-                </span>
-                <span className="h-px w-10 bg-[#5DB521]" />
-              </div>
-
-              <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
-                A car buying experience built around you.
+        {/* VALUES */}
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <h2
+                className={`${display.className} text-2xl uppercase leading-snug text-white sm:text-3xl`}
+              >
+                Buying should feel confident, not complicated.
               </h2>
+              <p className="mt-5 max-w-md text-base leading-7 text-zinc-300">
+                Whether you&apos;re shopping for a family SUV, a city car, or a
+                pickup for work, we help you find something that fits your life
+                and your budget.
+              </p>
             </div>
 
-            <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-              {values.map((value) => {
-                const Icon = value.icon;
-
-                return (
-                  <div
-                    key={value.title}
-                    className="group rounded-[26px] border border-white/10 bg-[#120f0d] p-6 transition-all duration-300 hover:border-[#5DB521]/50 hover:bg-[#15120f] hover:shadow-[0_15px_50px_rgba(0,0,0,0.25)]"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#5DB521]/30 bg-[#5DB521]/10 text-[#5DB521] transition-all duration-300 group-hover:border-[#5DB521]/60 group-hover:bg-[#5DB521]/20">
-                        <Icon size={22} />
-                      </div>
-
-                      <h3 className="text-base font-bold leading-tight text-white sm:text-xl">
-                        {value.title}
-                      </h3>
-                    </div>
-
-                    <p className="mt-5 text-base leading-7 text-zinc-400">
-                      {value.description}
+            <ul className="divide-y divide-white/10 border-y border-white/10">
+              {values.map(({ icon: Icon, title, description }) => (
+                <li key={title} className="flex gap-5 py-7">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-full border border-[#B026FF]/60 bg-[#B026FF]/10 shadow-[0_0_14px_rgba(176,38,255,0.35)]">
+                    <Icon size={22} className="text-[#D77BFF]" />
+                  </span>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">{title}</h3>
+                    <p className="mt-2 text-base leading-7 text-zinc-400">
+                      {description}
                     </p>
                   </div>
-                );
-              })}
-            </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 

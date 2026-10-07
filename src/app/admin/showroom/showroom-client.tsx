@@ -30,9 +30,9 @@ const STATUS_FILTERS: Array<"All" | Vehicle["status"]> = [
 ];
 
 const STATUS_STYLES: Record<Vehicle["status"], string> = {
-  available: "bg-emerald-500/10 text-emerald-400",
-  reserved: "bg-blue-500/10 text-blue-400",
-  sold: "bg-slate-500/15 text-slate-400",
+  available: "bg-[#39FF14]/10 text-[#7CFF5B]",
+  reserved: "bg-zinc-500/15 text-zinc-300",
+  sold: "bg-zinc-500/15 text-zinc-400",
 };
 
 const STATUS_LABELS: Record<Vehicle["status"], string> = {
@@ -76,13 +76,13 @@ function Dialog({
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-[#06030D]/70 backdrop-blur-sm"
         onClick={() => {
           if (!busy) onClose();
         }}
       />
       {/* Panel */}
-      <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#1a2332] p-6 shadow-2xl">
+      <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#06030D] p-6 shadow-2xl">
         {children}
       </div>
     </div>,
@@ -110,7 +110,7 @@ function RowActions({
         onClick={() => onEdit(vehicle)}
         title="Edit"
         aria-label={`Edit ${vehicle.name}`}
-        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-300 transition-colors hover:border-[#d9ae1f]/50 hover:bg-[#d9ae1f]/10 hover:text-[#d9ae1f]"
+        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-300 transition-colors hover:border-[#39FF14]/50 hover:bg-[#39FF14]/10 hover:text-[#7CFF5B]"
       >
         <Pencil size={14} />
       </button>
@@ -119,7 +119,7 @@ function RowActions({
         onClick={() => onDelete(vehicle)}
         title="Delete"
         aria-label={`Delete ${vehicle.name}`}
-        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-300 transition-colors hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400"
+        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-300 transition-colors hover:border-[#39FF14]/50 hover:bg-[#39FF14]/10 hover:text-[#7CFF5B]"
       >
         <Trash2 size={14} />
       </button>
@@ -214,13 +214,13 @@ export default function ShowroomClient({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-xl font-bold text-white sm:text-2xl">Showroom</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-zinc-400">
             Manage vehicle listings and stock.
           </p>
         </div>
         <button
           onClick={() => setDrawerVehicle(null)}
-          className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#d9ae1f] to-[#f4c430] px-5 py-2.5 text-sm font-bold text-[#171c28] transition-all hover:brightness-105"
+          className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#39FF14] to-[#7CFF5B] px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-105"
         >
           <Plus size={16} />
           Add vehicle
@@ -231,21 +231,21 @@ export default function ShowroomClient({
         <div className="relative flex-1">
           <Search
             size={16}
-            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
+            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500"
           />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by model or type..."
-            className="w-full rounded-xl border border-white/10 bg-[#232b3d]/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 outline-none focus:border-[#d9ae1f]/60"
+            className="w-full rounded-xl border border-white/10 bg-[#0E0818]/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#39FF14]/60"
           />
         </div>
 
         <div className="flex items-center gap-2 overflow-x-auto">
           <SlidersHorizontal
             size={15}
-            className="hidden shrink-0 text-slate-500 sm:block"
+            className="hidden shrink-0 text-zinc-500 sm:block"
           />
           {STATUS_FILTERS.map((status) => (
             <button
@@ -253,8 +253,8 @@ export default function ShowroomClient({
               onClick={() => setStatusFilter(status)}
               className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium capitalize transition-colors ${
                 statusFilter === status
-                  ? "bg-[#d9ae1f]/15 text-[#d9ae1f]"
-                  : "bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
+                  ? "bg-[#39FF14]/15 text-[#7CFF5B]"
+                  : "bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white"
               }`}
             >
               {status}
@@ -264,27 +264,27 @@ export default function ShowroomClient({
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+        <div className="rounded-xl border border-[#39FF14]/30 bg-[#39FF14]/10 px-4 py-3 text-sm text-[#7CFF5B]">
           {error}
         </div>
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center rounded-2xl border border-white/10 bg-[#232b3d]/70 py-16 text-sm text-slate-400">
-          <Loader2 size={18} className="mr-2 animate-spin text-[#d9ae1f]" />
+        <div className="flex items-center justify-center rounded-2xl border border-white/10 bg-[#0E0818]/70 py-16 text-sm text-zinc-400">
+          <Loader2 size={18} className="mr-2 animate-spin text-[#7CFF5B]" />
           Loading vehicles...
         </div>
       ) : (
         <>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-zinc-500">
             {filtered.length} vehicle{filtered.length !== 1 ? "s" : ""} found
           </p>
 
           {/* Desktop table */}
-          <div className="hidden overflow-hidden rounded-2xl border border-white/10 bg-[#232b3d]/70 lg:block">
+          <div className="hidden overflow-hidden rounded-2xl border border-white/10 bg-[#0E0818]/70 lg:block">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-white/10 text-xs uppercase tracking-wide text-slate-500">
+                <tr className="border-b border-white/10 text-xs uppercase tracking-wide text-zinc-500">
                   <th className="px-5 py-3 font-medium">Vehicle</th>
                   <th className="px-5 py-3 font-medium">Type</th>
                   <th className="px-5 py-3 font-medium">Price</th>
@@ -302,7 +302,7 @@ export default function ShowroomClient({
                   >
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#d9ae1f]/15 text-[#d9ae1f]">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#39FF14]/15 text-[#7CFF5B]">
                           {v.image ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
@@ -316,14 +316,14 @@ export default function ShowroomClient({
                         </span>
                         <div>
                           <p className="font-medium text-white">{v.name}</p>
-                          <p className="text-xs text-slate-500">{v.year}</p>
+                          <p className="text-xs text-zinc-500">{v.year}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-3 text-slate-400">{v.type}</td>
+                    <td className="px-5 py-3 text-zinc-400">{v.type}</td>
                     <td className="px-5 py-3 text-white">{v.price}</td>
-                    <td className="px-5 py-3 text-slate-400">{v.mileage}</td>
-                    <td className="px-5 py-3 text-slate-400">{v.stock}</td>
+                    <td className="px-5 py-3 text-zinc-400">{v.mileage}</td>
+                    <td className="px-5 py-3 text-zinc-400">{v.stock}</td>
                     <td className="px-5 py-3">
                       <span
                         className={`rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[v.status]}`}
@@ -344,7 +344,7 @@ export default function ShowroomClient({
                   <tr>
                     <td
                       colSpan={7}
-                      className="px-5 py-10 text-center text-sm text-slate-500"
+                      className="px-5 py-10 text-center text-sm text-zinc-500"
                     >
                       No vehicles match your search.
                     </td>
@@ -359,11 +359,11 @@ export default function ShowroomClient({
             {filtered.map((v) => (
               <div
                 key={v.id}
-                className="rounded-2xl border border-white/10 bg-[#232b3d]/70 p-4"
+                className="rounded-2xl border border-white/10 bg-[#0E0818]/70 p-4"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#d9ae1f]/15 text-[#d9ae1f]">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#39FF14]/15 text-[#7CFF5B]">
                       {v.image ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -379,7 +379,7 @@ export default function ShowroomClient({
                       <p className="text-sm font-semibold text-white">
                         {v.name}
                       </p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-zinc-500">
                         {v.type} · {v.year}
                       </p>
                     </div>
@@ -400,14 +400,14 @@ export default function ShowroomClient({
                   </span>
                 </div>
 
-                <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
+                <div className="mt-2 flex items-center justify-between text-xs text-zinc-500">
                   <span>{v.mileage}</span>
                   <span>{v.stock} in stock</span>
                 </div>
               </div>
             ))}
             {filtered.length === 0 && (
-              <div className="col-span-full rounded-2xl border border-white/10 bg-[#232b3d]/70 py-10 text-center text-sm text-slate-500">
+              <div className="col-span-full rounded-2xl border border-white/10 bg-[#0E0818]/70 py-10 text-center text-sm text-zinc-500">
                 No vehicles match your search.
               </div>
             )}
@@ -423,12 +423,12 @@ export default function ShowroomClient({
           busy={deleting}
         >
           <div className="flex items-start gap-4">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-red-400">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#39FF14]/10 text-[#7CFF5B]">
               <AlertTriangle size={20} />
             </span>
             <div className="min-w-0">
               <h2 className="text-lg font-bold text-white">Delete vehicle?</h2>
-              <p className="mt-1.5 text-sm leading-6 text-slate-400">
+              <p className="mt-1.5 text-sm leading-6 text-zinc-400">
                 You’re about to delete{" "}
                 <span className="font-semibold text-white">
                   {deleteTarget?.name}
@@ -439,7 +439,7 @@ export default function ShowroomClient({
           </div>
 
           {deleteError && (
-            <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+            <div className="mt-4 rounded-xl border border-[#39FF14]/30 bg-[#39FF14]/10 px-4 py-3 text-sm text-[#7CFF5B]">
               {deleteError}
             </div>
           )}
@@ -449,7 +449,7 @@ export default function ShowroomClient({
               type="button"
               onClick={closeDeleteDialog}
               disabled={deleting}
-              className="rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
+              className="rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
             >
               Cancel
             </button>
@@ -457,7 +457,7 @@ export default function ShowroomClient({
               type="button"
               onClick={confirmDelete}
               disabled={deleting}
-              className="flex items-center justify-center gap-2 rounded-full bg-red-500 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-red-600 disabled:opacity-60"
+              className="flex items-center justify-center gap-2 rounded-full bg-[#39FF14] px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-[#39FF14] disabled:opacity-60"
             >
               {deleting ? (
                 <>

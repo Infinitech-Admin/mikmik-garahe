@@ -11,19 +11,16 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import {
-  Car,
-  Check,
-  Eye,
-  EyeOff,
-  Loader2,
-  Lock,
-  Mail,
-  Phone,
-  User,
-  X,
-} from "lucide-react";
+import { Check, Eye, EyeOff, Loader2, X } from "lucide-react";
 import { register, type ApiError } from "@/lib/api";
+import {
+  AuthShell,
+  authButtonClass,
+  authErrorClass,
+  authInputClass,
+  authLabelClass,
+  authLinkClass,
+} from "@/components/auth/auth-shell";
 
 interface RegisterForm {
   name: string;
@@ -167,257 +164,204 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-[#1a2332] via-[#22293a] to-[#171c28] px-4 py-16">
-      <div className="pointer-events-none absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-[#3b82f6]/15 blur-[130px]" />
-      <div className="pointer-events-none absolute top-1/3 right-[-120px] h-[380px] w-[380px] rounded-full bg-[#5DB521]/20 blur-[130px]" />
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(90deg, #fff 0 40px, transparent 40px 90px)",
-          maskImage: "linear-gradient(to top, black, transparent)",
-        }}
-      />
+    <AuthShell
+      headline="Start your engine."
+      blurb="Create an account to save listings, track offers and sell or trade in your car."
+    >
+      <form onSubmit={handleSubmit} noValidate>
+        <h1 className="mb-1 text-2xl font-bold text-white">
+          Create your account
+        </h1>
+        <p className="mb-6 text-sm text-zinc-400">
+          Join Mikmik's Garahe in a few quick steps.
+        </p>
 
-      <div className="relative z-10 w-full max-w-md">
-        <div className="mb-8 text-center">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-2xl font-black text-white"
+        {formError && (
+          <div
+            role="alert"
+            className="mb-5 rounded-lg border border-[#39FF14]/40 bg-[#39FF14]/10 px-4 py-3 text-sm text-[#7CFF5B]"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#5DB521]/15 text-[#d9ae1f]">
-              <Car size={20} />
-            </span>
-            Auto<span className="text-[#d9ae1f]">Trade</span>
-          </Link>
-          <p className="mt-2 text-sm text-slate-400">Create your account</p>
+            {formError}
+          </div>
+        )}
+
+        {/* Name */}
+        <div className="mb-4">
+          <label htmlFor="name" className={authLabelClass}>
+            Full name
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            autoComplete="name"
+            required
+            value={form.name}
+            onChange={handleChange}
+            aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? "name-error" : undefined}
+            className={authInputClass}
+            placeholder="Juan Dela Cruz"
+          />
+          {errors.name && (
+            <p id="name-error" className={authErrorClass}>
+              {errors.name}
+            </p>
+          )}
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          noValidate
-          className="rounded-2xl border border-white/10 bg-[#232b3d]/70 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:p-8"
-        >
-          <div className="mb-6 h-1 w-14 rounded-full bg-gradient-to-r from-[#d9ae1f] to-[#f4c430]" />
+        {/* Phone */}
+        <div className="mb-4">
+          <label htmlFor="phone" className={authLabelClass}>
+            Phone <span className="font-normal text-zinc-500">(optional)</span>
+          </label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel"
+            maxLength={11}
+            pattern="09\d{9}"
+            value={form.phone}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            aria-invalid={!!errors.phone}
+            aria-describedby={errors.phone ? "phone-error" : undefined}
+            className={authInputClass}
+            placeholder="09171234567"
+          />
+          {errors.phone && (
+            <p id="phone-error" className={authErrorClass}>
+              {errors.phone}
+            </p>
+          )}
+        </div>
 
-          {formError && (
-            <div className="mb-5 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
-              {formError}
-            </div>
+        {/* Email */}
+        <div className="mb-4">
+          <label htmlFor="email" className={authLabelClass}>
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            value={form.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            className={authInputClass}
+            placeholder="you@example.com"
+          />
+          {errors.email && (
+            <p id="email-error" className={authErrorClass}>
+              {errors.email}
+            </p>
+          )}
+        </div>
+
+        {/* Password */}
+        <div className="mb-4">
+          <label htmlFor="password" className={authLabelClass}>
+            Password
+          </label>
+          <div className="relative">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="new-password"
+              required
+              value={form.password}
+              onChange={handleChange}
+              aria-invalid={!!errors.password}
+              aria-describedby={errors.password ? "password-error" : undefined}
+              className={`${authInputClass} pr-12`}
+              placeholder="Create a password"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 text-zinc-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#39FF14]"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+          {errors.password && (
+            <p id="password-error" className={authErrorClass}>
+              {errors.password}
+            </p>
           )}
 
-          {/* Name */}
-          <div className="mb-4">
-            <label
-              htmlFor="name"
-              className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-400"
-            >
-              Full name
-            </label>
-            <div className="relative">
-              <User
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
-              />
-              <input
-                id="name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                required
-                value={form.name}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-white/10 bg-[#171c28]/60 py-3 pl-10 pr-4 text-sm text-white placeholder-zinc-500 outline-none transition-colors focus:border-[#d9ae1f]/60"
-                placeholder="Juan Dela Cruz"
-              />
-            </div>
-            {errors.name && (
-              <p className="mt-1.5 text-xs text-red-400">{errors.name}</p>
-            )}
-          </div>
+          {form.password.length > 0 && (
+            <ul className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-sm">
+              <RuleItem met={rules.length}>10+ characters</RuleItem>
+              <RuleItem met={rules.upper && rules.lower}>
+                Upper &amp; lowercase
+              </RuleItem>
+              <RuleItem met={rules.number}>A number</RuleItem>
+              <RuleItem met={rules.symbol}>A symbol</RuleItem>
+            </ul>
+          )}
+        </div>
 
-          {/* Phone */}
-          <div className="mb-4">
-            <label
-              htmlFor="phone"
-              className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-400"
-            >
-              Phone{" "}
-              <span className="normal-case text-slate-600">(optional)</span>
-            </label>
-            <div className="relative">
-              <Phone
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
-              />
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                inputMode="numeric"
-                autoComplete="tel"
-                maxLength={11}
-                pattern="09\d{9}"
-                value={form.phone}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className="w-full rounded-xl border border-white/10 bg-[#171c28]/60 py-3 pl-10 pr-4 text-sm text-white placeholder-zinc-500 outline-none transition-colors focus:border-[#d9ae1f]/60"
-                placeholder="09171234567"
-              />
-            </div>
-            {errors.phone && (
-              <p className="mt-1.5 text-xs text-red-400">{errors.phone}</p>
-            )}
-          </div>
+        {/* Confirm password */}
+        <div className="mb-6">
+          <label htmlFor="password_confirmation" className={authLabelClass}>
+            Confirm password
+          </label>
+          <input
+            id="password_confirmation"
+            name="password_confirmation"
+            type={showPassword ? "text" : "password"}
+            autoComplete="new-password"
+            required
+            value={form.password_confirmation}
+            onChange={handleChange}
+            aria-invalid={
+              (form.password_confirmation.length > 0 && !passwordsMatch) ||
+              !!errors.password_confirmation
+            }
+            className={authInputClass}
+            placeholder="Re-enter your password"
+          />
+          {form.password_confirmation.length > 0 && !passwordsMatch && (
+            <p className={authErrorClass}>Passwords do not match.</p>
+          )}
+          {errors.password_confirmation && (
+            <p className={authErrorClass}>{errors.password_confirmation}</p>
+          )}
+        </div>
 
-          {/* Email */}
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-400"
-            >
-              Email
-            </label>
-            <div className="relative">
-              <Mail
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
-              />
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={form.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className="w-full rounded-xl border border-white/10 bg-[#171c28]/60 py-3 pl-10 pr-4 text-sm text-white placeholder-zinc-500 outline-none transition-colors focus:border-[#d9ae1f]/60"
-                placeholder="you@example.com"
-              />
-            </div>
-            {errors.email && (
-              <p className="mt-1.5 text-xs text-red-400">{errors.email}</p>
-            )}
-          </div>
+        <button type="submit" disabled={loading} className={authButtonClass}>
+          {loading && <Loader2 size={16} className="animate-spin" />}
+          {loading ? "Creating account..." : "Create account"}
+        </button>
 
-          {/* Password */}
-          <div className="mb-3">
-            <label
-              htmlFor="password"
-              className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-400"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <Lock
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
-              />
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                autoComplete="new-password"
-                required
-                value={form.password}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-white/10 bg-[#171c28]/60 py-3 pl-10 pr-11 text-sm text-white placeholder-zinc-500 outline-none transition-colors focus:border-[#d9ae1f]/60"
-                placeholder="••••••••"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 transition-colors hover:text-slate-300"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-              </button>
-            </div>
-            {errors.password && (
-              <p className="mt-1.5 text-xs text-red-400">{errors.password}</p>
-            )}
-
-            {form.password.length > 0 && (
-              <ul className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
-                <RuleItem met={rules.length}>10+ characters</RuleItem>
-                <RuleItem met={rules.upper && rules.lower}>
-                  Upper &amp; lowercase
-                </RuleItem>
-                <RuleItem met={rules.number}>A number</RuleItem>
-                <RuleItem met={rules.symbol}>A symbol</RuleItem>
-              </ul>
-            )}
-          </div>
-
-          {/* Confirm password */}
-          <div className="mb-6">
-            <label
-              htmlFor="password_confirmation"
-              className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-400"
-            >
-              Confirm password
-            </label>
-            <div className="relative">
-              <Lock
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
-              />
-              <input
-                id="password_confirmation"
-                name="password_confirmation"
-                type={showPassword ? "text" : "password"}
-                autoComplete="new-password"
-                required
-                value={form.password_confirmation}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-white/10 bg-[#171c28]/60 py-3 pl-10 pr-4 text-sm text-white placeholder-zinc-500 outline-none transition-colors focus:border-[#d9ae1f]/60"
-                placeholder="••••••••"
-              />
-            </div>
-            {form.password_confirmation.length > 0 && !passwordsMatch && (
-              <p className="mt-1.5 text-xs text-red-400">
-                Passwords do not match.
-              </p>
-            )}
-            {errors.password_confirmation && (
-              <p className="mt-1.5 text-xs text-red-400">
-                {errors.password_confirmation}
-              </p>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#d9ae1f] to-[#f4c430] py-3.5 text-sm font-bold text-[#171c28] transition-all duration-300 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loading && <Loader2 size={16} className="animate-spin" />}
-            {loading ? "Creating account..." : "Create Account"}
-          </button>
-
-          <p className="mt-6 text-center text-sm text-slate-400">
-            Already have an account?{" "}
-            <Link
-              href="/login"
-              className="font-semibold text-[#d9ae1f] hover:text-[#f4c430]"
-            >
-              Sign in
-            </Link>
-          </p>
-        </form>
-      </div>
-    </main>
+        <p className="mt-6 text-center text-sm text-zinc-400">
+          Already have an account?{" "}
+          <Link href="/login" className={authLinkClass}>
+            Sign in
+          </Link>
+        </p>
+      </form>
+    </AuthShell>
   );
 }
 
 function RuleItem({ met, children }: { met: boolean; children: ReactNode }) {
   return (
     <li
-      className={`flex items-center gap-1.5 ${met ? "text-emerald-400" : "text-slate-500"}`}
+      className={`flex items-center gap-1.5 ${met ? "font-medium text-emerald-400" : "text-zinc-400"}`}
     >
-      {met ? <Check size={13} /> : <X size={13} />}
+      {met ? <Check size={14} aria-hidden /> : <X size={14} aria-hidden />}
       {children}
+      <span className="sr-only">{met ? " (met)" : " (not met)"}</span>
     </li>
   );
 }

@@ -61,13 +61,13 @@ const formatDateTime = (value: string | null | undefined) => {
 };
 
 const STATUS_STYLES: Record<InquiryStatus, string> = {
-  new: "bg-lime-500/10 text-lime-400",
-  read: "bg-blue-500/10 text-blue-400",
-  replied: "bg-emerald-500/10 text-emerald-400",
-  closed: "bg-slate-500/15 text-slate-400",
+  new: "bg-[#39FF14]/10 text-[#7CFF5B]",
+  read: "bg-zinc-500/15 text-zinc-300",
+  replied: "bg-[#39FF14]/10 text-[#7CFF5B]",
+  closed: "bg-zinc-500/15 text-zinc-400",
 };
 
-const FALLBACK_STATUS_STYLE = "bg-slate-500/15 text-slate-400";
+const FALLBACK_STATUS_STYLE = "bg-zinc-500/15 text-zinc-400";
 
 const statusStyle = (status: string) =>
   STATUS_STYLES[status as InquiryStatus] ?? FALLBACK_STATUS_STYLE;
@@ -106,10 +106,10 @@ function Dialog({
       aria-modal="true"
     >
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-[#06030D]/70 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-[#1a2332] p-6 shadow-2xl">
+      <div className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-[#06030D] p-6 shadow-2xl">
         {children}
       </div>
     </div>,
@@ -126,7 +126,7 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-start justify-between gap-4 py-1.5 text-sm">
-      <span className="shrink-0 text-slate-400">{label}</span>
+      <span className="shrink-0 text-zinc-400">{label}</span>
       <span className="break-words text-right font-medium text-white">
         {children}
       </span>
@@ -362,14 +362,14 @@ export default function ContactClient() {
           <h1 className="text-xl font-bold text-white sm:text-2xl">
             Contact Us
           </h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-zinc-400">
             Review customer enquiries and reply by email.
           </p>
         </div>
         <button
           onClick={load}
           disabled={loading}
-          className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
+          className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
         >
           <RefreshCw size={15} className={loading ? "animate-spin" : ""} />
           Refresh
@@ -380,7 +380,7 @@ export default function ContactClient() {
         <div className="relative flex-1">
           <Search
             size={16}
-            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
+            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500"
           />
           <input
             type="text"
@@ -388,14 +388,14 @@ export default function ContactClient() {
             onChange={(e) => setSearchInput(e.target.value)}
             maxLength={100}
             placeholder="Search by name, email, phone or vehicle..."
-            className="w-full rounded-xl border border-white/10 bg-[#232b3d]/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 outline-none focus:border-[#d9ae1f]/60"
+            className="w-full rounded-xl border border-white/10 bg-[#0E0818]/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#39FF14]/60"
           />
         </div>
 
         <div className="flex items-center gap-2 overflow-x-auto">
           <SlidersHorizontal
             size={15}
-            className="hidden shrink-0 text-slate-500 sm:block"
+            className="hidden shrink-0 text-zinc-500 sm:block"
           />
           {statusFilters.map((status) => (
             <button
@@ -406,8 +406,8 @@ export default function ContactClient() {
               }}
               className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium capitalize transition-colors ${
                 statusFilter === status
-                  ? "bg-[#d9ae1f]/15 text-[#d9ae1f]"
-                  : "bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
+                  ? "bg-[#39FF14]/15 text-[#7CFF5B]"
+                  : "bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white"
               }`}
             >
               {status === "All" ? status : statusLabel(status)}
@@ -417,27 +417,27 @@ export default function ContactClient() {
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+        <div className="rounded-xl border border-[#39FF14]/30 bg-[#39FF14]/10 px-4 py-3 text-sm text-[#7CFF5B]">
           {error}
         </div>
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center rounded-2xl border border-white/10 bg-[#232b3d]/70 py-16 text-sm text-slate-400">
-          <Loader2 size={18} className="mr-2 animate-spin text-[#d9ae1f]" />
+        <div className="flex items-center justify-center rounded-2xl border border-white/10 bg-[#0E0818]/70 py-16 text-sm text-zinc-400">
+          <Loader2 size={18} className="mr-2 animate-spin text-[#7CFF5B]" />
           Loading enquiries...
         </div>
       ) : (
         <>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-zinc-500">
             {meta.total} enquir{meta.total !== 1 ? "ies" : "y"} found
           </p>
 
           {/* Desktop table */}
-          <div className="hidden overflow-hidden rounded-2xl border border-white/10 bg-[#232b3d]/70 lg:block">
+          <div className="hidden overflow-hidden rounded-2xl border border-white/10 bg-[#0E0818]/70 lg:block">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-white/10 text-xs uppercase tracking-wide text-slate-500">
+                <tr className="border-b border-white/10 text-xs uppercase tracking-wide text-zinc-500">
                   <th className="px-5 py-3 font-medium">Customer</th>
                   <th className="px-5 py-3 font-medium">Phone</th>
                   <th className="px-5 py-3 font-medium">Looking for</th>
@@ -454,7 +454,7 @@ export default function ContactClient() {
                   >
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#d9ae1f]/15 text-[#d9ae1f]">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#39FF14]/15 text-[#7CFF5B]">
                           <Mail size={16} />
                         </span>
                         <div className="min-w-0">
@@ -465,14 +465,14 @@ export default function ContactClient() {
                           >
                             {fullName(i)}
                           </p>
-                          <p className="truncate text-xs text-slate-500">
+                          <p className="truncate text-xs text-zinc-500">
                             {i.email}
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-3 text-slate-300">{i.phone}</td>
-                    <td className="max-w-[200px] truncate px-5 py-3 text-slate-400">
+                    <td className="px-5 py-3 text-zinc-300">{i.phone}</td>
+                    <td className="max-w-[200px] truncate px-5 py-3 text-zinc-400">
                       {i.looking_for || "—"}
                     </td>
                     <td className="px-5 py-3">
@@ -482,13 +482,13 @@ export default function ContactClient() {
                         {statusLabel(i.status)}
                       </span>
                       {!!i.replies_count && (
-                        <span className="ml-2 text-xs text-slate-500">
+                        <span className="ml-2 text-xs text-zinc-500">
                           {i.replies_count} repl
                           {i.replies_count !== 1 ? "ies" : "y"}
                         </span>
                       )}
                     </td>
-                    <td className="px-5 py-3 text-slate-400">
+                    <td className="px-5 py-3 text-zinc-400">
                       {formatDate(i.created_at)}
                     </td>
                     <td className="px-5 py-3">
@@ -498,7 +498,7 @@ export default function ContactClient() {
                           onClick={() => openInquiry(i)}
                           title="View enquiry"
                           aria-label={`View enquiry from ${fullName(i)}`}
-                          className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-300 transition-colors hover:border-[#d9ae1f]/50 hover:bg-[#d9ae1f]/10 hover:text-[#d9ae1f]"
+                          className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-300 transition-colors hover:border-[#39FF14]/50 hover:bg-[#39FF14]/10 hover:text-[#7CFF5B]"
                         >
                           <Eye size={14} />
                         </button>
@@ -510,7 +510,7 @@ export default function ContactClient() {
                   <tr>
                     <td
                       colSpan={6}
-                      className="px-5 py-10 text-center text-sm text-slate-500"
+                      className="px-5 py-10 text-center text-sm text-zinc-500"
                     >
                       No enquiries match your search.
                     </td>
@@ -527,11 +527,11 @@ export default function ContactClient() {
                 key={i.id}
                 type="button"
                 onClick={() => openInquiry(i)}
-                className="rounded-2xl border border-white/10 bg-[#232b3d]/70 p-4 text-left transition-colors hover:border-[#d9ae1f]/40"
+                className="rounded-2xl border border-white/10 bg-[#0E0818]/70 p-4 text-left transition-colors hover:border-[#39FF14]/40"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex min-w-0 items-center gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#d9ae1f]/15 text-[#d9ae1f]">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#39FF14]/15 text-[#7CFF5B]">
                       <Mail size={18} />
                     </span>
                     <div className="min-w-0">
@@ -542,7 +542,7 @@ export default function ContactClient() {
                       >
                         {fullName(i)}
                       </p>
-                      <p className="truncate text-xs text-slate-500">
+                      <p className="truncate text-xs text-zinc-500">
                         {i.email}
                       </p>
                     </div>
@@ -554,18 +554,18 @@ export default function ContactClient() {
                   </span>
                 </div>
 
-                <p className="mt-4 line-clamp-2 text-sm text-slate-300">
+                <p className="mt-4 line-clamp-2 text-sm text-zinc-300">
                   {i.message}
                 </p>
 
-                <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
+                <div className="mt-3 flex items-center justify-between text-xs text-zinc-500">
                   <span className="truncate">{i.looking_for || i.phone}</span>
                   <span>{formatDate(i.created_at)}</span>
                 </div>
               </button>
             ))}
             {inquiries.length === 0 && (
-              <div className="col-span-full rounded-2xl border border-white/10 bg-[#232b3d]/70 py-10 text-center text-sm text-slate-500">
+              <div className="col-span-full rounded-2xl border border-white/10 bg-[#0E0818]/70 py-10 text-center text-sm text-zinc-500">
                 No enquiries match your search.
               </div>
             )}
@@ -578,19 +578,19 @@ export default function ContactClient() {
                 type="button"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page <= 1 || loading}
-                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ChevronLeft size={14} />
                 Previous
               </button>
-              <span className="text-xs text-slate-500">
+              <span className="text-xs text-zinc-500">
                 Page {page} of {meta.lastPage}
               </span>
               <button
                 type="button"
                 onClick={() => setPage((p) => Math.min(meta.lastPage, p + 1))}
                 disabled={page >= meta.lastPage || loading}
-                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Next
                 <ChevronRight size={14} />
@@ -610,7 +610,7 @@ export default function ContactClient() {
                   <h2 className="truncate text-lg font-bold text-white">
                     {fullName(selected)}
                   </h2>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-xs text-zinc-500">
                     Received {formatDateTime(selected.created_at)}
                   </p>
                 </div>
@@ -624,7 +624,7 @@ export default function ContactClient() {
                     type="button"
                     onClick={closeDetails}
                     aria-label="Close"
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-zinc-300 transition-colors hover:bg-white/10 hover:text-white"
                   >
                     <X size={15} />
                   </button>
@@ -632,21 +632,21 @@ export default function ContactClient() {
               </div>
 
               {detailError && (
-                <p className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+                <p className="mt-4 rounded-lg border border-[#39FF14]/30 bg-[#39FF14]/10 px-3 py-2 text-xs text-[#7CFF5B]">
                   {detailError}
                 </p>
               )}
 
               {/* Contact details */}
-              <section className="mt-5 rounded-xl border border-white/10 bg-black/20 p-4">
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+              <section className="mt-5 rounded-xl border border-white/10 bg-[#06030D]/20 p-4">
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">
                   Customer
                 </h3>
                 <DetailRow label="Name">{fullName(selected)}</DetailRow>
                 <DetailRow label="Email">
                   <a
                     href={`mailto:${selected.email}`}
-                    className="text-[#d9ae1f] hover:underline"
+                    className="text-[#7CFF5B] hover:underline"
                   >
                     {selected.email}
                   </a>
@@ -654,7 +654,7 @@ export default function ContactClient() {
                 <DetailRow label="Phone">
                   <a
                     href={`tel:${selected.phone.replace(/[^\d+]/g, "")}`}
-                    className="hover:text-[#d9ae1f]"
+                    className="hover:text-[#7CFF5B]"
                   >
                     {selected.phone}
                   </a>
@@ -666,17 +666,17 @@ export default function ContactClient() {
 
               {/* Message */}
               <section className="mt-5">
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">
                   Message
                 </h3>
-                <p className="whitespace-pre-wrap break-words rounded-xl border-l-2 border-[#d9ae1f] bg-black/20 px-4 py-3 text-sm leading-6 text-slate-200">
+                <p className="whitespace-pre-wrap break-words rounded-xl border-l-2 border-[#39FF14] bg-[#06030D]/20 px-4 py-3 text-sm leading-6 text-zinc-200">
                   {selected.message}
                 </p>
               </section>
 
               {/* Reply by email */}
-              <section className="mt-5 rounded-xl border border-[#d9ae1f]/20 bg-black/20 p-4">
-                <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+              <section className="mt-5 rounded-xl border border-[#39FF14]/20 bg-[#06030D]/20 p-4">
+                <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">
                   <Send size={13} />
                   Reply by email
                 </h3>
@@ -691,7 +691,7 @@ export default function ContactClient() {
                     maxLength={255}
                     disabled={sending}
                     placeholder="Subject"
-                    className="w-full rounded-xl border border-white/10 bg-[#171c28] px-3 py-2.5 text-sm text-white placeholder-slate-500 outline-none focus:border-[#d9ae1f]/60 disabled:opacity-60"
+                    className="w-full rounded-xl border border-white/10 bg-[#06030D] px-3 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#39FF14]/60 disabled:opacity-60"
                   />
                   <textarea
                     rows={5}
@@ -703,19 +703,19 @@ export default function ContactClient() {
                     maxLength={10000}
                     disabled={sending}
                     placeholder={`Write your reply to ${selected.first_name}...`}
-                    className="w-full resize-none rounded-xl border border-white/10 bg-[#171c28] px-3 py-2.5 text-sm text-white placeholder-slate-500 outline-none focus:border-[#d9ae1f]/60 disabled:opacity-60"
+                    className="w-full resize-none rounded-xl border border-white/10 bg-[#06030D] px-3 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#39FF14]/60 disabled:opacity-60"
                   />
                 </div>
                 <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-zinc-500">
                     Sends to{" "}
-                    <span className="text-slate-300">{selected.email}</span>
+                    <span className="text-zinc-300">{selected.email}</span>
                   </p>
                   <button
                     type="button"
                     onClick={sendReply}
                     disabled={sending || !replyBody.trim()}
-                    className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#d9ae1f] to-[#f4c430] px-5 py-2.5 text-sm font-bold text-[#171c28] transition-all hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#39FF14] to-[#7CFF5B] px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {sending ? (
                       <Loader2 size={15} className="animate-spin" />
@@ -726,27 +726,27 @@ export default function ContactClient() {
                   </button>
                 </div>
                 {replyError && (
-                  <p className="mt-3 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+                  <p className="mt-3 rounded-lg border border-[#39FF14]/30 bg-[#39FF14]/10 px-3 py-2 text-xs text-[#7CFF5B]">
                     {replyError}
                   </p>
                 )}
                 {replyNotice && (
-                  <p className="mt-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300">
+                  <p className="mt-3 rounded-lg border border-[#39FF14]/30 bg-[#39FF14]/10 px-3 py-2 text-xs text-[#7CFF5B]">
                     {replyNotice}
                   </p>
                 )}
               </section>
 
               {/* Reply history */}
-              <section className="mt-5 rounded-xl border border-white/10 bg-black/20 p-4">
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+              <section className="mt-5 rounded-xl border border-white/10 bg-[#06030D]/20 p-4">
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">
                   Reply history
                 </h3>
                 {detailLoading && !selected.replies ? (
-                  <p className="flex items-center gap-2 py-2 text-sm text-slate-500">
+                  <p className="flex items-center gap-2 py-2 text-sm text-zinc-500">
                     <Loader2
                       size={14}
-                      className="animate-spin text-[#d9ae1f]"
+                      className="animate-spin text-[#7CFF5B]"
                     />
                     Loading...
                   </p>
@@ -758,24 +758,24 @@ export default function ContactClient() {
                           <p className="text-sm font-medium text-white">
                             {reply.subject}
                           </p>
-                          <span className="shrink-0 text-xs text-slate-500">
+                          <span className="shrink-0 text-xs text-zinc-500">
                             {formatDateTime(reply.sent_at ?? reply.created_at)}
                           </span>
                         </div>
-                        <p className="mt-1 whitespace-pre-wrap break-words text-sm text-slate-400">
+                        <p className="mt-1 whitespace-pre-wrap break-words text-sm text-zinc-400">
                           {reply.body}
                         </p>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="py-2 text-sm text-slate-500">No replies yet.</p>
+                  <p className="py-2 text-sm text-zinc-500">No replies yet.</p>
                 )}
               </section>
 
               {/* Update status */}
-              <section className="mt-5 rounded-xl border border-white/10 bg-black/20 p-4">
-                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">
+              <section className="mt-5 rounded-xl border border-white/10 bg-[#06030D]/20 p-4">
+                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-zinc-400">
                   Update status
                 </h3>
                 <div className="flex flex-col gap-2 sm:flex-row">
@@ -787,7 +787,7 @@ export default function ContactClient() {
                       setUpdateNotice("");
                     }}
                     disabled={updating}
-                    className="flex-1 rounded-xl border border-white/10 bg-[#171c28] px-3 py-2.5 text-sm text-white outline-none focus:border-[#d9ae1f]/60 disabled:opacity-60"
+                    className="flex-1 rounded-xl border border-white/10 bg-[#06030D] px-3 py-2.5 text-sm text-white outline-none focus:border-[#39FF14]/60 disabled:opacity-60"
                   >
                     {INQUIRY_STATUSES.map((status) => (
                       <option key={status} value={status}>
@@ -799,23 +799,23 @@ export default function ContactClient() {
                     type="button"
                     onClick={saveStatus}
                     disabled={updating || nextStatus === selected.status}
-                    className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:border-[#d9ae1f]/50 hover:bg-[#d9ae1f]/10 hover:text-[#d9ae1f] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:border-[#39FF14]/50 hover:bg-[#39FF14]/10 hover:text-[#7CFF5B] disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {updating && <Loader2 size={15} className="animate-spin" />}
                     {updating ? "Saving..." : "Save status"}
                   </button>
                 </div>
-                <p className="mt-2 text-xs text-slate-500">
+                <p className="mt-2 text-xs text-zinc-500">
                   Sending a reply sets the status to Replied. Opening a new
                   enquiry marks it as Read.
                 </p>
                 {updateError && (
-                  <p className="mt-3 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+                  <p className="mt-3 rounded-lg border border-[#39FF14]/30 bg-[#39FF14]/10 px-3 py-2 text-xs text-[#7CFF5B]">
                     {updateError}
                   </p>
                 )}
                 {updateNotice && (
-                  <p className="mt-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300">
+                  <p className="mt-3 rounded-lg border border-[#39FF14]/30 bg-[#39FF14]/10 px-3 py-2 text-xs text-[#7CFF5B]">
                     {updateNotice}
                   </p>
                 )}

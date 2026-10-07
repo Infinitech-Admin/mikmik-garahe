@@ -3,10 +3,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { Bungee } from "next/font/google";
 import {
   ArrowRight,
   Clock3,
-  Mail,
   MapPin,
   MessageCircle,
   Phone,
@@ -16,66 +16,56 @@ import {
 import Navbar from "../../components/layout/navbar";
 import Footer from "../../components/layout/footer";
 
+// Signage-style display face, same as the home hero.
+const display = Bungee({ subsets: ["latin"], weight: "400" });
+
 // ---------------------------------------------------------------------------
-// Business details
-// Verified from the public Facebook page: address and Facebook URL.
-// TODO: fill in PHONE, EMAIL and HOURS. Anything left empty is hidden
-// automatically instead of showing placeholder text.
+// Business details (source: Mikmik's Garahe Facebook page)
+// Instagram and TikTok are "#" until the real links exist.
 // ---------------------------------------------------------------------------
-const FACEBOOK_URL =
-  "https://www.facebook.com/people/Mikmiks-Garahe/100083373601114/";
-const ADDRESS_LINE_1 = "91 Aurora Pijuan St., BF Resort Village";
-const ADDRESS_LINE_2 = "Las Piñas City, Philippines";
-const PHONE_DISPLAY = ""; // e.g. "0917 123 4567"
-const PHONE_TEL = ""; // e.g. "+639171234567"
-const EMAIL = ""; // e.g. "hello@yourdomain.com"
-const HOURS: { day: string; time: string }[] = [
-  // { day: "Monday - Saturday", time: "9:00 AM - 6:00 PM" },
-];
+const BUSINESS_NAME = "Mikmik's Garahe";
+const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=100083373601114";
+const INSTAGRAM_URL = "#";
+const TIKTOK_URL = "#";
+const ADDRESS = "F&E De Castro Village, Molino Bacoor, Bacoor, Philippines";
+const PHONE_DISPLAY = "0956 659 0932";
+const PHONE_TEL = "+639566590932";
 
 const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-  `Mikmik's Garahe, ${ADDRESS_LINE_1}, ${ADDRESS_LINE_2}`,
+  `${BUSINESS_NAME}, ${ADDRESS}`,
 )}`;
 
 const contactOptions = [
   {
     icon: MessageCircle,
     title: "Message us on Facebook",
-    value: "Mikmik's Garahe",
+    value: BUSINESS_NAME,
     href: FACEBOOK_URL,
+  },
+  {
+    icon: Phone,
+    title: "Call us",
+    value: PHONE_DISPLAY,
+    href: `tel:${PHONE_TEL}`,
   },
   {
     icon: MapPin,
     title: "Visit us",
-    value: `${ADDRESS_LINE_1}, ${ADDRESS_LINE_2}`,
+    value: ADDRESS,
     href: MAPS_URL,
   },
-  ...(PHONE_DISPLAY && PHONE_TEL
-    ? [
-        {
-          icon: Phone,
-          title: "Call us",
-          value: PHONE_DISPLAY,
-          href: `tel:${PHONE_TEL}`,
-        },
-      ]
-    : []),
-  ...(EMAIL
-    ? [
-        {
-          icon: Mail,
-          title: "Email",
-          value: EMAIL,
-          href: `mailto:${EMAIL}`,
-        },
-      ]
-    : []),
+];
+
+const socials = [
+  { label: "Facebook", href: FACEBOOK_URL },
+  { label: "Instagram", href: INSTAGRAM_URL },
+  { label: "TikTok", href: TIKTOK_URL },
 ];
 
 const privacyCopy = {
   title: "Privacy Policy",
   body: [
-    "At Mikmik's Garahe, we value your trust and are committed to protecting your personal information. We collect details you provide when contacting us, requesting a valuation, or browsing our inventory.",
+    `At ${BUSINESS_NAME}, we value your trust and are committed to protecting your personal information. We collect details you provide when contacting us, requesting a valuation, or browsing our inventory.`,
     "This information may be used to respond to enquiries, process vehicle transactions, improve our services, and communicate relevant updates. We do not sell your personal data to third parties for marketing purposes.",
     "We may use secure third-party tools to help operate our website, manage customer interactions, and improve the user experience. These partners are expected to handle your information with appropriate safeguards.",
     "You have the right to request access to, correction of, or deletion of your personal data, subject to legal and operational requirements. If you have any concerns, please contact our team directly.",
@@ -117,8 +107,13 @@ const NAME_PATTERN = new RegExp("^[\\p{L}\\p{M}\\s.'’-]+$", "u");
 // PH mobile number: exactly 11 digits, starts with 09
 const PHONE_PATTERN = /^09\d{9}$/;
 
+const focusRing =
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5BC236]";
+
 const inputClass =
-  "w-full rounded-2xl border border-white/10 bg-[#0f0d0a] px-4 py-3 text-white placeholder:text-zinc-500 focus:border-[#5DB521] focus:outline-none";
+  "w-full rounded-xl border border-white/10 bg-[#06030D] px-4 py-3 text-white placeholder:text-zinc-500 transition-shadow focus:border-[#5BC236]  focus:outline-none";
+
+const errorText = "text-[#FF7AA8]";
 
 export default function Contact() {
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
@@ -270,383 +265,384 @@ export default function Contact() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-[#0B0714] text-white">
-        <section className="relative overflow-hidden border-b border-[#5DB521]/20 bg-[#080b0f]">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(93,181,33,0.18),transparent_50%)]" />
+      <main className="min-h-screen bg-[#0E0818] text-white">
+        {/* HERO */}
+        <section className="relative overflow-hidden bg-[#06030D]">
+          <div className="pointer-events-none absolute -left-32 top-0 h-[400px] w-[400px] rounded-full bg-[#B026FF] opacity-20 blur-[140px]" />
 
           <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
             <div className="max-w-3xl">
-              <div className="mb-5 flex items-center gap-3">
-                <span className="h-px w-10 bg-[#5DB521]" />
-                <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#5DB521]">
-                  Contact us
-                </span>
-              </div>
-
-              <h1 className="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-                Let’s find your
-                <span className="block text-[#5DB521]">next ideal drive.</span>
+              <h1
+                className={`${display.className} text-[2rem] uppercase leading-[1.12] text-white  sm:text-5xl lg:text-[2.6rem] xl:text-5xl`}
+              >
+                <span className="block">{"Let's talk cars."}</span>
+                <span className="block text-white">Tell us what you need.</span>
               </h1>
 
               <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg">
-                Tell us what you’re looking for, and our team will guide you
-                toward a vehicle that fits your life, your budget, and your
-                driving style. Cash, financing, and trade-in are all welcome.
+                Buying, selling, or trading in, our team will guide you toward a
+                car that fits your life, your budget, and your driving style.
+                Message us on Facebook for the fastest reply, or send an enquiry
+                below.
               </p>
             </div>
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="space-y-5">
-              {contactOptions.map(({ icon: Icon, title, value, href }) => (
-                <a
-                  key={title}
-                  href={href}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel={
-                    href.startsWith("http") ? "noopener noreferrer" : undefined
-                  }
-                  className="group flex items-start gap-4 rounded-[24px] border border-white/10 bg-[#120f0d] p-5 transition-all duration-300 hover:border-[#5DB521]/50 hover:bg-[#15120f]"
-                >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#5DB521]/30 bg-[#5DB521]/10 text-[#5DB521]">
-                    <Icon size={20} />
-                  </div>
+        {/* CONTACT + FORM */}
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+          <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+            {/* Left: contact rows, no cards */}
+            <div>
+              <ul className="border-t border-white/10">
+                {contactOptions.map(({ icon: Icon, title, value, href }) => {
+                  const external = href.startsWith("http");
 
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.25em] text-zinc-500">
-                      {title}
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-white transition-colors group-hover:text-[#A3DC6B]">
-                      {value}
-                    </p>
-                  </div>
-                </a>
-              ))}
-
-              <div className="rounded-[24px] border border-white/10 bg-[#120f0d] p-5">
-                <div className="mb-4 flex items-center gap-3 text-[#5DB521]">
-                  <Clock3 size={18} />
-                  <p className="text-xs font-semibold uppercase tracking-[0.25em]">
-                    Opening hours
-                  </p>
-                </div>
-
-                {HOURS.length > 0 ? (
-                  <div className="space-y-3">
-                    {HOURS.map((item) => (
-                      <div
-                        key={item.day}
-                        className="flex items-center justify-between gap-4 border-t border-white/10 pt-3 text-sm text-zinc-300 first:border-t-0 first:pt-0"
+                  return (
+                    <li key={title} className="border-b border-white/10">
+                      <a
+                        href={href}
+                        target={external ? "_blank" : undefined}
+                        rel={external ? "noopener noreferrer" : undefined}
+                        className={`group flex items-start gap-4 py-6 ${focusRing}`}
                       >
-                        <span>{item.day}</span>
-                        <span className="font-medium text-white">
-                          {item.time}
+                        <span className="flex size-12 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5  transition-shadow duration-300 ">
+                          <Icon size={20} className="text-[#5BC236]" />
                         </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-sm leading-6 text-zinc-300">
-                    Message us on Facebook to confirm our hours before you
-                    visit.
-                  </p>
-                )}
+
+                        <span>
+                          <span className="block text-sm text-zinc-500">
+                            {title}
+                          </span>
+                          <span className="mt-1 block text-lg font-semibold text-white transition-colors group-hover:text-[#78D152]">
+                            {value}
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div className="mt-8 flex gap-4">
+                <Clock3 size={20} className="mt-0.5 shrink-0 text-[#D77BFF]" />
+                <p className="text-sm leading-6 text-zinc-300">
+                  Our Facebook page lists us as always open. Message us before
+                  you visit so we can have the car ready for you.
+                </p>
+              </div>
+
+              <div className="mt-8 flex flex-wrap items-center gap-2 text-sm">
+                <span className="mr-1 text-zinc-400">Follow us</span>
+                {socials.map((social) => {
+                  const isLive = social.href !== "#";
+
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target={isLive ? "_blank" : undefined}
+                      rel={isLive ? "noopener noreferrer" : undefined}
+                      className={`rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 font-semibold text-white transition-colors hover:border-[#5BC236] hover:text-[#78D152] ${focusRing}`}
+                    >
+                      {social.label}
+                    </a>
+                  );
+                })}
               </div>
             </div>
 
-            <div className="rounded-[30px] border border-[#5DB521]/20 bg-[#120f0d] p-5 shadow-[0_25px_80px_rgba(0,0,0,0.35)] sm:p-7">
-              <div className="mb-6 flex items-center gap-3 text-[#5DB521]">
-                <Send size={18} />
-                <span className="text-xs font-semibold uppercase tracking-[0.28em]">
-                  Enquire now
-                </span>
-              </div>
+            {/* Right: form in a neon tube frame */}
+            <div className="relative">
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 translate-x-3 translate-y-3 rounded-[2rem] border-[3px] border-[#B026FF] shadow-[0_0_28px_rgba(176,38,255,0.7),inset_0_0_20px_rgba(176,38,255,0.35)] sm:translate-x-4 sm:translate-y-4"
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 z-20 rounded-[2rem] border border-white/15 "
+              />
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <label className="block">
-                    <span className="mb-2 flex items-center gap-1 text-sm text-zinc-300">
-                      First name
-                      <span className="text-[#f7b5a8]" aria-label="required">
-                        *
-                      </span>
-                    </span>
-                    <input
-                      type="text"
-                      required
-                      value={formData.firstName}
-                      onChange={(event) =>
-                        handleFieldChange("firstName", event.target.value)
-                      }
-                      maxLength={100}
-                      autoComplete="given-name"
-                      placeholder="John"
-                      aria-invalid={Boolean(errors.firstName)}
-                      className={inputClass}
-                    />
-                    {errors.firstName ? (
-                      <span className="mt-2 block text-sm text-[#f7b5a8]">
-                        {errors.firstName}
-                      </span>
-                    ) : null}
-                  </label>
-
-                  <label className="block">
-                    <span className="mb-2 flex items-center gap-1 text-sm text-zinc-300">
-                      Last name
-                      <span className="text-[#f7b5a8]" aria-label="required">
-                        *
-                      </span>
-                    </span>
-                    <input
-                      type="text"
-                      required
-                      value={formData.lastName}
-                      onChange={(event) =>
-                        handleFieldChange("lastName", event.target.value)
-                      }
-                      maxLength={100}
-                      autoComplete="family-name"
-                      placeholder="Smith"
-                      aria-invalid={Boolean(errors.lastName)}
-                      className={inputClass}
-                    />
-                    {errors.lastName ? (
-                      <span className="mt-2 block text-sm text-[#f7b5a8]">
-                        {errors.lastName}
-                      </span>
-                    ) : null}
-                  </label>
+              <div className="relative z-10 rounded-[2rem] bg-[#0E0818] p-5 sm:p-8">
+                <div className="mb-6 flex items-center gap-3">
+                  <Send size={20} className="text-[#5BC236]" />
+                  <h2
+                    className={`${display.className} text-xl uppercase text-white sm:text-2xl`}
+                  >
+                    Send an enquiry
+                  </h2>
                 </div>
 
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <label className="block">
-                    <span className="mb-2 flex items-center gap-1 text-sm text-zinc-300">
-                      Email
-                      <span className="text-[#f7b5a8]" aria-label="required">
-                        *
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <label className="block">
+                      <span className="mb-2 flex items-center gap-1 text-sm text-zinc-300">
+                        First name
+                        <span className={errorText} aria-label="required">
+                          *
+                        </span>
                       </span>
+                      <input
+                        type="text"
+                        required
+                        value={formData.firstName}
+                        onChange={(event) =>
+                          handleFieldChange("firstName", event.target.value)
+                        }
+                        maxLength={100}
+                        autoComplete="given-name"
+                        placeholder="John"
+                        aria-invalid={Boolean(errors.firstName)}
+                        className={inputClass}
+                      />
+                      {errors.firstName ? (
+                        <span className={`mt-2 block text-sm ${errorText}`}>
+                          {errors.firstName}
+                        </span>
+                      ) : null}
+                    </label>
+
+                    <label className="block">
+                      <span className="mb-2 flex items-center gap-1 text-sm text-zinc-300">
+                        Last name
+                        <span className={errorText} aria-label="required">
+                          *
+                        </span>
+                      </span>
+                      <input
+                        type="text"
+                        required
+                        value={formData.lastName}
+                        onChange={(event) =>
+                          handleFieldChange("lastName", event.target.value)
+                        }
+                        maxLength={100}
+                        autoComplete="family-name"
+                        placeholder="Smith"
+                        aria-invalid={Boolean(errors.lastName)}
+                        className={inputClass}
+                      />
+                      {errors.lastName ? (
+                        <span className={`mt-2 block text-sm ${errorText}`}>
+                          {errors.lastName}
+                        </span>
+                      ) : null}
+                    </label>
+                  </div>
+
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <label className="block">
+                      <span className="mb-2 flex items-center gap-1 text-sm text-zinc-300">
+                        Email
+                        <span className={errorText} aria-label="required">
+                          *
+                        </span>
+                      </span>
+                      <input
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(event) =>
+                          handleFieldChange("email", event.target.value)
+                        }
+                        maxLength={255}
+                        autoComplete="email"
+                        placeholder="john@email.com"
+                        aria-invalid={Boolean(errors.email)}
+                        className={inputClass}
+                      />
+                      {errors.email ? (
+                        <span className={`mt-2 block text-sm ${errorText}`}>
+                          {errors.email}
+                        </span>
+                      ) : null}
+                    </label>
+
+                    <label className="block">
+                      <span className="mb-2 flex items-center gap-1 text-sm text-zinc-300">
+                        Phone
+                        <span className={errorText} aria-label="required">
+                          *
+                        </span>
+                      </span>
+                      <input
+                        type="tel"
+                        required
+                        value={formData.phone}
+                        onChange={(event) =>
+                          handleFieldChange("phone", event.target.value)
+                        }
+                        maxLength={11}
+                        minLength={11}
+                        pattern="09[0-9]{9}"
+                        autoComplete="tel"
+                        inputMode="numeric"
+                        placeholder="09123456789"
+                        title="11-digit mobile number starting with 09"
+                        aria-invalid={Boolean(errors.phone)}
+                        className={inputClass}
+                      />
+                      {errors.phone ? (
+                        <span className={`mt-2 block text-sm ${errorText}`}>
+                          {errors.phone}
+                        </span>
+                      ) : null}
+                    </label>
+                  </div>
+
+                  <label className="block">
+                    <span className="mb-2 block text-sm text-zinc-300">
+                      Looking for
                     </span>
                     <input
-                      type="email"
-                      required
-                      value={formData.email}
+                      type="text"
+                      value={formData.lookingFor}
                       onChange={(event) =>
-                        handleFieldChange("email", event.target.value)
+                        handleFieldChange("lookingFor", event.target.value)
                       }
                       maxLength={255}
-                      autoComplete="email"
-                      placeholder="john@email.com"
-                      aria-invalid={Boolean(errors.email)}
+                      placeholder="SUV, sedan, MPV, pickup..."
                       className={inputClass}
                     />
-                    {errors.email ? (
-                      <span className="mt-2 block text-sm text-[#f7b5a8]">
-                        {errors.email}
+                    {errors.lookingFor ? (
+                      <span className={`mt-2 block text-sm ${errorText}`}>
+                        {errors.lookingFor}
                       </span>
                     ) : null}
                   </label>
 
                   <label className="block">
                     <span className="mb-2 flex items-center gap-1 text-sm text-zinc-300">
-                      Phone
-                      <span className="text-[#f7b5a8]" aria-label="required">
+                      Message
+                      <span className={errorText} aria-label="required">
                         *
                       </span>
                     </span>
-                    <input
-                      type="tel"
+                    <textarea
+                      rows={5}
                       required
-                      value={formData.phone}
+                      value={formData.message}
                       onChange={(event) =>
-                        handleFieldChange("phone", event.target.value)
+                        handleFieldChange("message", event.target.value)
                       }
-                      maxLength={11}
-                      minLength={11}
-                      pattern="09[0-9]{9}"
-                      autoComplete="tel"
-                      inputMode="numeric"
-                      placeholder="09123456789"
-                      title="11-digit mobile number starting with 09"
-                      aria-invalid={Boolean(errors.phone)}
-                      className={inputClass}
+                      maxLength={5000}
+                      placeholder="Tell us about your ideal vehicle, budget, and timeline..."
+                      aria-invalid={Boolean(errors.message)}
+                      className={`${inputClass} resize-none`}
                     />
-                    {errors.phone ? (
-                      <span className="mt-2 block text-sm text-[#f7b5a8]">
-                        {errors.phone}
+                    {errors.message ? (
+                      <span className={`mt-2 block text-sm ${errorText}`}>
+                        {errors.message}
                       </span>
                     ) : null}
                   </label>
-                </div>
 
-                <label className="block">
-                  <span className="mb-2 block text-sm text-zinc-300">
-                    Looking for
-                  </span>
-                  <input
-                    type="text"
-                    value={formData.lookingFor}
-                    onChange={(event) =>
-                      handleFieldChange("lookingFor", event.target.value)
-                    }
-                    maxLength={255}
-                    placeholder="SUV, sedan, MPV, pickup..."
-                    className={inputClass}
-                  />
-                  {errors.lookingFor ? (
-                    <span className="mt-2 block text-sm text-[#f7b5a8]">
-                      {errors.lookingFor}
-                    </span>
-                  ) : null}
-                </label>
+                  {/* Honeypot: hidden from people, bots tend to fill it in. */}
+                  <div
+                    aria-hidden="true"
+                    className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
+                  >
+                    <label>
+                      Website
+                      <input
+                        type="text"
+                        name="website"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={honeypot}
+                        onChange={(event) => setHoneypot(event.target.value)}
+                      />
+                    </label>
+                  </div>
 
-                <label className="block">
-                  <span className="mb-2 flex items-center gap-1 text-sm text-zinc-300">
-                    Message
-                    <span className="text-[#f7b5a8]" aria-label="required">
-                      *
-                    </span>
-                  </span>
-                  <textarea
-                    rows={5}
-                    required
-                    value={formData.message}
-                    onChange={(event) =>
-                      handleFieldChange("message", event.target.value)
-                    }
-                    maxLength={5000}
-                    placeholder="Tell us about your ideal vehicle, budget, and timeline..."
-                    aria-invalid={Boolean(errors.message)}
-                    className={`${inputClass} resize-none`}
-                  />
-                  {errors.message ? (
-                    <span className="mt-2 block text-sm text-[#f7b5a8]">
-                      {errors.message}
-                    </span>
-                  ) : null}
-                </label>
-
-                {/* Honeypot: hidden from people, bots tend to fill it in. */}
-                <div
-                  aria-hidden="true"
-                  className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
-                >
-                  <label>
-                    Website
+                  <label className="flex items-center gap-3 text-sm text-zinc-300">
                     <input
-                      type="text"
-                      name="website"
-                      tabIndex={-1}
-                      autoComplete="off"
-                      value={honeypot}
-                      onChange={(event) => setHoneypot(event.target.value)}
+                      type="checkbox"
+                      required
+                      checked={acceptedPrivacy}
+                      onChange={(event) => {
+                        setAcceptedPrivacy(event.target.checked);
+                        if (event.target.checked) {
+                          setPrivacyError("");
+                          setErrors((current) => ({ ...current, privacy: "" }));
+                        }
+                      }}
+                      className="h-4 w-4 rounded border-white/20 bg-[#06030D] text-[#5BC236] focus:ring-[#5BC236]"
                     />
+                    <span>
+                      I agree to the{" "}
+                      <button
+                        type="button"
+                        onClick={() => setActiveModal("privacy")}
+                        className="font-medium text-white underline underline-offset-2 transition-colors hover:text-[#78D152]"
+                      >
+                        Privacy Policy
+                      </button>{" "}
+                      and consent to being contacted about my vehicle enquiry.
+                    </span>
                   </label>
-                </div>
 
-                <label className="flex items-center gap-3 text-sm text-zinc-300">
-                  <input
-                    type="checkbox"
-                    required
-                    checked={acceptedPrivacy}
-                    onChange={(event) => {
-                      setAcceptedPrivacy(event.target.checked);
-                      if (event.target.checked) {
-                        setPrivacyError("");
-                        setErrors((current) => ({ ...current, privacy: "" }));
-                      }
-                    }}
-                    className="h-4 w-4 rounded border-white/20 bg-[#0f0d0a] text-[#5DB521] focus:ring-[#5DB521]"
-                  />
-                  <span>
-                    I agree to the{" "}
-                    <button
-                      type="button"
-                      onClick={() => setActiveModal("privacy")}
-                      className="font-medium text-[#5DB521] transition-colors hover:text-[#A3DC6B]"
+                  {errors.privacy || privacyError ? (
+                    <p className={`text-sm ${errorText}`}>
+                      {errors.privacy || privacyError}
+                    </p>
+                  ) : null}
+
+                  {status ? (
+                    <p
+                      role="status"
+                      className={`rounded-xl border px-4 py-3 text-sm ${
+                        status.type === "success"
+                          ? "border-[#5BC236]/40 bg-white/5 text-[#78D152]"
+                          : "border-[#FF7AA8]/40 bg-[#FF7AA8]/10 text-[#FF7AA8]"
+                      }`}
                     >
-                      Privacy Policy
-                    </button>{" "}
-                    and consent to being contacted about my vehicle enquiry.
-                  </span>
-                </label>
+                      {status.message}
+                    </p>
+                  ) : null}
 
-                {errors.privacy || privacyError ? (
-                  <p className="text-sm text-[#f7b5a8]">
-                    {errors.privacy || privacyError}
-                  </p>
-                ) : null}
+                  <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-sm text-zinc-400">
+                      We’ll get back to you as soon as we can.
+                    </p>
 
-                {status ? (
-                  <p
-                    role="status"
-                    className={`rounded-2xl border px-4 py-3 text-sm ${
-                      status.type === "success"
-                        ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                        : "border-[#f7b5a8]/30 bg-[#f7b5a8]/10 text-[#f7b5a8]"
-                    }`}
-                  >
-                    {status.message}
-                  </p>
-                ) : null}
-
-                <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-sm text-zinc-400">
-                    We usually respond within 1 business day.
-                  </p>
-
-                  <button
-                    type="submit"
-                    disabled={!acceptedPrivacy || submitting}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#5DB521] px-6 py-3 text-sm font-semibold text-black transition-all duration-300 hover:bg-[#74CC35] disabled:cursor-not-allowed disabled:bg-[#5DB521]/25 disabled:text-zinc-400"
-                  >
-                    {submitting ? "Sending..." : "Send inquiry"}
-                    <ArrowRight size={16} />
-                  </button>
-                </div>
-              </form>
+                    <button
+                      type="submit"
+                      disabled={!acceptedPrivacy || submitting}
+                      className={`inline-flex items-center justify-center gap-2 rounded-full bg-[#5BC236] px-7 py-3 text-sm font-bold text-black  transition-all duration-300 hover:bg-[#78D152] disabled:cursor-not-allowed disabled:bg-[#5BC236]/25 disabled:text-zinc-400 disabled:shadow-none ${focusRing}`}
+                    >
+                      {submitting ? "Sending..." : "Send enquiry"}
+                      <ArrowRight size={16} />
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="relative overflow-hidden border-t border-[#5DB521]/30 bg-black py-14 text-center">
-          {/* Background glow */}
-          <div className="absolute left-1/2 top-1/2 h-[450px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#5DB521]/10 blur-[130px]" />
-
-          <div className="relative mx-auto max-w-4xl px-5 sm:px-6">
-            <div className="mb-5 flex items-center justify-center gap-3">
-              <span className="h-px w-10 bg-[#5DB521]" />
-              <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#5DB521]">
-                Visit our showroom
-              </span>
-              <span className="h-px w-10 bg-[#5DB521]" />
-            </div>
-
-            <h2 className="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Book your{" "}
-              <span className="block text-[#5DB521]">Next Journey</span>
+        {/* CLOSING */}
+        <section className="border-t border-white/10 bg-[#06030D] py-14">
+          <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 sm:px-6 md:flex-row md:items-center lg:px-8">
+            <h2
+              className={`${display.className} max-w-xl text-xl uppercase leading-snug text-white sm:text-2xl`}
+            >
+              Ready to see the cars in person?
             </h2>
 
-            <p className="mt-5 text-sm leading-7 text-zinc-400 sm:text-base">
-              Explore our inventory, compare models side by side, and speak with
-              an expert about the right fit for your next move.
-            </p>
-
-            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+            <div className="flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/showroom"
-                className="inline-flex items-center justify-center rounded-full bg-[#5DB521] px-7 py-3.5 text-sm font-semibold text-black transition-all duration-300 hover:bg-[#74CC35] hover:shadow-[0_0_30px_rgba(93,181,33,0.25)]"
+                className={`inline-flex items-center justify-center rounded-full bg-[#5BC236] px-7 py-3.5 text-sm font-bold text-black  transition-all duration-300 hover:bg-[#78D152] ${focusRing}`}
               >
-                Visit Showroom
+                Visit showroom
               </Link>
 
               <Link
                 href="/sell-trade"
-                className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-[#5DB521]/50 hover:bg-white/10"
+                className={`inline-flex items-center justify-center rounded-full border-2 border-[#B026FF] px-7 py-3 text-sm font-semibold text-white shadow-[0_0_18px_rgba(176,38,255,0.4)] transition-all duration-300 hover:border-[#D77BFF] hover:bg-[#B026FF]/15 ${focusRing}`}
               >
-                Sell / Trade Car
+                Sell / Trade car
               </Link>
             </div>
           </div>
@@ -656,8 +652,8 @@ export default function Contact() {
       <Footer />
 
       {activeModal && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="max-h-[85vh] w-full max-w-2xl overflow-hidden rounded-[28px] border border-[#5DB521]/20 bg-[#120f0d] shadow-[0_30px_90px_rgba(0,0,0,0.5)]">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#06030D]/70 p-4 backdrop-blur-sm">
+          <div className="max-h-[85vh] w-full max-w-2xl overflow-hidden rounded-[28px] border border-white/10 bg-[#0E0818] ">
             <div className="flex items-center justify-between border-b border-white/10 px-5 py-4 sm:px-6">
               <h3 className="text-xl font-bold text-white">
                 {privacyCopy.title}
@@ -666,7 +662,7 @@ export default function Contact() {
                 type="button"
                 aria-label="Close privacy policy"
                 onClick={() => setActiveModal(null)}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-300 transition-all hover:border-[#5DB521] hover:text-[#A3DC6B]"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-300 transition-all hover:border-[#5BC236] hover:text-[#78D152]"
               >
                 ×
               </button>

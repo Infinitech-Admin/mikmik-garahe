@@ -5,8 +5,16 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Car, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { login, fetchMe, type ApiError } from "@/lib/api";
+import {
+  AuthShell,
+  authButtonClass,
+  authErrorClass,
+  authInputClass,
+  authLabelClass,
+  authLinkClass,
+} from "@/components/auth/auth-shell";
 
 interface LoginForm {
   email: string;
@@ -91,178 +99,112 @@ export default function LoginPage() {
     }
   }
 
-  const inputClass =
-    "w-full rounded-xl border border-zinc-800 bg-black py-3 pl-10 pr-4 text-sm text-white placeholder-zinc-600 outline-none transition-all focus:border-[#39FF14] focus:shadow-[0_0_0_3px_rgba(57,255,20,0.18),0_0_18px_rgba(57,255,20,0.25)]";
-
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-4 py-16">
-      {/* neon glow pools, like light spilling off a night-street sign */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-32 -left-32 h-[460px] w-[460px] rounded-full bg-[#39FF14]/20 blur-[140px]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute bottom-[-160px] right-[-120px] h-[420px] w-[420px] rounded-full bg-[#39FF14]/10 blur-[140px]"
-      />
+    <AuthShell
+      headline="Your next car is waiting."
+      blurb="Sign in to save listings, track offers and pick up where you left off."
+    >
+      <form onSubmit={handleSubmit} noValidate>
+        <h1 className="mb-1 text-2xl font-bold text-white">Welcome back</h1>
+        <p className="mb-6 text-sm text-zinc-400">
+          Sign in to your Mikmik's Garahe account.
+        </p>
 
-      {/* neon tube along the bottom edge */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-10 h-[3px] bg-gradient-to-r from-transparent via-[#39FF14] to-transparent shadow-[0_0_18px_4px_rgba(57,255,20,0.55)]"
-      />
-
-      <div className="relative z-10 w-full max-w-md">
-        <div className="mb-8 text-center">
-          <Link
-            href="/"
-            className="inline-flex flex-col items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#39FF14]"
+        {formError && (
+          <div
+            role="alert"
+            className="mb-5 rounded-lg border border-[#39FF14]/40 bg-[#39FF14]/10 px-4 py-3 text-sm text-[#7CFF5B]"
           >
-            {/* brushed-metal ring, echoing the circular badge in the logo */}
-            <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-zinc-200 via-zinc-500 to-zinc-300 p-[3px] shadow-[0_0_24px_rgba(57,255,20,0.45)]">
-              <span className="flex h-full w-full items-center justify-center rounded-full bg-black text-[#39FF14]">
-                <Car size={28} />
-              </span>
-            </span>
-            <span
-              className="text-4xl font-black italic tracking-tight text-[#39FF14]"
-              style={{
-                textShadow:
-                  "0 0 8px rgba(57,255,20,0.7), 0 0 28px rgba(57,255,20,0.45)",
-              }}
-            >
-              Mikmik&apos;s
-            </span>
-            <span className="-mt-2 text-sm font-medium tracking-[0.55em] text-zinc-300">
-              Garahe
-            </span>
-          </Link>
+            {formError}
+          </div>
+        )}
+
+        <div className="mb-4">
+          <label htmlFor="email" className={authLabelClass}>
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            value={form.email}
+            onChange={handleChange}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            className={authInputClass}
+            placeholder="you@example.com"
+          />
+          {errors.email && (
+            <p id="email-error" className={authErrorClass}>
+              {errors.email}
+            </p>
+          )}
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          noValidate
-          className="rounded-2xl border border-[#39FF14]/30 bg-black/80 p-6 shadow-[0_0_40px_rgba(57,255,20,0.14)] backdrop-blur-xl sm:p-8"
-        >
-          <h1 className="mb-1 text-xl font-bold text-white">Welcome back</h1>
-          <p className="mb-6 text-sm text-zinc-400">
-            Sign in to find your next ride.
-          </p>
-
-          {formError && (
-            <div
-              role="alert"
-              className="mb-5 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300"
+        <div className="mb-4">
+          <label htmlFor="password" className={authLabelClass}>
+            Password
+          </label>
+          <div className="relative">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              required
+              value={form.password}
+              onChange={handleChange}
+              aria-invalid={!!errors.password}
+              aria-describedby={errors.password ? "password-error" : undefined}
+              className={`${authInputClass} pr-12`}
+              placeholder="Enter your password"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 text-zinc-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#39FF14]"
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              {formError}
-            </div>
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+          {errors.password && (
+            <p id="password-error" className={authErrorClass}>
+              {errors.password}
+            </p>
           )}
+        </div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="mb-1.5 block text-sm font-medium text-zinc-300"
-            >
-              Email
-            </label>
-            <div className="relative">
-              <Mail
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500"
-              />
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={form.email}
-                onChange={handleChange}
-                className={inputClass}
-                placeholder="you@example.com"
-              />
-            </div>
-            {errors.email && (
-              <p className="mt-1.5 text-xs text-red-400">{errors.email}</p>
-            )}
-          </div>
+        <div className="mb-6 flex items-center justify-between">
+          <label className="flex items-center gap-2 text-sm text-zinc-400">
+            <input
+              type="checkbox"
+              name="remember"
+              checked={form.remember}
+              onChange={handleChange}
+              className="h-4 w-4 rounded border-zinc-700 bg-[#06030D] accent-[#39FF14]"
+            />
+            Remember me
+          </label>
+          {/* <Link href="/forgot-password" className={`text-sm ${authLinkClass}`}>
+            Forgot password?
+          </Link> */}
+        </div>
 
-          <div className="mb-3">
-            <label
-              htmlFor="password"
-              className="mb-1.5 block text-sm font-medium text-zinc-300"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <Lock
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500"
-              />
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                autoComplete="current-password"
-                required
-                value={form.password}
-                onChange={handleChange}
-                className={`${inputClass} pr-11`}
-                placeholder="••••••••"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 transition-colors hover:text-[#39FF14] focus-visible:text-[#39FF14] focus-visible:outline-none"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-              </button>
-            </div>
-            {errors.password && (
-              <p className="mt-1.5 text-xs text-red-400">{errors.password}</p>
-            )}
-          </div>
+        <button type="submit" disabled={loading} className={authButtonClass}>
+          {loading && <Loader2 size={16} className="animate-spin" />}
+          {loading ? "Signing in..." : "Sign in"}
+        </button>
 
-          <div className="mb-6 flex items-center justify-between">
-            <label className="flex items-center gap-2 text-sm text-zinc-400">
-              <input
-                type="checkbox"
-                name="remember"
-                checked={form.remember}
-                onChange={handleChange}
-                className="h-4 w-4 rounded border-zinc-700 bg-black accent-[#39FF14]"
-              />
-              Remember me
-            </label>
-            {/* <Link
-              href="/forgot-password"
-              className="text-sm font-medium text-[#39FF14] hover:text-[#7dff63]"
-            >
-              Forgot password?
-            </Link> */}
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-[#39FF14] py-3.5 text-sm font-bold text-black shadow-[0_0_22px_rgba(57,255,20,0.5)] transition-all duration-300 hover:bg-[#6bff4f] hover:shadow-[0_0_32px_rgba(57,255,20,0.7)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
-          >
-            {loading && <Loader2 size={16} className="animate-spin" />}
-            {loading ? "Signing in..." : "Sign in"}
-          </button>
-
-          <p className="mt-6 text-center text-sm text-zinc-400">
-            New to Mikmik&apos;s Garahe?{" "}
-            <Link
-              href="/register"
-              className="font-semibold text-[#39FF14] hover:text-[#7dff63]"
-            >
-              Create an account
-            </Link>
-          </p>
-        </form>
-      </div>
-    </main>
+        <p className="mt-6 text-center text-sm text-zinc-400">
+          New to Mikmik's Garahe?{" "}
+          <Link href="/register" className={authLinkClass}>
+            Create an account
+          </Link>
+        </p>
+      </form>
+    </AuthShell>
   );
 }
