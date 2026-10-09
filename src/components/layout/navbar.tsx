@@ -7,6 +7,9 @@ import { ArrowRight, Download, Menu, ShoppingCart, X } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import UserMenu from "@/components/layout/user-menu";
 import NotificationBell from "@/components/layout/notification-bell";
+import LanguageSwitcher, {
+  GoogleTranslateLoader,
+} from "@/components/layout/language-switcher";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -49,7 +52,8 @@ interface BeforeInstallPromptEvent extends Event {
 function Wordmark({ className = "" }: { className?: string }) {
   return (
     <span
-      className={`flex flex-col items-center whitespace-nowrap leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] ${className}`}
+      translate="no"
+      className={`notranslate flex flex-col items-center whitespace-nowrap leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] ${className}`}
     >
       <span
         role="img"
@@ -175,6 +179,9 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Loads the Google Translate engine (hidden). Mount once. */}
+      <GoogleTranslateLoader />
+
       <header
         className={`sticky top-0 z-50 border-b transition-all duration-300 motion-reduce:transition-none ${isHome ? HEADER_OFFSET : ""} ${isSolid ? "border-white/10 bg-[#06030D]/90 backdrop-blur-xl" : "border-transparent bg-transparent"}`}
       >
@@ -210,7 +217,7 @@ export default function Navbar() {
               })}
             </div>
 
-            {/* RIGHT SIDE: INSTALL + CART + ACCOUNT + MOBILE MENU */}
+            {/* RIGHT SIDE: INSTALL + LANGUAGE + CART + ACCOUNT + MOBILE MENU */}
             <div className="ml-auto flex items-center gap-2">
               {/* Install App */}
               {canInstall && (
@@ -223,6 +230,9 @@ export default function Navbar() {
                   Install App
                 </button>
               )}
+
+              {/* Language (hidden below sm; mobile uses the drawer version) */}
+              <LanguageSwitcher variant="header" focusRing={focusRing} />
 
               {/* Announcement notifications */}
               <NotificationBell className={`${glowPurple} ${focusRing}`} />
@@ -318,6 +328,13 @@ export default function Navbar() {
                 Install App
               </button>
             )}
+
+            {/* Language (mobile) */}
+            <LanguageSwitcher
+              variant="drawer"
+              focusRing={focusRing}
+              className="mb-6"
+            />
 
             {/* Label */}
             <div
