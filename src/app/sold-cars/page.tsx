@@ -29,9 +29,10 @@ import {
 } from "@/lib/api";
 
 /*
-  Prime Auto Display palette
-  dark #1C0606 | page #150404 | panel #2A0A0A | input #2E0C0C
-  maroon #9B1111 | gold #F9A602 | cream #FDF5DC | image backdrop #F5E9C8
+  Mikmik's Garahe palette (matches the home hero)
+  page #060309 | panel #0F0A19 | chip/input #120B1E | glow bg #1E0A38
+  green #5DC232 (hover #74D94A) | neon purple #B026FF | purple border #5B1E8C
+  text white | image backdrop #1A1228
 */
 
 const DEFAULT_LOAD_ERROR =
@@ -42,15 +43,17 @@ const SHOW_PRICE = true;
 const CARS_PER_PAGE = 12;
 
 const ring =
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F9A602]";
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5DC232]";
+
+const neonGlow = "shadow-[0_0_18px_rgba(176,38,255,0.45)]";
 
 const fieldClass =
-  "h-12 w-full border-2 border-[#FDF5DC]/15 bg-[#2E0C0C] px-4 text-sm text-[#FDF5DC] placeholder:text-[#FDF5DC]/40 outline-none transition-colors focus:border-[#F9A602] focus:bg-[#3A1212]";
+  "h-12 w-full rounded-full border border-[#5B1E8C]/60 bg-[#120B1E] px-5 text-sm text-white placeholder:text-white/40 outline-none transition-colors focus:border-[#B026FF] focus:shadow-[0_0_14px_rgba(176,38,255,0.45)]";
 
 const stateBox =
-  "border-t-4 border-[#F9A602] bg-[#2A0A0A] px-6 py-16 text-center";
-const goldBtn = `chamfer mt-6 inline-flex items-center gap-2 bg-[#F9A602] px-7 py-4 text-sm font-bold uppercase tracking-wider text-[#1C0606] transition-colors hover:bg-[#FDF5DC] ${ring}`;
-const pageBtn = `inline-flex h-10 items-center justify-center border-2 border-[#FDF5DC]/25 px-4 text-sm font-bold uppercase tracking-wider transition-colors hover:border-[#F9A602] hover:text-[#F9A602] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-[#FDF5DC]/25 disabled:hover:text-[#FDF5DC] ${ring}`;
+  "rounded-3xl border border-[#5B1E8C]/60 bg-[#0F0A19] px-6 py-16 text-center";
+const greenBtn = `mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#5DC232] px-7 py-3.5 text-sm font-bold text-[#060309] transition-colors hover:bg-[#74D94A] ${ring}`;
+const pageBtn = `inline-flex h-10 items-center justify-center rounded-full border border-[#5B1E8C]/70 bg-[#120B1E] px-5 text-sm font-bold text-white transition-colors hover:border-[#B026FF] hover:text-[#D07CFF] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-[#5B1E8C]/70 disabled:hover:text-white ${ring}`;
 
 function Select({
   value,
@@ -69,13 +72,13 @@ function Select({
         aria-label={label}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`${fieldClass} appearance-none pr-10`}
+        className={`${fieldClass} appearance-none pr-11`}
       >
         {children}
       </select>
       <ChevronDown
         size={18}
-        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#F9A602]"
+        className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#5DC232]"
       />
     </div>
   );
@@ -198,67 +201,79 @@ export default function SoldCarsPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-[#1C0606] text-[#FDF5DC]">
+      <main className="min-h-screen bg-[#060309] text-white">
         {/* HEADER */}
-        <section className="relative overflow-hidden bg-[#1C0606]">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-24 top-0 hidden h-full w-72 -skew-x-12 bg-[#9B1111] lg:block"
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-4 top-0 hidden h-full w-6 -skew-x-12 bg-[#F9A602] lg:block"
-          />
-
-          <div className="relative mx-auto flex max-w-7xl flex-col gap-10 px-4 py-14 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8 lg:py-20 xl:pr-40 2xl:pr-8">
-            <div className="max-w-4xl border-l-8 border-[#F9A602] pl-5 sm:pl-8">
-              <h1 className="text-5xl font-black uppercase leading-[0.92] tracking-tight sm:text-6xl lg:text-8xl">
+        <section className="relative overflow-hidden bg-[#060309] bg-[radial-gradient(ellipse_at_left,#1E0A38_0%,#060309_65%)]">
+          <div className="relative mx-auto flex max-w-7xl flex-col gap-12 px-4 py-14 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8 lg:py-20">
+            <div className="max-w-2xl">
+              <h1 className="text-5xl font-black uppercase leading-[1.05] tracking-wide sm:text-6xl lg:text-7xl">
                 Cars that found homes.
               </h1>
-              <p className="mt-6 max-w-2xl text-base leading-7 text-[#FDF5DC]/70 sm:text-lg">
+              <p className="mt-6 max-w-xl text-base leading-7 text-white/80 sm:text-lg">
                 Every car here went to a happy driver. Your next ride could be
                 on this list.
               </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  href="/showroom"
+                  className={`inline-flex items-center gap-2 rounded-full bg-[#5DC232] px-7 py-3.5 text-sm font-bold text-[#060309] transition-colors hover:bg-[#74D94A] ${ring}`}
+                >
+                  Browse the showroom
+                  <ArrowRight size={16} />
+                </Link>
+                <Link
+                  href="/sell-trade"
+                  className={`inline-flex items-center rounded-full border-2 border-[#B026FF] bg-[#060309] px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#1E0A38] ${neonGlow} ${ring}`}
+                >
+                  Sell / Trade your car
+                </Link>
+              </div>
             </div>
 
-            <div className="flex w-full items-stretch border-t-4 border-[#F9A602] bg-[#2A0A0A] lg:w-96 lg:shrink-0">
-              <div className="flex flex-1 items-center gap-4 p-6">
-                <span className="chamfer flex h-14 w-14 shrink-0 items-center justify-center bg-[#9B1111] text-[#F9A602]">
-                  <BadgeCheck size={26} />
-                </span>
-                <div>
-                  <p className="text-5xl font-black leading-none text-[#F9A602]">
-                    {isLoading || loadError ? "--" : vehicles.length}
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-[#FDF5DC]/65">
-                    car{vehicles.length !== 1 ? "s" : ""} sold
-                  </p>
+            {/* Stats card with neon offset outline */}
+            <div className="relative w-full lg:w-[26rem] lg:shrink-0">
+              <div
+                aria-hidden="true"
+                className={`absolute inset-0 translate-x-3 translate-y-3 rounded-3xl border-2 border-[#B026FF] ${neonGlow}`}
+              />
+              <div className="relative flex items-stretch rounded-3xl border border-white/15 bg-[#0F0A19]">
+                <div className="flex flex-1 items-center gap-4 p-6">
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#5DC232]/15 text-[#5DC232]">
+                    <BadgeCheck size={26} />
+                  </span>
+                  <div>
+                    <p className="text-5xl font-black leading-none text-white">
+                      {isLoading || loadError ? "--" : vehicles.length}
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-white/65">
+                      car{vehicles.length !== 1 ? "s" : ""} sold
+                    </p>
+                  </div>
                 </div>
+                {!isLoading && !loadError && modelCount > 0 && (
+                  <div className="flex flex-col justify-center border-l border-white/10 px-6">
+                    <p className="text-3xl font-black leading-none">
+                      {modelCount}
+                    </p>
+                    <p className="mt-1 text-xs font-semibold text-white/55">
+                      model{modelCount !== 1 ? "s" : ""}
+                    </p>
+                  </div>
+                )}
               </div>
-              {!isLoading && !loadError && modelCount > 0 && (
-                <div className="flex flex-col justify-center border-l border-[#FDF5DC]/10 px-6">
-                  <p className="text-3xl font-black leading-none">
-                    {modelCount}
-                  </p>
-                  <p className="mt-1 text-xs font-semibold text-[#FDF5DC]/55">
-                    model{modelCount !== 1 ? "s" : ""}
-                  </p>
-                </div>
-              )}
             </div>
           </div>
-          <div aria-hidden="true" className="tread" />
         </section>
 
         {/* LIST */}
-        <section className="bg-[#150404]">
-          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <section className="bg-[#060309]">
+          <div className="mx-auto max-w-7xl px-4 pb-12 pt-4 sm:px-6 lg:px-8 lg:pb-16">
             {/* TYPE CHIPS */}
             {typeOptions.length > 2 && (
               <div
                 role="group"
                 aria-label="Body type"
-                className="mb-5 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                className="mb-5 flex gap-2 overflow-x-auto px-1 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               >
                 {typeOptions.map((t) => (
                   <button
@@ -266,10 +281,10 @@ export default function SoldCarsPage() {
                     type="button"
                     aria-pressed={typeFilter === t}
                     onClick={() => setTypeFilter(t)}
-                    className={`shrink-0 border-2 px-5 py-2.5 text-sm font-bold uppercase tracking-wider transition-colors ${ring} ${
+                    className={`shrink-0 rounded-full border px-5 py-2 text-sm font-semibold transition-colors ${ring} ${
                       typeFilter === t
-                        ? "border-[#F9A602] bg-[#F9A602] text-[#1C0606]"
-                        : "border-[#FDF5DC]/20 hover:border-[#F9A602] hover:text-[#F9A602]"
+                        ? "border-[#5DC232] bg-[#5DC232] text-[#060309]"
+                        : "border-[#5B1E8C]/70 bg-[#120B1E] text-white hover:border-[#B026FF] hover:shadow-[0_0_12px_rgba(176,38,255,0.4)]"
                     }`}
                   >
                     {t === "all" ? "All cars" : t}
@@ -279,18 +294,18 @@ export default function SoldCarsPage() {
             )}
 
             {/* FILTER BAR */}
-            <div className="grid gap-3 border-t-4 border-[#F9A602] bg-[#2A0A0A] p-4 sm:p-5 lg:grid-cols-[1.5fr_1fr_1fr_auto]">
+            <div className="grid gap-3 lg:grid-cols-[1.5fr_1fr_1fr_auto]">
               <label className="relative block">
                 <span className="sr-only">Search</span>
                 <Search
                   size={16}
-                  className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#F9A602]"
+                  className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-[#5DC232]"
                 />
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search model, type, or city"
-                  className={`${fieldClass} pl-11`}
+                  className={`${fieldClass} pl-12`}
                 />
               </label>
 
@@ -300,25 +315,25 @@ export default function SoldCarsPage() {
                 onChange={setSelectedModel}
               >
                 {modelOptions.map((model) => (
-                  <option key={model} value={model} className="bg-[#2E0C0C]">
+                  <option key={model} value={model} className="bg-[#120B1E]">
                     {model === "all" ? "All models" : model}
                   </option>
                 ))}
               </Select>
 
               <Select label="Sort" value={sortOrder} onChange={setSortOrder}>
-                <option value="newest" className="bg-[#2E0C0C]">
+                <option value="newest" className="bg-[#120B1E]">
                   Newest first
                 </option>
-                <option value="oldest" className="bg-[#2E0C0C]">
+                <option value="oldest" className="bg-[#120B1E]">
                   Oldest first
                 </option>
                 {SHOW_PRICE && (
                   <>
-                    <option value="price-low" className="bg-[#2E0C0C]">
+                    <option value="price-low" className="bg-[#120B1E]">
                       Price: low to high
                     </option>
-                    <option value="price-high" className="bg-[#2E0C0C]">
+                    <option value="price-high" className="bg-[#120B1E]">
                       Price: high to low
                     </option>
                   </>
@@ -329,7 +344,7 @@ export default function SoldCarsPage() {
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className={`inline-flex h-12 items-center justify-center gap-2 border-2 border-[#FDF5DC]/25 px-5 text-sm font-bold uppercase tracking-wider transition-colors hover:border-[#F9A602] hover:bg-[#9B1111] ${ring}`}
+                  className={`inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/25 px-6 text-sm font-bold text-white transition-colors hover:border-[#B026FF] hover:bg-[#1E0A38] ${ring}`}
                 >
                   <X size={15} />
                   Clear
@@ -339,7 +354,7 @@ export default function SoldCarsPage() {
 
             {!isLoading && !loadError && vehicles.length > 0 && (
               <p
-                className="mt-4 text-sm font-semibold text-[#FDF5DC]/60"
+                className="mt-4 text-sm font-semibold text-white/60"
                 aria-live="polite"
               >
                 Showing {filteredCars.length} of {vehicles.length} sold car
@@ -351,8 +366,8 @@ export default function SoldCarsPage() {
             <div className="mt-6">
               {isLoading ? (
                 <div className={stateBox}>
-                  <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-[#FDF5DC]/15 border-t-[#F9A602]" />
-                  <p className="mt-6 text-2xl font-black uppercase">
+                  <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-white/15 border-t-[#5DC232]" />
+                  <p className="mt-6 text-base font-medium text-white/70">
                     Loading sold cars...
                   </p>
                 </div>
@@ -361,13 +376,13 @@ export default function SoldCarsPage() {
                   <p className="text-2xl font-black uppercase">
                     Couldn&apos;t load sold cars
                   </p>
-                  <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#FDF5DC]/70">
+                  <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-white/70">
                     {loadError}
                   </p>
                   <button
                     type="button"
                     onClick={() => load()}
-                    className={goldBtn}
+                    className={greenBtn}
                   >
                     <RotateCcw size={16} />
                     Try again
@@ -380,7 +395,7 @@ export default function SoldCarsPage() {
                       ? "No sold cars yet"
                       : "No matching cars found"}
                   </p>
-                  <p className="mt-2 text-sm text-[#FDF5DC]/60">
+                  <p className="mt-2 text-sm text-white/60">
                     {vehicles.length === 0
                       ? "Sold cars will show up here."
                       : "Try a different body type or model."}
@@ -389,7 +404,7 @@ export default function SoldCarsPage() {
                     <button
                       type="button"
                       onClick={clearFilters}
-                      className={goldBtn}
+                      className={greenBtn}
                     >
                       <X size={15} />
                       Clear filters
@@ -409,10 +424,10 @@ export default function SoldCarsPage() {
                       return (
                         <article
                           key={car.id}
-                          className="group flex h-full flex-col overflow-hidden border-t-4 border-transparent bg-[#2A0A0A] transition-colors hover:border-[#F9A602]"
+                          className="group flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#0F0A19] p-3 transition-all hover:border-[#B026FF] hover:shadow-[0_0_22px_rgba(176,38,255,0.35)]"
                         >
                           {/* Photo with SOLD stamp */}
-                          <div className="relative overflow-hidden bg-[#F5E9C8] p-3">
+                          <div className="relative overflow-hidden rounded-2xl bg-[#1A1228] p-3">
                             {imageSrc ? (
                               <Image
                                 src={imageSrc}
@@ -420,23 +435,23 @@ export default function SoldCarsPage() {
                                 width={800}
                                 height={500}
                                 unoptimized
-                                className="h-48 w-full object-contain opacity-70 grayscale-[35%] transition duration-500 group-hover:opacity-90 group-hover:grayscale-0"
+                                className="h-44 w-full object-contain opacity-60 grayscale-[35%] transition duration-500 group-hover:opacity-90 group-hover:grayscale-0"
                               />
                             ) : (
-                              <div className="flex h-48 items-center justify-center text-sm text-[#1C0606]/40">
+                              <div className="flex h-44 items-center justify-center text-sm text-white/40">
                                 No image available
                               </div>
                             )}
                             <span
                               aria-label="Sold"
-                              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 border-4 border-[#9B1111] bg-[#F5E9C8]/80 px-5 py-1 text-3xl font-black uppercase tracking-widest text-[#9B1111]"
+                              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 rounded-md border-4 border-[#B026FF] bg-[#060309]/75 px-5 py-1 text-3xl font-black uppercase tracking-widest text-[#D07CFF] shadow-[0_0_18px_rgba(176,38,255,0.5)]"
                             >
                               Sold
                             </span>
                           </div>
 
-                          <div className="flex flex-1 flex-col p-5">
-                            <p className="text-sm font-semibold text-[#F9A602]">
+                          <div className="flex flex-1 flex-col px-3 pb-3 pt-4">
+                            <p className="text-sm font-semibold text-[#5DC232]">
                               {car.year} | {car.type}
                             </p>
                             <h2 className="mt-1 text-2xl font-black uppercase leading-tight">
@@ -444,17 +459,17 @@ export default function SoldCarsPage() {
                             </h2>
 
                             {showPrice && (
-                              <p className="mt-2 text-sm text-[#FDF5DC]/60">
+                              <p className="mt-2 text-sm text-white/60">
                                 Sold at{" "}
-                                <span className="text-lg font-black text-[#FDF5DC]">
+                                <span className="text-lg font-black text-white">
                                   {car.price}
                                 </span>
                               </p>
                             )}
 
-                            <dl className="mt-4 grid grid-cols-2 divide-x divide-[#FDF5DC]/10 border-y border-[#FDF5DC]/10 text-sm">
+                            <dl className="mt-4 grid grid-cols-2 divide-x divide-white/10 border-y border-white/10 text-sm">
                               <div className="min-w-0 py-3 pr-3">
-                                <dt className="text-xs font-semibold text-[#FDF5DC]/50">
+                                <dt className="text-xs font-semibold text-white/50">
                                   Mileage
                                 </dt>
                                 <dd
@@ -465,7 +480,7 @@ export default function SoldCarsPage() {
                                 </dd>
                               </div>
                               <div className="min-w-0 py-3 pl-3">
-                                <dt className="text-xs font-semibold text-[#FDF5DC]/50">
+                                <dt className="text-xs font-semibold text-white/50">
                                   Engine
                                 </dt>
                                 <dd
@@ -477,10 +492,10 @@ export default function SoldCarsPage() {
                               </div>
                             </dl>
 
-                            <p className="mt-auto flex min-w-0 items-center gap-2 pt-4 text-sm text-[#FDF5DC]/65">
+                            <p className="mt-auto flex min-w-0 items-center gap-2 pt-4 text-sm text-white/65">
                               <MapPin
                                 size={14}
-                                className="shrink-0 text-[#F9A602]"
+                                className="shrink-0 text-[#5DC232]"
                               />
                               <span
                                 className="line-clamp-1"
@@ -519,10 +534,10 @@ export default function SoldCarsPage() {
                             aria-current={
                               currentPage === page ? "page" : undefined
                             }
-                            className={`flex h-10 w-10 items-center justify-center text-sm font-bold transition-colors ${ring} ${
+                            className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold transition-colors ${ring} ${
                               currentPage === page
-                                ? "bg-[#F9A602] text-[#1C0606]"
-                                : "border-2 border-[#FDF5DC]/25 hover:border-[#F9A602] hover:text-[#F9A602]"
+                                ? "bg-[#5DC232] text-[#060309]"
+                                : "border border-[#5B1E8C]/70 bg-[#120B1E] text-white hover:border-[#B026FF] hover:text-[#D07CFF]"
                             }`}
                           >
                             {page}
@@ -548,38 +563,44 @@ export default function SoldCarsPage() {
         </section>
 
         {/* BOTTOM BAND */}
-        <section className="bg-[#9B1111]">
-          <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-12 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-            <div className="border-l-8 border-[#F9A602] pl-5">
-              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl">
-                Your car could be next.
-              </h2>
-              <p className="mt-3 max-w-xl text-base leading-7 text-[#FDF5DC]/85">
-                Find your next ride in the showroom, or sell or trade in the car
-                you have now.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/showroom"
-                className={`chamfer inline-flex items-center justify-center gap-2 bg-[#F9A602] px-7 py-4 text-sm font-bold uppercase tracking-wider text-[#1C0606] transition-colors hover:bg-[#FDF5DC] ${ring}`}
-              >
-                View showroom
-                <ArrowRight size={16} />
-              </Link>
-              <Link
-                href="/sell-trade"
-                className={`chamfer inline-flex items-center justify-center bg-[#1C0606] px-7 py-4 text-sm font-bold uppercase tracking-wider text-[#FDF5DC] transition-colors hover:bg-[#FDF5DC] hover:text-[#1C0606] ${ring}`}
-              >
-                Sell / Trade
-              </Link>
-              <Link
-                href="/contact"
-                className={`inline-flex items-center justify-center gap-2 border-2 border-[#FDF5DC]/40 px-7 py-4 text-sm font-bold uppercase tracking-wider transition-colors hover:border-[#F9A602] hover:text-[#F9A602] ${ring}`}
-              >
-                <Phone size={16} />
-                Contact us
-              </Link>
+        <section className="bg-[#060309] px-4 pb-16 sm:px-6 lg:px-8">
+          <div className="relative mx-auto max-w-7xl">
+            <div
+              aria-hidden="true"
+              className={`absolute inset-0 translate-x-3 translate-y-3 rounded-3xl border-2 border-[#B026FF] ${neonGlow}`}
+            />
+            <div className="relative flex flex-col gap-6 rounded-3xl border border-white/15 bg-[#0F0A19] px-6 py-10 sm:px-10 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <h2 className="text-3xl font-black uppercase leading-tight tracking-wide sm:text-4xl">
+                  Your car could be next.
+                </h2>
+                <p className="mt-3 max-w-xl text-base leading-7 text-white/80">
+                  Find your next ride in the showroom, or sell or trade in the
+                  car you have now.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/showroom"
+                  className={`inline-flex items-center justify-center gap-2 rounded-full bg-[#5DC232] px-7 py-3.5 text-sm font-bold text-[#060309] transition-colors hover:bg-[#74D94A] ${ring}`}
+                >
+                  View showroom
+                  <ArrowRight size={16} />
+                </Link>
+                <Link
+                  href="/sell-trade"
+                  className={`inline-flex items-center justify-center rounded-full border-2 border-[#B026FF] bg-[#060309] px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#1E0A38] ${neonGlow} ${ring}`}
+                >
+                  Sell / Trade
+                </Link>
+                <Link
+                  href="/contact"
+                  className={`inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:border-[#5DC232] hover:text-[#5DC232] ${ring}`}
+                >
+                  <Phone size={16} />
+                  Contact us
+                </Link>
+              </div>
             </div>
           </div>
         </section>
