@@ -9,10 +9,14 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
+  Film,
+  Image as ImageIcon,
   Loader2,
+  Play,
   Search,
   SlidersHorizontal,
   Trash2,
+  X,
 } from "lucide-react";
 import type { ApiError } from "@/lib/api";
 import {
@@ -22,6 +26,36 @@ import {
   type SellTradeRequest,
   type SellTradeStatus,
 } from "@/lib/sell-trade-api";
+
+/* -------------------------------------------------------------------------- */
+/*  Media types                                                               */
+/*  The admin list endpoint already returns `media` (with('media') in         */
+/*  SellTradeRequestController::index), so no extra request is needed.        */
+/* -------------------------------------------------------------------------- */
+
+type MediaItem = {
+  id?: number;
+  type: string; // "image" | "video"
+  path?: string;
+  url?: string | null;
+};
+
+type AdminRequest = Omit<SellTradeRequest, "media"> & { media?: MediaItem[] };
+
+type ViewableMedia = { type: "image" | "video"; url: string };
+
+/** Media that has a usable URL, normalised to image/video. */
+const getMedia = (item: AdminRequest): ViewableMedia[] =>
+  (item.media ?? []).flatMap((m) =>
+    m.url
+      ? [
+          {
+            type: m.type === "video" ? ("video" as const) : ("image" as const),
+            url: m.url,
+          },
+        ]
+      : [],
+  );
 
 const STATUS_FILTERS: Array<"All" | SellTradeStatus> = [
   "All",
@@ -107,6 +141,197 @@ function Dialog({
 }
 
 /* -------------------------------------------------------------------------- */
+/*  Full-screen photo / video viewer                                          */
+/* -------------------------------------------------------------------------- */
+
+function MediaViewer({
+  items,
+  index,
+  onIndex,
+  onClose,
+}: {
+  items: ViewableMedia[];
+  index: number;
+  onIndex: (i: number) => void;
+  onClose: () => void;
+}) {
+  const item = items[index];
+  const count = items.length;
+
+  useEffect(() => {
+    // Capture phase + stopPropagation so Escape only closes the viewer,
+    // not the detail dialog behind it.
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        onClose();
+      } else if (e.key === "ArrowLeft" && count > 1) {
+        onIndex((index - 1 + count) % count);
+      } else if (e.key === "ArrowRight" && count > 1) {
+        onIndex((index + 1) % count);
+      }
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [index, count, onIndex, onClose]);
+
+  if (!item) return null;
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[110] flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Media viewer"
+    >
+      <button
+        type="button"
+        aria-label="Close viewer"
+        onClick={onClose}
+        className="absolute inset-0 cursor-default bg-black/90"
+      />
+
+      <div className="relative z-10 flex items-center justify-center">
+        {item.type === "image" ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={item.url}
+            src={item.url}
+            alt=""
+            className="max-h-[85vh] max-w-[92vw] rounded-lg object-contain"
+          />
+        ) : (
+          <video
+            key={item.url}
+            src={item.url}
+            controls
+            autoPlay
+            playsInline
+            className="max-h-[85vh] max-w-[92vw] rounded-lg bg-black"
+          />
+        )}
+      </div>
+
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close viewer"
+        className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white transition-colors hover:bg-white/10"
+      >
+        <X size={18} />
+      </button>
+
+      {count > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={() => onIndex((index - 1 + count) % count)}
+            aria-label="Previous"
+            className="absolute left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white transition-colors hover:bg-white/10 sm:left-5"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            type="button"
+            onClick={() => onIndex((index + 1) % count)}
+            aria-label="Next"
+            className="absolute right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white transition-colors hover:bg-white/10 sm:right-5"
+          >
+            <ChevronRight size={20} />
+          </button>
+          <p className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-xs text-zinc-300">
+            {index + 1} / {count}
+          </p>
+        </>
+      )}
+    </div>,
+    document.body,
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Thumbnails + counts                                                       */
+/* -------------------------------------------------------------------------- */
+
+function MediaThumb({
+  item,
+  label,
+  onOpen,
+}: {
+  item: ViewableMedia;
+  label: string;
+  onOpen: () => void;
+}) {
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      aria-label={label}
+      className="group relative block aspect-square w-full overflow-hidden rounded-xl border border-white/10 bg-black/40 transition-colors hover:border-[#39FF14]/50"
+    >
+      {failed ? (
+        <span className="flex h-full w-full flex-col items-center justify-center gap-1 text-[10px] text-zinc-500">
+          <ImageIcon size={16} />
+          Can&apos;t load
+        </span>
+      ) : item.type === "image" ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={item.url}
+          alt=""
+          loading="lazy"
+          onError={() => setFailed(true)}
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      ) : (
+        <>
+          <video
+            src={`${item.url}#t=0.1`}
+            preload="metadata"
+            muted
+            playsInline
+            onError={() => setFailed(true)}
+            className="h-full w-full object-cover"
+          />
+          <span className="absolute inset-0 flex items-center justify-center bg-black/35">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white">
+              <Play size={16} className="ml-0.5" />
+            </span>
+          </span>
+        </>
+      )}
+    </button>
+  );
+}
+
+function MediaCount({ item }: { item: AdminRequest }) {
+  const all = item.media ?? [];
+  if (all.length === 0) return null;
+
+  const videos = all.filter((m) => m.type === "video").length;
+  const photos = all.length - videos;
+
+  return (
+    <div className="mt-1 flex items-center gap-3 text-[11px] text-zinc-500">
+      {photos > 0 && (
+        <span className="inline-flex items-center gap-1">
+          <ImageIcon size={12} />
+          {photos}
+        </span>
+      )}
+      {videos > 0 && (
+        <span className="inline-flex items-center gap-1">
+          <Film size={12} />
+          {videos}
+        </span>
+      )}
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Row action icons (always visible)                                         */
 /* -------------------------------------------------------------------------- */
 
@@ -115,9 +340,9 @@ function RowActions({
   onView,
   onDelete,
 }: {
-  item: SellTradeRequest;
-  onView: (i: SellTradeRequest) => void;
-  onDelete: (i: SellTradeRequest) => void;
+  item: AdminRequest;
+  onView: (i: AdminRequest) => void;
+  onDelete: (i: AdminRequest) => void;
 }) {
   return (
     <div className="flex items-center justify-end gap-1.5">
@@ -148,7 +373,7 @@ function RowActions({
 /* -------------------------------------------------------------------------- */
 
 export default function SellTradeClient() {
-  const [items, setItems] = useState<SellTradeRequest[]>([]);
+  const [items, setItems] = useState<AdminRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchInput, setSearchInput] = useState("");
@@ -161,16 +386,17 @@ export default function SellTradeClient() {
   const [total, setTotal] = useState(0);
 
   // Detail dialog state
-  const [selected, setSelected] = useState<SellTradeRequest | null>(null);
+  const [selected, setSelected] = useState<AdminRequest | null>(null);
   const [statusDraft, setStatusDraft] = useState<SellTradeStatus>("new");
   const [notesDraft, setNotesDraft] = useState("");
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
 
+  // Photo / video viewer (index into the selected request's media)
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+
   // Delete dialog state
-  const [deleteTarget, setDeleteTarget] = useState<SellTradeRequest | null>(
-    null,
-  );
+  const [deleteTarget, setDeleteTarget] = useState<AdminRequest | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
@@ -214,8 +440,13 @@ export default function SellTradeClient() {
 
   /* ------------------------------ Detail dialog ----------------------------- */
 
-  const openDetail = (item: SellTradeRequest) => {
+  const detailMedia = selected ? getMedia(selected) : [];
+  const missingUrls =
+    !!selected && (selected.media?.length ?? 0) > 0 && detailMedia.length === 0;
+
+  const openDetail = (item: AdminRequest) => {
     setSaveError("");
+    setViewerIndex(null);
     setStatusDraft(item.status);
     setNotesDraft(item.notes ?? "");
     setSelected(item);
@@ -223,8 +454,11 @@ export default function SellTradeClient() {
 
   const closeDetail = useCallback(() => {
     setSelected(null);
+    setViewerIndex(null);
     setSaveError("");
   }, []);
+
+  const closeViewer = useCallback(() => setViewerIndex(null), []);
 
   const hasChanges =
     !!selected &&
@@ -241,6 +475,7 @@ export default function SellTradeClient() {
       });
       setItems((prev) => prev.map((i) => (i.id === updated.id ? updated : i)));
       setSelected(null);
+      setViewerIndex(null);
     } catch (err) {
       setSaveError((err as ApiError).message || "Failed to save changes.");
     } finally {
@@ -250,7 +485,7 @@ export default function SellTradeClient() {
 
   /* ----------------------------- Delete dialog ------------------------------ */
 
-  const openDeleteDialog = (item: SellTradeRequest) => {
+  const openDeleteDialog = (item: AdminRequest) => {
     setDeleteError("");
     setDeleteTarget(item);
   };
@@ -268,6 +503,7 @@ export default function SellTradeClient() {
       await deleteSellTrade(deleteTarget.id);
       setDeleteTarget(null);
       setSelected(null);
+      setViewerIndex(null);
 
       if (items.length === 1 && page > 1) {
         setPage((p) => p - 1);
@@ -386,6 +622,7 @@ export default function SellTradeClient() {
                           <p className="text-xs text-zinc-500">
                             {i.year} · {i.type} · {i.condition}
                           </p>
+                          <MediaCount item={i} />
                         </div>
                       </div>
                     </td>
@@ -447,6 +684,7 @@ export default function SellTradeClient() {
                       <p className="text-xs text-zinc-500">
                         {i.type} · {i.year}
                       </p>
+                      <MediaCount item={i} />
                     </div>
                   </div>
                   <RowActions
@@ -511,7 +749,12 @@ export default function SellTradeClient() {
 
       {/* Detail dialog */}
       {mounted && (
-        <Dialog open={!!selected} onClose={closeDetail} busy={saving} wide>
+        <Dialog
+          open={!!selected}
+          onClose={closeDetail}
+          busy={saving || viewerIndex !== null}
+          wide
+        >
           {selected && (
             <>
               <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#7CFF5B]">
@@ -559,6 +802,38 @@ export default function SellTradeClient() {
                   </dd>
                 </div>
               </dl>
+
+              {/* Photos & videos */}
+              <div className="mt-5">
+                <p className="text-xs text-zinc-500">
+                  Photos &amp; videos
+                  {detailMedia.length > 0 ? ` (${detailMedia.length})` : ""}
+                </p>
+
+                {detailMedia.length > 0 ? (
+                  <ul className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-4">
+                    {detailMedia.map((m, idx) => (
+                      <li key={`${m.url}-${idx}`}>
+                        <MediaThumb
+                          item={m}
+                          label={`Open ${m.type} ${idx + 1} of ${detailMedia.length}`}
+                          onOpen={() => setViewerIndex(idx)}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                ) : missingUrls ? (
+                  <p className="mt-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-xs leading-5 text-zinc-400">
+                    Files were uploaded, but the API didn&apos;t return their
+                    URLs. Check that the SellTradeMedia model appends the{" "}
+                    <code className="text-zinc-300">url</code> attribute.
+                  </p>
+                ) : (
+                  <p className="mt-2 text-sm text-zinc-500">
+                    The customer didn&apos;t attach any photos or videos.
+                  </p>
+                )}
+              </div>
 
               <div className="mt-5">
                 <label
@@ -650,6 +925,19 @@ export default function SellTradeClient() {
         </Dialog>
       )}
 
+      {/* Photo / video viewer */}
+      {mounted &&
+        selected &&
+        viewerIndex !== null &&
+        detailMedia[viewerIndex] && (
+          <MediaViewer
+            items={detailMedia}
+            index={viewerIndex}
+            onIndex={setViewerIndex}
+            onClose={closeViewer}
+          />
+        )}
+
       {/* Delete confirmation dialog */}
       {mounted && (
         <Dialog
@@ -668,7 +956,8 @@ export default function SellTradeClient() {
                 <span className="font-semibold text-white">
                   {deleteTarget?.full_name}
                 </span>
-                . This action can’t be undone.
+                . Its uploaded photos and videos will be deleted too. This
+                action can’t be undone.
               </p>
             </div>
           </div>

@@ -13,8 +13,10 @@ import {
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Car, Loader2, MailCheck } from "lucide-react";
+import { Loader2, MailCheck } from "lucide-react";
+import Wordmark from "@/components/layout/wordmark";
 import { resendVerification, verifyEmail, type ApiError } from "@/lib/api";
+import { markHasAccount, safeRedirect } from "@/lib/auth-hint";
 
 const RESEND_COOLDOWN_SECONDS = 30;
 
@@ -22,6 +24,9 @@ function VerifyEmailForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email") || "";
+
+  // Where to go after they sign in (e.g. back to /sell-trade).
+  const redirect = safeRedirect(searchParams.get("redirect"));
 
   const [digits, setDigits] = useState<string[]>(Array(6).fill(""));
   const [error, setError] = useState("");
@@ -84,7 +89,16 @@ function VerifyEmailForm() {
     setLoading(true);
     try {
       await verifyEmail({ email, code });
-      router.push("/login?verified=1");
+
+      // Make sure this browser is remembered as having an account.
+      markHasAccount();
+
+      // Send them to login, and keep the return path so they land back
+      // where they started once they sign in.
+      const params = new URLSearchParams({ verified: "1" });
+      if (redirect) params.set("redirect", redirect);
+
+      router.push(`/login?${params.toString()}`);
     } catch (err) {
       const apiErr = err as ApiError;
       setError(apiErr.message || "Invalid or expired verification code.");
@@ -111,8 +125,8 @@ function VerifyEmailForm() {
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-[#06030D] via-[#1E0A3C] to-[#06030D] px-4 py-16">
-      <div className="pointer-events-none absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-[#FFFFFF]/15 blur-[130px]" />
-      <div className="pointer-events-none absolute top-1/3 right-[-120px] h-[380px] w-[380px] rounded-full bg-[#39FF14]/20 blur-[130px]" />
+      <div className="pointer-events-none absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-[#B026FF]/20 blur-[130px]" />
+      <div className="pointer-events-none absolute top-1/3 right-[-120px] h-[380px] w-[380px] rounded-full bg-[#5BC236]/20 blur-[130px]" />
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-40 opacity-[0.06]"
         style={{
@@ -123,15 +137,13 @@ function VerifyEmailForm() {
       />
 
       <div className="relative z-10 w-full max-w-md">
-        <div className="mb-8 text-center">
+        <div className="mb-8 flex justify-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-2xl font-black text-white"
+            aria-label="Mikmik's Garahe home"
+            className="group inline-flex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#5BC236]"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#39FF14]/15 text-[#7CFF5B]">
-              <Car size={20} />
-            </span>
-            Auto<span className="text-[#7CFF5B]">Trade</span>
+            <Wordmark className="text-4xl" />
           </Link>
         </div>
 
@@ -139,7 +151,7 @@ function VerifyEmailForm() {
           onSubmit={handleSubmit}
           className="rounded-2xl border border-white/10 bg-[#0E0818]/70 p-6 text-center shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:p-8"
         >
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-[#39FF14]/30 bg-[#39FF14]/10 text-[#7CFF5B]">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-[#5BC236]/30 bg-[#5BC236]/10 text-[#78D152]">
             <MailCheck size={22} />
           </div>
           <h1 className="text-lg font-bold text-white">Verify your email</h1>
@@ -149,12 +161,18 @@ function VerifyEmailForm() {
           </p>
 
           {error && (
-            <div className="mt-4 rounded-xl border border-[#39FF14]/30 bg-[#39FF14]/10 px-4 py-3 text-sm text-[#7CFF5B]">
+            <div
+              role="alert"
+              className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300"
+            >
               {error}
             </div>
           )}
           {notice && !error && (
-            <div className="mt-4 rounded-xl border border-[#39FF14]/30 bg-[#39FF14]/10 px-4 py-3 text-sm text-[#7CFF5B]">
+            <div
+              role="status"
+              className="mt-4 rounded-xl border border-[#5BC236]/30 bg-[#5BC236]/10 px-4 py-3 text-sm text-[#78D152]"
+            >
               {notice}
             </div>
           )}
@@ -168,11 +186,12 @@ function VerifyEmailForm() {
                 }}
                 inputMode="numeric"
                 autoComplete="one-time-code"
+                aria-label={`Digit ${index + 1}`}
                 maxLength={1}
                 value={digit}
                 onChange={(e) => handleDigitChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                className="h-12 w-11 rounded-xl border border-white/10 bg-[#06030D]/60 text-center text-lg font-semibold text-white outline-none transition-colors focus:border-[#39FF14]/60"
+                className="h-12 w-11 rounded-xl border border-white/10 bg-[#06030D]/60 text-center text-lg font-semibold text-white outline-none transition-colors focus:border-[#5BC236]/70 focus:shadow-[0_0_14px_rgba(91,194,54,0.25)]"
               />
             ))}
           </div>
@@ -180,7 +199,7 @@ function VerifyEmailForm() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#39FF14] to-[#7CFF5B] py-3.5 text-sm font-bold text-white transition-all duration-300 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#5BC236] to-[#78D152] py-3.5 text-sm font-bold text-black transition-all duration-300 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading && <Loader2 size={16} className="animate-spin" />}
             {loading ? "Verifying..." : "Verify Email"}
@@ -190,7 +209,7 @@ function VerifyEmailForm() {
             type="button"
             onClick={handleResend}
             disabled={cooldown > 0}
-            className="mt-4 text-sm font-medium text-[#7CFF5B] transition-colors hover:text-[#7CFF5B] disabled:cursor-not-allowed disabled:text-zinc-600"
+            className="mt-4 text-sm font-medium text-[#D77BFF] transition-colors hover:text-white disabled:cursor-not-allowed disabled:text-zinc-600"
           >
             {cooldown > 0 ? `Resend code in ${cooldown}s` : "Resend code"}
           </button>

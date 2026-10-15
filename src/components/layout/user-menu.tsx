@@ -1,17 +1,20 @@
+// components/layout/user-menu.tsx
 "use client";
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { ClipboardList, LogIn, LogOut } from "lucide-react";
+import { CarFront, ClipboardList, LogIn, LogOut } from "lucide-react";
 
 import { useAuth } from "@/context/auth-context";
+import { apiFetch } from "@/lib/chunk-upload";
 
 const LOGIN_HREF = "/login"; // ADJUST if your login page lives elsewhere
 const ORDERS_HREF = "/orders";
+const REQUESTS_HREF = "/my-requests";
 
 const focusRing =
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#39FF14]";
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D41F2D]";
 
 function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -27,7 +30,9 @@ export default function UserMenu() {
   const pathname = usePathname();
 
   const [open, setOpen] = useState(false);
+  const [openRequests, setOpenRequests] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isLoggedIn = !!user;
 
   // Close when navigating.
   useEffect(() => {
@@ -61,6 +66,35 @@ export default function UserMenu() {
     };
   }, [open]);
 
+  // Count sell/trade requests that aren't closed yet.
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setOpenRequests(0);
+      return;
+    }
+
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await apiFetch("/my-sell-trade");
+        if (!res.ok) return;
+
+        const json = await res.json();
+        const list: { status: string }[] = json.data ?? [];
+        if (!cancelled) {
+          setOpenRequests(list.filter((r) => r.status !== "closed").length);
+        }
+      } catch {
+        /* ignore: the menu should never break because of this */
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isLoggedIn, pathname]);
+
   const handleLogout = async () => {
     setOpen(false);
     await logout();
@@ -83,7 +117,7 @@ export default function UserMenu() {
     return (
       <Link
         href={LOGIN_HREF}
-        className={`flex h-11 items-center justify-center gap-2 rounded-full border border-white/15 bg-[#06030D]/30 px-3 text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 hover:border-[#39FF14] hover:text-[#D77BFF] sm:h-12 sm:px-4 ${focusRing}`}
+        className={`flex h-11 items-center justify-center gap-2 rounded-full border border-white/15 bg-[#040E21]/30 px-3 text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 hover:border-[#D41F2D] hover:text-[#5FA8E8] sm:h-12 sm:px-4 ${focusRing}`}
       >
         <LogIn size={18} strokeWidth={2} />
         <span className="hidden sm:inline">Login</span>
@@ -97,18 +131,23 @@ export default function UserMenu() {
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        aria-label="Account menu"
+        aria-label={`Account menu${openRequests > 0 ? `, ${openRequests} open request${openRequests === 1 ? "" : "s"}` : ""}`}
         aria-haspopup="menu"
         aria-expanded={open}
-        className={`flex h-11 w-11 items-center justify-center rounded-full border border-[#39FF14]/60 bg-[#39FF14] text-sm font-black text-black shadow-[0_10px_30px_rgba(191,152,13,0.25)] transition-all duration-300 hover:bg-[#7CFF5B] sm:h-12 sm:w-12 ${focusRing}`}
+        className={`relative flex h-11 w-11 items-center justify-center rounded-full border border-[#D41F2D]/60 bg-[#D41F2D] text-sm font-black text-black shadow-[0_10px_30px_rgba(191,152,13,0.25)] transition-all duration-300 hover:bg-[#E8404B] sm:h-12 sm:w-12 ${focusRing}`}
       >
         {getInitials(user.name)}
+        {openRequests > 0 && (
+          <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full border-2 border-[#071A38] bg-white px-1 text-[10px] font-bold text-black">
+            {openRequests > 99 ? "99+" : openRequests}
+          </span>
+        )}
       </button>
 
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 mt-3 w-64 overflow-hidden rounded-2xl border border-white/10 bg-[#0E0818] shadow-[0_20px_60px_rgba(0,0,0,0.55)]"
+          className="absolute right-0 top-full z-50 mt-3 w-64 overflow-hidden rounded-2xl border border-white/10 bg-[#071A38] shadow-[0_20px_60px_rgba(0,0,0,0.55)]"
         >
           <div className="border-b border-white/10 px-4 py-3">
             <p className="truncate text-sm font-semibold text-white">
@@ -121,17 +160,31 @@ export default function UserMenu() {
             <Link
               href={ORDERS_HREF}
               role="menuitem"
-              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-200 transition-colors hover:bg-[#39FF14]/10 hover:text-[#D77BFF] ${focusRing}`}
+              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-200 transition-colors hover:bg-[#D41F2D]/10 hover:text-[#5FA8E8] ${focusRing}`}
             >
               <ClipboardList size={16} />
               My orders
+            </Link>
+
+            <Link
+              href={REQUESTS_HREF}
+              role="menuitem"
+              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-200 transition-colors hover:bg-[#D41F2D]/10 hover:text-[#5FA8E8] ${focusRing}`}
+            >
+              <CarFront size={16} />
+              My sell / trade requests
+              {openRequests > 0 && (
+                <span className="ml-auto rounded-full bg-[#D41F2D] px-2 py-0.5 text-[11px] font-bold text-white">
+                  {openRequests}
+                </span>
+              )}
             </Link>
 
             <button
               type="button"
               role="menuitem"
               onClick={handleLogout}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-zinc-200 transition-colors hover:bg-[#39FF14]/10 hover:text-[#7CFF5B] ${focusRing}`}
+              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-zinc-200 transition-colors hover:bg-[#D41F2D]/10 hover:text-[#FF5C68] ${focusRing}`}
             >
               <LogOut size={16} />
               Log out

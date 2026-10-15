@@ -21,8 +21,12 @@ const navigation = [
   { name: "Contact", href: "/contact" },
 ];
 
+// Desktop nav shows from the `xl` breakpoint (1280px). Below that the
+// hamburger drawer is used, so the header never wraps into two rows.
+const DESKTOP_MIN_WIDTH = 1280;
+
 // Matches header height (72/76/80px) + 1px border
-const HEADER_OFFSET = "-mb-[73px] sm:-mb-[77px] lg:-mb-[81px]";
+const HEADER_OFFSET = "-mb-[73px] sm:-mb-[77px] xl:-mb-[81px]";
 
 // Mikmik's Garahe palette
 // neon green #5BC236 | green hover #78D152 | neon purple #B026FF
@@ -164,7 +168,7 @@ export default function Navbar() {
     };
 
     const handleResize = () => {
-      if (window.innerWidth >= 1024) setIsMenuOpen(false);
+      if (window.innerWidth >= DESKTOP_MIN_WIDTH) setIsMenuOpen(false);
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -187,44 +191,48 @@ export default function Navbar() {
       >
         <nav
           aria-label="Main"
-          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+          className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8"
         >
-          <div className="flex h-[72px] items-center justify-between gap-4 sm:h-[76px] lg:h-20 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+          {/* One flex row: logo | nav (fills the middle) | actions */}
+          <div className="flex h-[72px] items-center gap-3 sm:h-[76px] xl:h-20 xl:gap-6">
             {/* LOGO (text wordmark) */}
             <Link
               href="/"
               aria-label="Mikmik's Garahe home"
-              className={`group flex w-fit items-center justify-self-start ${focusRing}`}
+              className={`group flex shrink-0 items-center ${focusRing}`}
             >
-              <Wordmark className="text-3xl sm:text-4xl lg:text-5xl" />
+              <Wordmark className="text-3xl sm:text-4xl" />
             </Link>
 
-            {/* DESKTOP NAVIGATION */}
-            <div className="hidden items-center gap-1 rounded-full border border-white/15 bg-[#06030D]/75 p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur-xl lg:flex">
-              {navigation.map((item) => {
-                const active = isActive(item.href);
+            {/* DESKTOP NAVIGATION (xl and up) */}
+            <div className="hidden min-w-0 flex-1 justify-center xl:flex">
+              <ul className="flex items-center gap-0.5 rounded-full border border-white/15 bg-[#06030D]/75 p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur-xl">
+                {navigation.map((item) => {
+                  const active = isActive(item.href);
 
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    aria-current={active ? "page" : undefined}
-                    className={`relative flex items-center rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 ${focusRing} ${active ? "bg-[#5BC236] text-black " : "text-white/85 hover:bg-white/10 hover:text-white"}`}
-                  >
-                    {item.name}
-                  </Link>
-                );
-              })}
+                  return (
+                    <li key={item.name} className="shrink-0">
+                      <Link
+                        href={item.href}
+                        aria-current={active ? "page" : undefined}
+                        className={`flex items-center whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-semibold transition-all duration-300 ${focusRing} ${active ? "bg-[#5BC236] text-black" : "text-white/85 hover:bg-white/10 hover:text-white"}`}
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
 
-            {/* RIGHT SIDE: INSTALL + LANGUAGE + CART + ACCOUNT + MOBILE MENU */}
-            <div className="ml-auto flex items-center gap-2">
+            {/* RIGHT SIDE: INSTALL + LANGUAGE + BELL + CART + ACCOUNT + MOBILE MENU */}
+            <div className="ml-auto flex shrink-0 items-center gap-2 xl:ml-0">
               {/* Install App */}
               {canInstall && (
                 <button
                   type="button"
                   onClick={handleInstallClick}
-                  className={`hidden items-center gap-2 rounded-full border bg-white/5 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 hover:bg-white/10 sm:flex ${glowGreen} ${focusRing}`}
+                  className={`hidden items-center gap-2 whitespace-nowrap rounded-full border bg-white/5 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 hover:bg-white/10 sm:flex ${glowGreen} ${focusRing}`}
                 >
                   <Download size={16} strokeWidth={2.25} />
                   Install App
@@ -241,7 +249,7 @@ export default function Navbar() {
               <Link
                 href="/cart"
                 aria-label={`View cart${totalItems > 0 ? `, ${totalItems} item${totalItems === 1 ? "" : "s"}` : ""}`}
-                className={`relative flex h-11 w-11 items-center justify-center rounded-full border bg-[#06030D]/30 text-white backdrop-blur-md transition-all duration-300 hover:text-[#78D152] sm:h-12 sm:w-12 ${glowPurple} ${focusRing}`}
+                className={`relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-[#06030D]/30 text-white backdrop-blur-md transition-all duration-300 hover:text-[#78D152] sm:h-12 sm:w-12 ${glowPurple} ${focusRing}`}
               >
                 <ShoppingCart size={20} strokeWidth={2} />
                 {totalItems > 0 && (
@@ -251,19 +259,19 @@ export default function Navbar() {
                 )}
               </Link>
 
-              {/* Account: avatar + "My orders" (or Login when logged out) */}
-              <div className={`flex items-center ${loginGlow}`}>
+              {/* Account: avatar + dropdown (or Login when logged out) */}
+              <div className={`flex shrink-0 items-center ${loginGlow}`}>
                 <UserMenu />
               </div>
 
-              {/* Mobile / Tablet Menu */}
+              {/* Mobile / Tablet Menu (below xl) */}
               <button
                 type="button"
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMenuOpen}
                 aria-controls="mobile-menu"
                 onClick={() => setIsMenuOpen((open) => !open)}
-                className={`flex h-11 w-11 items-center justify-center rounded-full border text-white backdrop-blur-md transition-all duration-300 sm:h-12 sm:w-12 lg:hidden ${isMenuOpen ? `bg-white/5 ${glowGreen}` : `bg-[#06030D]/30 ${glowPurple}`} ${focusRing}`}
+                className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border text-white backdrop-blur-md transition-all duration-300 sm:h-12 sm:w-12 xl:hidden ${isMenuOpen ? `bg-white/5 ${glowGreen}` : `bg-[#06030D]/30 ${glowPurple}`} ${focusRing}`}
               >
                 {isMenuOpen ? (
                   <X size={21} strokeWidth={2} />
@@ -280,7 +288,7 @@ export default function Navbar() {
       <div
         id="mobile-menu"
         aria-hidden={!isMenuOpen}
-        className={`fixed inset-0 z-40 lg:hidden transition-all duration-500 ${isMenuOpen ? "visible opacity-100" : "invisible opacity-0"}`}
+        className={`fixed inset-0 z-40 xl:hidden transition-all duration-500 ${isMenuOpen ? "visible opacity-100" : "invisible opacity-0"}`}
       >
         {/* Backdrop */}
         <button
