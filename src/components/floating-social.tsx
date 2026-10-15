@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 // Source: Mikmik's Garahe Facebook page.
 // Instagram and TikTok are "#" until the real links exist.
 const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=100083373601114";
+const MESSENGER_URL = "https://m.me/100083373601114";
 const INSTAGRAM_URL = "#";
 const TIKTOK_URL = "#";
 const PHONE_NUMBER = "+639566590932"; // 0956 659 0932
@@ -31,6 +32,26 @@ function FacebookIcon({ size = 18, className }: BrandIconProps) {
       className={className}
     >
       <path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.23.2 2.23.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.58v1.89h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94Z" />
+    </svg>
+  );
+}
+
+function MessengerIcon({ size = 18, className }: BrandIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
+      {/* Chat bubble with the lightning bolt cut out (evenodd) */}
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12 2C6.48 2 2 6.14 2 11.25c0 2.9 1.45 5.48 3.72 7.17V22l3.4-1.87c.92.26 1.87.39 2.88.39 5.52 0 10-4.14 10-9.27S17.52 2 12 2ZM5.8 14.2l4.7-5 2.4 2.3 4.7-2.2-4.5 5-2.4-2.3-4.9 2.2Z"
+      />
     </svg>
   );
 }
@@ -73,6 +94,7 @@ function TikTokIcon({ size = 18, className }: BrandIconProps) {
 
 export interface FloatingSocialProps {
   facebookHref?: string;
+  messengerHref?: string;
   instagramHref?: string;
   tiktokHref?: string;
   phone?: string;
@@ -88,6 +110,7 @@ interface SocialLink {
 
 export default function FloatingSocial({
   facebookHref = FACEBOOK_URL,
+  messengerHref = MESSENGER_URL,
   instagramHref = INSTAGRAM_URL,
   tiktokHref = TIKTOK_URL,
   phone = PHONE_NUMBER,
@@ -106,6 +129,13 @@ export default function FloatingSocial({
       icon: FacebookIcon,
       bg: "bg-[#1877F2]",
       glow: "shadow-[0_0_18px_rgba(24,119,242,0.55)]",
+    },
+    {
+      name: "Messenger",
+      href: messengerHref,
+      icon: MessengerIcon,
+      bg: "bg-gradient-to-b from-[#00B2FF] to-[#006AFF]",
+      glow: "shadow-[0_0_18px_rgba(0,153,255,0.55)]",
     },
     {
       name: "Instagram",
