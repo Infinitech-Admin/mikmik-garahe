@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/layout/legal-page";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | AutoTrade",
+  title: "Privacy Policy | Mikmik Garahe",
   description:
-    "How AutoTrade collects, uses, and protects your personal information.",
+    "How Mikmik Garahe collects, uses, and protects your personal information.",
 };
 
 const sections: LegalSection[] = [
@@ -99,7 +99,7 @@ const sections: LegalSection[] = [
   {
     title: "Contact Us",
     paragraphs: [
-      "For privacy questions or to exercise your rights, contact us at hello@autotrade.com or through our Contact Us page.",
+      "For privacy questions or to exercise your rights, call or text us at 0956 659 0932 or reach us through our Contact Us page.",
     ],
   },
 ];
@@ -109,8 +109,8 @@ export default function PrivacyPolicyPage() {
     <LegalPage
       eyebrow="Legal"
       title="Privacy Policy"
-      updated="September 29, 2026"
-      intro="At AutoTrade, we value your trust and are committed to protecting your personal information. This policy explains what we collect, why we collect it, and the choices you have."
+      updated="October 15, 2026"
+      intro="At Mikmik Garahe, we value your trust and are committed to protecting your personal information. This policy explains what we collect, why we collect it, and the choices you have."
       sections={sections}
     />
   );
